@@ -1,0 +1,280 @@
+
+================================
+
+Rara Lab 公式サイト ギャラリー仕様書（統合最新版）
+
+version: 20251121
+
+================================
+
+––––––––––––––––
+
+0. 基本方針
+
+––––––––––––––––
+
+Rara Lab の公式サイトは以下の3ページ構成で構築する。
+	1.	ギャラリー一覧（gallery/index.html）
+	2.	個別ページ（gallery/[slug]/index.html）
+	3.	トップページ（/index.html）
+
+優先対象は スマホ（幅 360〜430px）。
+PC は「スマホと同じ流れを崩さずに広げる」方針。
+hover や派手な装飾は極力使わない。
+
+画像は Cloudflare Images / Stream を使用し、
+build.py により静的 HTML を生成する。
+
+⸻
+
+––––––––––––––––
+
+1. 画像の種類（命名規則・役割）
+
+––––––––––––––––
+
+● hero（メイン画像）
+	•	720px 程度の幅（2×ピクセル前提）
+	•	個別ページの最上部に表示
+
+● thumbs（サムネイル）
+	•	幅 150〜180px 程度
+	•	枚数に制限なし
+	•	クリックすると Lightbox が起動
+
+● full（4K画像）
+	•	Cloudflare Images の最終出力
+	•	Lightbox で表示
+
+● video
+	•	Cloudflare Stream
+	•	hero の直下に動画ブロックとして挿入
+
+⸻
+
+––––––––––––––––
+
+2. 個別ページの構造
+
+––––––––––––––––
+
+<section class="hero">     ← hero（画像 または hero + video）
+<section class="thumbs">   ← サムネイル
+<section class="plate">    ← プレート（A/B/C）
+<section class="cta-block">← CTA
+
+プレート表示は A → B → C → CTA の順。
+
+⸻
+
+––––––––––––––––
+
+3. 個別ページの縦リズム（確定値）
+
+––––––––––––––––
+
+◆ 動画ありの場合
+	•	hero 下 → 動画上：16px
+	•	動画下 → thumbs 上：22px
+	•	thumbs 下 → plate 上：32px
+
+◆ 動画なし
+	•	hero 下 → thumbs 上：22px
+	•	thumbs 下 → plate 上：32px
+
+⸻
+
+––––––––––––––––
+
+4. thumbs（サムネ帯）
+
+––––––––––––––––
+
+◆ 仕様
+	•	max-width:720px で hero と揃える
+	•	中央寄せ
+	•	hover 効果なし
+	•	最終行の端数は中央寄せで問題なし
+
+◆ CSS
+
+.detail .thumbs {
+  max-width: 720px;
+  margin: 0 auto;
+}
+
+
+⸻
+
+––––––––––––––––
+
+5. プレート（A/B/C）
+
+––––––––––––––––
+
+◆ A（日本語タイトル）
+	•	例：「モンタナサファイア 0.20ct “Simple Hexagon”」
+	•	plate の最上段に1行表示
+
+◆ B（英語 2行）
+	1.	{Stone} {carat}ct
+	2.	Design: “{name}”
+
+行間は 4px（p+p）
+
+◆ C（クレジット）
+	1.	Faceted by Rara Lab
+	2.	Origin: Montana, USA
+
+◆ CTA（ご購入はこちら →）
+	•	プレートの直後
+	•	下マージンは 56px
+
+◆ CSS
+
+.detail .plate {
+  max-width: 320px;
+  margin: 32px auto 32px;
+  text-align: left;
+}
+.detail .plate p + p {
+  margin-top: 4px;
+}
+
+
+⸻
+
+––––––––––––––––
+
+6. CTA ブロック
+
+––––––––––––––––
+	•	CTA 文言：「ご購入はこちら →」
+	•	display:inline-block
+	•	padding: 6px 0 3px
+	•	border-bottom: #111 の 1px
+	•	下マージン 56px
+
+⸻
+
+––––––––––––––––
+
+7. Lightbox（オーバーレイ 4Kビュー）
+
+––––––––––––––––
+
+◆ 挙動
+	•	hero / thumb どちらを押しても起動
+	•	黒背景で画面全体をオーバーレイ
+	•	画像は画面の 64px（横）×96px（縦）分だけ余白
+	•	左右タップで前後へ移動
+	•	背景タップで閉じる
+	•	ESC でも閉じる
+
+◆ UI仕様
+	•	ナビ（prev / next）：白抜き → 画像に 10px 重ねる
+	•	閉じるボタン（×）：同じく top:10px / right:10px
+	•	角丸：hero / thumbs と揃えた値
+
+.lb-close {
+  top: 10px !important;
+  right: 10px !important;
+}
+
+◆ Safari 黒フチ問題
+
+Cloudflare Stream × iframe × border-radius の Safari バグは
+「再生後に消える」挙動のため 許容仕様 とする。
+
+⸻
+
+––––––––––––––––
+
+8. 動画（Cloudflare Stream）
+
+––––––––––––––––
+	•	hero 直下に挿入される
+	•	border-radius: inherit で角丸を反映
+	•	背景黒でアスペクト比維持
+
+.hero-video-inner video,
+.hero-video-inner iframe {
+  background: black;
+  border-radius: inherit;
+}
+
+
+⸻
+
+––––––––––––––––
+
+9. 一覧ページ（Gallery）
+
+––––––––––––––––
+	•	画像は 3 列（PC） / 2 列（スマホ）
+	•	hover 効果なし
+	•	タイトル部分は2行まで（overflow hidden）
+	•	NEW/SOLD バッジは必要時のみ
+
+⸻
+
+––––––––––––––––
+
+10. build.py の仕様
+
+––––––––––––––––
+	•	image_order があればそれを優先
+	•	なければ filename / prefix の順
+	•	動画は動画ファイルの presence で自動判定し出力
+	•	slug ディレクトリごとに個別 detail ページを生成
+
+⸻
+
+––––––––––––––––
+
+11. CSS の再構成（フェーズ2）
+
+––––––––––––––––
+
+次フェーズで CSS を 4分割する方針：
+	1.	base.css（フォント、色、初期化）
+	2.	gallery.css（一覧ページ）
+	3.	detail.css（個別ページ）
+	4.	lightbox.css（ライトボックス）
+
+※現状は触れず、今後の最適化作業とする。
+
+⸻
+
+––––––––––––––––
+
+12. 今後の作業（公式サイト完成に必要なこと）
+
+––––––––––––––––
+	1.	例外ページの最終確認
+	•	動画なし
+	•	サムネ1枚
+	•	タグが1件
+	•	CTAなし（売約済）
+→ レイアウト崩れがないかだけ確認。
+	2.	トップページの導線最終確認
+	•	hero → ギャラリーへの誘導動線
+	•	New Items 12件の表示確認
+	•	スクエアスペース終了に向けたリンク整理
+	3.	Cloudflare Pages での最終デプロイ
+	•	main push → 自動デプロイが機能するか
+	•	キャッシュが適切に消えるか
+	4.	Squarespace 解約前のバックアップ
+	•	旧ギャラリー画像
+	•	旧記事の HTML
+	•	必要なら 301 リダイレクト計画
+
+⸻
+
+================================
+
+以上：仕様書統合最新版（2025-11）
+
+================================
+
+⸻

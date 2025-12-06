@@ -1,0 +1,268 @@
+
+━━━━━━━━━━━━━━━━━━━
+
+Rara Lab ギャラリー仕様書（2025-11 最新版）
+
+━━━━━━━━━━━━━━━━━━━
+
+この仕様書は Rara Lab オフィシャルサイト（静的HTML）で使用するギャラリー一式の技術仕様です。
+ギャラリー一覧・個別ページ・動画・ライトボックス・CSV インポートなど、現行バージョンで使用するすべての仕組みを記します。
+
+⸻
+
+1. ギャラリー全体構成
+
+1-1. 目的
+	•	スマホ中心の閲覧体験を最適化する
+	•	写真（特に 4K）の美しさを主役にした表示
+	•	ページ遷移なしで閲覧が続けられる「ライトボックス型」へ移行
+	•	各石ごとに動画（Cloudflare Stream）を埋め込める
+
+⸻
+
+2. ファイル構造（基本）
+
+site/
+ ├ gallery/
+ │   ├ index.html    … ギャラリー一覧
+ │   └ {slug}/index.html   … 個別ページ
+ ├ assets/
+ │   ├ css/site.css
+ │   ├ js/lightbox.js
+ │   └ data/items.{csv,json}
+ └ top/index.html
+
+スクリプト類：
+	•	build.py（静的HTML生成）
+	•	tools_import_csv.py（CSV → JSON変換）
+	•	tools_from_block.py（ブロック抽出）
+
+⸻
+
+3. 一覧ページ（gallery/index.html）
+
+3-1. レイアウト
+	•	サムネ：正方形と長方形が混ざっても揃う masonry 風レイアウト（CSS のみ）
+	•	1列 or 2列（画面幅で可変）
+	•	上部に薄い区切り線（仕様書通り）
+	•	hover は PC のみ採用しない（ユーザー方針で削除）
+
+3-2. データソース
+
+items.json の全石を日付降順で並べる。
+サムネ画像は thumb/ フォルダの1枚目。
+
+⸻
+
+4. 個別ページ（detail）
+
+4-1. ページ構造
+
+<h1>石名 – X.XXXct</h1>
+<h2>“Design Name”</h2>
+
+<section class="hero">（ヒーロー画像）</section>
+
+<section class="hero-video">（動画：任意）</section>
+
+<div class="thumbs">（サムネ一覧）</div>
+
+<section class="plate">（A/B/Cブロック）</section>
+
+<section class="cta-block">ご購入はこちら →</section>
+
+ライトボックス用コンテナ
+
+
+⸻
+
+5. ヒーロー画像
+	•	4K がある → 4K がヒーロー
+	•	無い場合 → thumb を使用
+	•	ライトボックスに対応（別タブ遷移なし）
+
+HTML例：
+
+<a href="#" class="hero-link" data-full="/gallery/.../4k/...jpg">
+  <img class="hero" src="/gallery/.../thumb/...jpg">
+</a>
+
+
+⸻
+
+6. 動画（Cloudflare Stream 対応）
+
+6-1. CSV 仕様
+
+CSVに video_url 列を追加。
+Cloudflare Stream の iframe形式URL（末尾が /iframe）を入れる。
+
+例：
+
+https://customer-xxxxx.cloudflarestream.com/xxxxxx/iframe
+
+6-2. build.py の動作
+	•	video_url が空 → 何も出さない
+	•	video_url がある → 以下を hero の直下に挿入
+
+<section class="hero-video">
+  <div class="hero-video-inner">
+    <iframe src="{video_url}" allowfullscreen></iframe>
+  </div>
+</section>
+
+6-3. CSS（共通デザイン 16:9）
+
+.hero-video { max-width: 720px; margin: 16px auto 0; }
+.hero-video-inner {
+  position: relative; padding-top: 56.25%; background:black;
+}
+.hero-video-inner iframe {
+  position:absolute; inset:0; width:100%; height:100%;
+}
+
+
+⸻
+
+7. サムネイル（thumbs）
+
+7-1. 並び順
+
+CSV の image_order 列を使用。
+空欄の場合はディレクトリ順。
+
+7-2. HTML構造
+
+<a class="thumb" href="#" data-full="/gallery/.../4k/...jpg">
+  <img src="/gallery/.../thumb/...jpg">
+</a>
+
+4K 画像は単純に
+
+t.replace("/thumb/", "/4k/")
+
+で変換。
+
+⸻
+
+8. ライトボックス（Lightbox.js）
+
+● 新規追加仕様（2025-11）
+	•	サムネ／ヒーローをクリックすると 4K がオーバーレイ表示
+	•	黒背景が画面全体を覆う
+	•	スマホは左右タップで前後
+	•	PCは左右ボタン
+	•	外側タップで閉じる
+
+HTML（build.py が各detailページに自動挿入）：
+
+<div class="lb-root" data-lb-root hidden>
+  <div class="lb-backdrop" data-lb-close></div>
+  <div class="lb-frame">
+    <button class="lb-close" data-lb-close>×</button>
+    <button class="lb-prev"  data-lb-prev>‹</button>
+    <img class="lb-img" data-lb-img>
+    <button class="lb-next"  data-lb-next>›</button>
+  </div>
+</div>
+
+JS は /assets/js/lightbox.js に集約。
+
+CSSは .lb-root 以下がすべて一本化済み。
+
+⸻
+
+9. プレート（A/B/Cブロック）
+
+9-1. A（日本語タイトル）
+
+CSVの title_jp をそのまま使用。
+
+9-2. B（英語名・デザイン名）
+	•	{stone} {carat}ct
+	•	Design: “...”
+
+9-3. C（クレジット）
+	•	Faceted by …
+	•	Origin: …
+
+すべての余白調整は CSS で統一済み。
+
+⸻
+
+10. CTA（ご購入はこちら）
+
+CSVの product_url が入っていれば表示。
+無ければ出さない。
+
+⸻
+
+11. JSON（items.json）
+
+11-1. 生成方法
+
+python3 tools_import_csv.py
+
+	•	JSON破損時でも復旧可能
+	•	CSV が真実のソース
+	•	slug を辞書キー化し重複 slug を上書きする
+
+11-2. JSONが空になる原因をすでに解消済み
+	•	image_order / video_url を含む新しい列構造に完全対応済み
+	•	末尾改行などのエラーにも耐性あり
+
+⸻
+
+12. ビルド（build.py）
+
+python3 build.py
+
+	•	gallery, detail, top の3種を自動生成
+	•	ライトボックスHTMLを detail に挿入
+	•	video_url を検出した場合、自動で動画ブロックが入る
+
+⸻
+
+━━━━━━━━━━━━━━━━━━━
+
+13. 次にやるべきこと（優先順）
+
+━━━━━━━━━━━━━━━━━━━
+
+① 個別ページのデザイン微調整
+
+最も影響の大きい箇所：
+	•	動画 → ヒーロー → サムネ → プレート → CTA の縦リズム
+	•	スマホ表示の余白調整（720px枠の見え方）
+	•	CTA の下余白
+
+優先度：高
+
+⸻
+
+② ギャラリー一覧の微修正
+	•	一覧ページのサムネ間隔の最終調整
+	•	NEW / SOLD ラベルの有無（必要なら）
+
+優先度：中
+
+⸻
+
+③ トップページにギャラリー導線を追加（任意）
+	•	新サイトのコンセプトが固まり次第でOK
+	•	今は不急
+
+優先度：低
+
+⸻
+
+④ Cloudflare Stream の運用ルールを作る
+	•	動画IDの管理方法
+	•	CSVへの書き方を固定（iframe URLのみ）
+	•	サムネ（poster）はCloudflare側に任せる
+
+優先度：低（技術的にはもう問題なし）
+
+⸻
+
+━━━━━━━━━━━━━━━━━━━
