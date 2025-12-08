@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 import json, html, re, csv
 from pathlib import Path
+import shutil  # ← ここを追加
 
 # ---- WebP 変換用ライブラリ (Pillow) の読み込み ----
 try:
@@ -10,14 +11,21 @@ except ImportError:
 
 # ---- Paths / Policy ----
 ROOT = Path(__file__).parent.resolve()
+
+# 公開用ルート（ここが Cloudflare Pages の "Build output directory" = site になる）
+SITE_ROOT = ROOT / "site"
+SITE_ROOT.mkdir(parents=True, exist_ok=True)
+
 DATA = ROOT / "assets" / "data" / "items.json"
-OUT_GALLERY = ROOT / "gallery"
+
+# ギャラリー・ニュースは site/ 以下に出力
+OUT_GALLERY = SITE_ROOT / "gallery"
 OUT_GALLERY.mkdir(parents=True, exist_ok=True)
 PAGE_SIZE = 24
 
 NEWS_CSV      = ROOT / "data" / "news.csv"
 NEWS_BODY_DIR = ROOT / "data" / "news_body"
-OUT_NEWS      = ROOT / "news"
+OUT_NEWS      = SITE_ROOT / "news"
 OUT_NEWS.mkdir(parents=True, exist_ok=True)
 
 TOP_HERO     = ROOT / "assets" / "partials" / "top_hero.html"
@@ -67,12 +75,11 @@ def ensure_webp_thumbs():
             print(f"[webp] failed to convert {p.name}: {e}")
 
 def ensure_webp_news_images():
-    """
-    news/images 以下の JPG/PNG から、同名の .webp を自動生成する。
-    ・すでに .webp がある場合は何もしない
-    ・Pillow が無い場合も何もしない
-    """
     if Image is None:
+        return
+
+    news_dir = SITE_ROOT / "news" / "images"
+    if not news_dir.exists():
         return
 
     news_dir = ROOT / "news" / "images"
@@ -165,33 +172,31 @@ def resolve_news_image_src(image_file: str) -> str:
 
     # "news/images/xxx.jpg" / "/news/images/xxx.jpg" / "xxx.jpg" どれでも受ける
     if "/" in image_file:
-        rel = image_file.lstrip("/")  # 例: "news/images/DSC_1777.jpg"
+        rel = image_file.lstrip("/")  # "news/images/DSC_1777.jpg"
     else:
-        rel = f"news/images/{image_file}"  # CSV がファイル名だけの場合
+        rel = f"news/images/{image_file}"
 
-    p = ROOT / rel
+    # 実ファイルは site/ の下にある前提
+    p = SITE_ROOT / rel
 
-    # もともと .webp 指定ならそのまま返す
+    # もともと .webp 指定ならそのまま
     if p.suffix.lower() == ".webp":
-        if p.exists():
-            return "/" + rel
-        return "/" + rel  # まだファイルを置いてないだけのケース
+        return "/" + rel
 
     folder = p.parent
     stem   = p.stem
 
-    # 同じフォルダに .webp があれば優先
     webp_path = folder / (stem + ".webp")
     if webp_path.exists():
-        rel_webp = str(webp_path.relative_to(ROOT)).replace("\\", "/")
+        # URL は /news/images/... 形式で返す
+        rel_webp = f"news/images/{webp_path.name}"
         return "/" + rel_webp
 
-    # なければ元の拡張子を使う
     if p.exists():
-        rel_orig = str(p.relative_to(ROOT)).replace("\\", "/")
+        rel_orig = f"news/images/{p.name}"
         return "/" + rel_orig
 
-    # まだ画像をコピーしていない等のケースでも、とりあえず組み立てたパスを返す
+    # まだ実ファイルが無くても URL だけは返しておく
     return "/" + rel
 
 def render_news_list_items(news_items, limit=None) -> str:
@@ -912,6 +917,21 @@ def detail_html(it):
 
 # ---- Build ----
 def build():
+    # 公開用 assets を site/assets にコピー
+    src_assets = ROOT / "assets"
+    dst_assets = SITE_ROOT / "assets"
+
+    if dst_assets.exists():
+        shutil.rmtree(dst_assets)
+    if src_assets.exists():
+        shutil.copytree(src_assets, dst_assets)
+
+    # サムネ & ニュース画像の WebP を事前に揃えておく
+    ensure_webp_thumbs()
+    ensure_webp_news_images()
+
+    items = read_items()
+    
     # サムネ & ニュース画像の WebP を事前に揃えておく
     ensure_webp_thumbs()
     ensure_webp_news_images()
@@ -1036,7 +1056,7 @@ if news_items:
     else:
         top_news_list = ""  # ニュースがない場合は空のまま
 
-    (ROOT / "index.html").write_text(
+    (SITE_ROOT / "index.html").write_text(
         top_index_html(new_cards, top_news_list),
         encoding="utf-8"
     )
