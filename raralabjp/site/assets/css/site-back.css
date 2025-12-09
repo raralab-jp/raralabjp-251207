@@ -1,0 +1,3560 @@
+:root{--max:1200px;--gap:16px;font-family:system-ui,-apple-system,"Segoe UI",Roboto,Helvetica,Arial;}
+*{box-sizing:border-box} body{margin:0;color:#111;background:#fff}
+.site-header{max-width:var(--max);margin:0 auto;padding:16px}
+.grid{max-width:var(--max);margin:0 auto;padding:16px;display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:var(--gap)}
+.card{border:1px solid #eee;border-radius:12px;overflow:hidden;background:#fff;box-shadow:0 1px 2px rgba(0,0,0,.04)}
+.card a{color:inherit;text-decoration:none;display:block}
+.card img{display:block;width:100%;height:auto}
+.meta{padding:12px}
+.meta .title{margin:0 0 6px 0;font-size:14px;line-height:1.4}
+.meta .sub{margin:0;color:#555;font-size:12px}
+.detail{max-width:var(--max);margin:0 auto;padding:24px}
+
+/*.hero img{width:100%.hero img{
+  width:100%;
+  height:auto;
+  display:block;
+  border-radius:0;
+};height:auto;display:block;border-radius:12px}*/
+
+.btn{display:inline-block;padding:10px 14px;border:1px solid #333;border-radius:999px;text-decoration:none;margin-right:8px}
+.btn.primary{background:#111;color:#fff;border-color:#111}
+/* === patch: cards / thumbs === */
+.cards{
+  max-width:var(--max);
+  margin:0 auto;
+  padding:16px;
+  display:grid;
+  grid-template-columns:repeat(auto-fill,minmax(220px,1fr));
+  gap:var(--gap);
+}
+.thumbs{
+  display:flex;
+  flex-wrap:wrap;
+  gap:10px;
+  margin:12px 0;
+}
+.thumbs img{
+  width:140px;
+  height:auto;
+  border-radius:10px;
+}
+
+/* intro block */
+.intro{max-width:var(--max);margin:0 auto 16px;padding:0 16px;line-height:1.7}
+.intro p{margin:0 0 .6em}
+
+/* ===== Rara Lab: Gallery (frameless, case-like spacing) ===== */
+:root{
+  /* tokens for gallery */
+  --rl-text: #555555;         /* キャプション色（ブランド指定どおり） */
+  --rl-bg: #ffffff;
+  --rl-gap-x: 16px;           /* アイテム左右の余白（スマホ基準） */
+  --rl-gap-y: 24px;           /* アイテム上下の余白（スマホ基準） */
+  --rl-cap-gap: 10px;         /* 画像とキャプションの距離 */
+  --rl-cap-size-min: 12px;    /* スマホの最小フォント */
+  --rl-cap-size-max: 14px;    /* PCの最大フォント */
+}
+
+/* ラッパー：スマホ1列 → タブレット2列 → PC3列 */
+.rl-gallery{
+  max-width: var(--max);
+  margin: 0 auto;
+  padding: 0;                 /* ページ側でセクション余白を足す想定 */
+  display: grid;
+  grid-template-columns: 1fr; /* スマホ：1列 */
+}
+
+/* 列数ブレークポイント（端末のばらつきに強い安全値） */
+@media (min-width: 600px){
+  .rl-gallery{ grid-template-columns: repeat(2, 1fr); }
+}
+@media (min-width: 1024px){
+  .rl-gallery{ grid-template-columns: repeat(3, 1fr); }
+}
+
+/* 各アイテム：枠は描かず、余白だけで“ケース感”を出す */
+.rl-item{
+  padding: var(--rl-gap-y) var(--rl-gap-x);
+  background: var(--rl-bg);
+}
+
+/* 画像はブロック化して横幅フィット、角丸・枠なし */
+.rl-item img{
+  display: block;
+  width: 100%;
+  height: auto;
+}
+
+/* 画像と“プレート”の距離感（静かめ） */
+.rl-caption{
+  margin-top: var(--rl-cap-gap);
+  color: var(--rl-text);
+  font-size: clamp(var(--rl-cap-size-min), 1.1vw, var(--rl-cap-size-max));
+  line-height: 1.4;           /* 詰め気味：プレート感 */
+  font-weight: 400;
+  letter-spacing: 0.01em;
+  text-align: left;           /* 美術館プレートは左揃えが安定 */
+}
+
+/* 2行構成：上＝石種+ct、下＝デザイン名（任意） */
+.rl-caption .primary{ display:block; }
+.rl-caption .secondary{ display:block; opacity: 0.9; }
+
+/* 画像どうしの“呼吸感”：線で区切らず余白で区切る */
+.rl-gallery{
+  /* 行間・列間はitem側のpaddingで作るので gapは0 */
+  gap: 0;
+}
+
+/* （任意）極薄影：面の切れをほんのり出したい場合だけ
+.rl-item{ box-shadow: 0 1px 2px rgba(0,0,0,0.04); }
+*/
+.rl-item .rl-link{ display:block; text-decoration:none; color:inherit; }
+
+/* 一時的にパンくず非表示（復活は display:block に） */
+.breadcrumb{ display:none; }
+
+/* ==== Rara Lab Gallery (added 2025-11-11) ==== */
+
+:root{
+  --max: 1200px;
+  --gap: 16px;
+  --radius: 12px;
+}
+
+html { font-size: 16px; }
+body{
+  font-family: system-ui, -apple-system, "Hiragino Kaku Gothic ProN", "Yu Gothic", "Noto Sans JP", sans-serif;
+  line-height: 1.7;
+  letter-spacing: .01em;
+  color:#111;
+}
+
+/* コンテナ */
+.top .intro, .rl-gallery, .detail { max-width: var(--max); margin: 0 auto; padding: 0 16px; }
+
+/* ギャラリー共通 */
+.rl-gallery{
+  display:grid;
+  grid-template-columns: repeat(auto-fill, minmax(220px,1fr));
+  gap: var(--gap);
+}
+.rl-item .rl-link{ display:block; text-decoration:none; color:inherit; }
+.rl-item img{
+  width:100%;
+  aspect-ratio: 1 / 1;      /* サムネは正方形に見せる */
+  object-fit: cover;         /* 画面いっぱいに切り取り */
+  display:block;
+  border-radius: var(--radius);
+}
+.rl-caption{ margin-top: .5rem; }
+.rl-caption .primary{ font-weight: 600; }
+.rl-caption .secondary{ opacity:.75; }
+
+/* 個別ページ */
+.detail .hero img{
+  width:100%;
+  height:auto;
+  display:block;
+  border-radius: var(--radius);
+}
+
+/* ---- Detail: work plate & CTA ---- */
+/* ここに .cta-block / .cta-link のスタイルを書く */
+.gallery-detail .cta-block {
+  border-top: 1px solid #eee;   /* 見出しよりかなり薄い */
+  padding-top: 10px;
+  margin-top: 16px;
+}
+.gallery-detail .cta-link {
+  border-bottom: 1px solid #ccc;
+  text-decoration: none;
+  font-size: 14px;
+  letter-spacing: .05em;
+}
+
+.detail .thumbs{
+  display:flex; flex-wrap:wrap; gap:10px; margin:12px 0;
+}
+.detail .thumbs img{
+  width:140px; height:140px; object-fit:cover; display:block; border-radius:10px;
+}
+.spec ul{ list-style:none; padding:0; margin:1rem 0 0; }
+.spec li{ margin:.25rem 0; }
+
+/* A→B寄せ（高級感を少しだけ） */
+body{ color:#0e0e0e; }
+.rl-caption .secondary{ opacity:.65; }
+
+
+
+/* ---- Top sections ---- */
+.top-sections { max-width: var(--max, 1200px); margin: 0 auto 24px; padding: 0 16px; }
+.top-sections .lead { color:#333; margin: 8px 0 12px; }
+.top-sections .quick-links { display:flex; flex-wrap:wrap; gap: 10px; }
+.top-sections .quick-links a {
+  display:inline-block; padding:6px 12px; border:1px solid #ddd; border-radius:999px; text-decoration:none; color:#333;
+}
+
+/* ---- Heading ---- */
+.h-sec { max-width: var(--max, 1200px); margin: 0 auto 12px; padding: 0 16px; font-size: 20px; }
+
+/* rl-gallery は既存のカードCSSをそのまま利用 */
+
+/* ===== Top Intro / Hero (scoped) ===== */
+.top-head{
+  max-width:1080px;margin:0 auto; padding:16px 16px 8px;
+}
+.top-head .lead{
+  margin:0 0 8px; font-size:14px; line-height:1.6; color:#111;
+}
+.top-head .quick-links{
+  display:flex; flex-wrap:wrap; gap:8px;
+}
+.top-head .quick-links a{
+  display:inline-block; padding:6px 10px;
+  border:1px solid #e3e3e3; border-radius:999px;
+  background:#fff; text-decoration:none; color:#111;
+  font-size:12px; line-height:1; box-shadow:0 1px 2px rgba(0,0,0,.04);
+}
+.top-head .quick-links a:hover{
+  border-color:#cfcfcf; box-shadow:0 2px 4px rgba(0,0,0,.08);
+}
+
+
+
+/* ========== Rara Lab brand tokens ========== */
+:root{
+  --rl-yellow: #FDCC42;
+  --rl-yellow-soft: #FCE8B5;
+  --rl-gray-0: #FFFFFF;
+  --rl-gray-1: #EEEEEE;
+  --rl-gray-3: #CCCCCC;         /* icon hover 等 */
+  --rl-gray-5: #888888;         /* link 等 */
+  --rl-text:   #2A2A2A;         /* base text（Squarespace実績色） */
+  --rl-text-weak:#555555;       /* 補助テキスト/キャプション */
+  --rl-card-shadow: 0 1px 3px rgba(0,0,0,.06), 0 4px 16px rgba(0,0,0,.04);
+
+  --rl-max: 1080px;             /* 画面幅上限。必要なら 1200px に変更 */
+  --rl-gap: 32px;               /* 基本余白 */
+  --rl-radius: 12px;            /* カード角丸 */
+}
+
+/* ========== base ========== */
+html,body{ color:var(--rl-text); background:#fff; }
+main, .container{ max-width:var(--rl-max); margin:0 auto; padding:0 16px; }
+
+h1,h2,h3{ letter-spacing:.03em; color:var(--rl-text); }
+h1{ font-weight:700; font-size:28px; margin:24px 0; }
+h2{ font-weight:600; font-size:20px; margin:24px 0 12px; }
+
+p,li{ font-size:15px; line-height:1.8; }
+
+/* links：下線なし、ホバーで下線/色強調 */
+a{ color:#888888; text-decoration:none; transition:color .2s ease, opacity .2s ease; }
+a:hover{ color:#3A3A3A; text-decoration:underline; }
+
+/* ========== buttons ========== */
+.btn, .pill, .nav a.btn{
+  display:inline-block; padding:8px 14px; border-radius:999px;
+  background:var(--rl-gray-1); color:var(--rl-text); border:1px solid #e6e6e6;
+  text-transform:capitalize;   /* 単語の先頭のみ大文字（英語UI用） */
+}
+.btn.primary{
+  background:var(--rl-yellow); border-color:var(--rl-yellow);
+  color:#1a1a1a; font-weight:600;
+}
+.btn:hover{ filter:saturate(1.05); }
+
+/* ========== gallery (一覧) ========== */
+.rl-gallery{
+  display:grid;
+  grid-template-columns:repeat(auto-fill, minmax(220px, 1fr));
+  gap:var(--rl-gap);
+  margin:24px 0 64px;
+}
+.rl-item{
+  background:#fff; border:1px solid #f1f1f1; border-radius:var(--rl-radius);
+  box-shadow:var(--rl-card-shadow); overflow:hidden;
+  transition:transform .15s ease, box-shadow .15s ease, border-color .2s ease;
+}
+.rl-item:hover{
+  transform:translateY(-2px);
+  box-shadow:0 3px 10px rgba(0,0,0,.08), 0 10px 24px rgba(0,0,0,.06);
+  border-color:#e8e8e8;
+}
+.rl-item img{
+  display:block;
+  width:100%;
+  height:auto;
+  aspect-ratio: 1 / 1;
+  object-fit: contain;
+  background:#fff;
+}
+
+/* caption：上段=石種+ct、下段=デザイン名 */
+.rl-caption{ padding:10px 12px 12px; }
+.rl-caption .primary{
+  display:block; font-size:14px; font-weight:600; color:var(--rl-text);
+}
+.rl-caption .secondary{
+  display:block; margin-top:2px; font-size:12px; color:var(--rl-text-weak);
+  white-space:nowrap; overflow:hidden; text-overflow:ellipsis;
+}
+
+/* ========== detail（個別ページ） ========== */
+.detail{
+  max-width:var(--rl-max); margin:0 auto; padding:0 16px 56px;
+}
+.detail h1{
+  font-size:24px; font-weight:700; margin:20px 0 6px;
+}
+.subtitle{
+  font-size:14px;
+  color:var(--rl-text-weak);
+  margin-bottom:14px;
+}
+
+/* detail ページのヒーローエリア：幅 720px で中央寄せ */
+.detail .hero{
+  max-width:720px;
+  margin:0 auto;
+}
+
+/* ヒーロー画像自体の見た目 */
+.detail .hero img{
+  display:block;
+  width:100%;
+  height:auto;
+  border-radius:18px;
+  box-shadow:var(--rl-card-shadow);
+}
+
+.detail .thumbs{ display:flex; gap:10px; flex-wrap:wrap; margin:10px 0 18px; }
+.detail .thumbs .thumb img{
+  width:96px; height:96px; object-fit:cover; border-radius:12px; border:1px solid #eee;
+}
+.detail .spec{
+  margin-top:14px; padding:12px 14px; background:#fff; border:1px solid #f1f1f1; border-radius:14px;
+}
+.detail .spec dt{ width:74px; color:var(--rl-text-weak); }
+.detail .spec dd{ margin:0 0 6px; }
+
+/* ========== header/menu（仮：今ある pill 風リンクの整え） ========== */
+.top-nav{ max-width:var(--rl-max); margin:10px auto 6px; padding:0 16px; }
+.top-nav .pill{
+  background:#fff; border:1px solid #e8e8e8; color:var(--rl-text);
+}
+.top-nav .pill:hover{ border-color:var(--rl-gray-3); }
+.top-nav .pill.shop{ background:var(--rl-yellow); border-color:var(--rl-yellow); font-weight:600; }
+
+/* 補助：ヒーロー帯が薄黄色背景の時の整え */
+.hero-band{ background:var(--rl-yellow-soft); padding:10px 0; }
+
+/* ギャラリーのグリッド密度を少し広げる */
+.rl-gallery{
+  display:grid;
+  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+  gap: 28px;
+  padding: 8px 12px 64px;
+}
+
+/* カードの仕立て（角丸・影・余白） */
+.rl-item{
+  background:#fff;
+  border-radius:16px;
+  box-shadow: 0 2px 14px rgba(0,0,0,.06);
+  padding: 18px 16px 14px;
+}
+
+/* サムネは正方形・非トリミングのまま中央に */
+.rl-item img{
+  display:block;
+  width:100%;
+  height:auto;
+  aspect-ratio: 1/1;
+  object-fit: contain;
+  background:#fff;
+  border-radius:12px;
+}
+
+/* キャプションのタイポ */
+.rl-caption{ margin-top: 10px; }
+.rl-caption .primary{
+  display:block;
+  font-weight:600;
+  color:#3a3a3a;      /* darker gray */
+  line-height:1.4;
+}
+.rl-caption .secondary{
+  display:block;
+  color:#888;         /* medium gray */
+  font-size:.92rem;
+  line-height:1.3;
+  overflow:hidden;
+  text-overflow:ellipsis;
+  white-space:nowrap; /* 1行で切る */
+}
+
+/* ホバーで“触れる高級感”だけ出す */
+.rl-item:hover{
+  box-shadow: 0 6px 22px rgba(0,0,0,.10);
+  transform: translateY(-1px);
+  transition: box-shadow .2s ease, transform .2s ease;
+}
+
+/* リンク色のポリシー */
+a{ color:#888; text-decoration:none; }
+a:hover{ color:#3a3a3a; text-decoration:underline; }
+
+.pills{ display:flex; gap:8px; flex-wrap:wrap; }
+.pill{ border:1px solid #eee; border-radius:999px; padding:6px 12px; }
+.pill.shop{
+  background:#FDCC42;   /* ブランド黄色 */
+  color:#2a2a2a;        /* more darker gray */
+  font-weight:600;
+  border-color:#Fce8b5; /* 薄黄を縁取りに */
+}
+.pill:hover{ border-color:#cccccc; }
+
+.detail .hero{
+  width:min(900px, 100%);
+  aspect-ratio:1/1;
+  object-fit:contain;
+  border-radius:16px;
+  display:block;
+  margin: 0 auto 18px;
+  box-shadow: 0 2px 14px rgba(0,0,0,.06);
+}
+
+.detail .thumbs{
+  display:flex; flex-wrap:wrap; gap:10px;
+  margin: 8px 0 20px;
+}
+
+.detail .thumb img{
+  width:72px; height:72px;
+  object-fit:cover;      /* 小サムネは省略トリミングでOK */
+  border-radius:10px;
+  display:block;
+}
+
+/* ===== Top Hero ===== */
+.hero{
+  max-width: 1200px;
+  margin: 24px auto 40px;
+  padding: 0 16px;
+}
+
+
+
+/* ヒーロー画像 */
+/*.hero img{
+  display:block;
+  width:100%;
+  height:auto;
+  aspect-ratio: 16 / 9;
+  object-fit: cover;
+}
+.hero.hero--contain img{
+  object-fit: contain;
+}*/
+
+/* 見出し・リード */
+.hero .lead{
+  text-align:center;
+  margin-top: 18px;
+}
+.hero .lead h1{
+  font-size: clamp(28px, 3vw, 36px);
+  line-height: 1.2;
+  color:#2a2a2a;              /* more darker gray */
+  letter-spacing: .02em;      /* 少しだけ字間を開けて安定感 */
+  margin: 0 0 6px;
+}
+.hero .lead .tagline{
+  margin: 0 0 14px;
+  color:#555;                 /* 基本文字色 */
+  font-size: clamp(14px, 1.6vw, 16px);
+}
+
+.hero .lead h1 {
+  font-weight: 600;
+  letter-spacing: 0.03em;  /* 少し広げて安心感を */
+}
+
+.hero .lead .tagline {
+  line-height: 1.8;        /* ややゆとりを出す */
+}
+
+/* ヒーローのナビ（ピル） */
+.hero-cta{
+  display:flex;
+  gap:10px;
+  justify-content:center;
+  flex-wrap:wrap;
+}
+.pill{
+  display:inline-block;
+  padding:8px 14px;
+  border:1px solid #eee;
+  border-radius:999px;
+  color:#888;                 /* リンクポリシー */
+  text-decoration:none;
+  transition: border-color .15s ease, color .15s ease, background .15s ease;
+}
+.pill:hover{ color:#3a3a3a; border-color:#ccc; text-decoration:none; }
+.pill.shop{
+  background:#FDCC42;         /* ブランド黄色 */
+  color:#2a2a2a;
+  font-weight:600;
+  border-color:#Fce8b5;
+}
+
+/* 下の “New” セクションとの距離を適度に */
+.h-sec{
+  max-width:1200px;
+  margin: 28px auto 6px;
+  padding: 0 16px;
+  font-size: 18px;
+  color:#3a3a3a;
+}
+
+
+
+main.top {
+  margin-top: 48px;
+}
+
+.h-sec {
+  font-weight: 600;
+  letter-spacing: 0.02em;
+  margin-bottom: 20px;
+}
+
+/* =============================================================
+   Rara Lab – Gallery & Top page micro‑tweaks (2025‑11‑12)
+   既存の site.css の末尾に追記してください。
+   ※ 11/11追加分と重複しないよう、同名セレクタには接尾辞を付与。
+   ============================================================= */
+
+/* ---------- CSS Variables (safe defaults) ---------- */
+:root{
+  /* spacing */
+  --space-1: 4px;  --space-2: 8px;  --space-3: 12px;  --space-4: 16px;
+  --space-5: 24px; --space-6: 32px; --space-7: 40px; --space-8: 56px;
+  /* radius & shadow */
+  --radius: 14px; 
+  --shadow-1: 0 1px 2px rgba(0,0,0,.06), 0 6px 18px rgba(0,0,0,.06);
+  --shadow-2: 0 2px 6px rgba(0,0,0,.06), 0 12px 32px rgba(0,0,0,.10);
+  /* colors */
+  --bg: #ffffff;        /* ページ背景 */
+  --surface: #fff;      /* カード背景 */
+  --ink: #2a2a2a;       /* 基本文字 */
+  --ink-dim: #555;      /* 補助文字 */
+  --line: #e9e9ec;      /* 罫線 */
+  --accent: #2f7aa7;    /* アクセント(後で調整可) */
+}
+@media (prefers-color-scheme: dark){
+  :root{
+    --bg: #0f1115; --surface: #151823; --ink: #e9edf3; --ink-dim: #aab3c2; --line:#24293a; --accent:#6ab0e1;
+    --shadow-1: none; --shadow-2: none; /* ダークは影を抑える */
+  }
+}
+
+/* ---------- Base layout refinements ---------- */
+body{ background: var(--bg); color: var(--ink); }
+.wrapper, .container, .container-narrow{ width: min(1100px, 92%); margin-inline:auto; }
+.container-narrow{ width: min(860px, 90%); }
+
+/* タイポ微調整（トップのヒーロー） */
+.hero .lead{ text-align:center; margin-top: clamp(10px, 2.2vw, 18px); }
+.hero .lead h1{ font-size: clamp(28px, 3.2vw, 38px); line-height:1.18; color: var(--ink); letter-spacing:.02em; margin:0 0 6px; }
+.hero .lead .tagline{ margin:0 0 14px; color: var(--ink-dim); font-size: clamp(14px, 1.6vw, 16px); }
+
+/* ヒーローの下マージン（スマホで詰まりを解消） */
+.section-hero{ padding: clamp(20px, 4.5vw, 40px) 0 clamp(20px, 6vw, 56px); }
+
+/* CTA ボタン（トップ用） */
+.btn, .button{ display:inline-block; padding: 10px 16px; border-radius: calc(var(--radius) - 4px); border:1px solid var(--line); background: var(--surface); color: var(--ink); box-shadow: var(--shadow-1); transition: transform .18s ease, box-shadow .18s ease, border-color .18s ease; }
+.btn:hover, .button:hover{ transform: translateY(-1px); box-shadow: var(--shadow-2); border-color: color-mix(in oklab, var(--accent), #000 15%); }
+.btn-accent{ background: var(--accent); color:#fff; border-color: transparent; }
+.btn-accent:hover{ filter: brightness(1.03); transform: translateY(-1.5px); }
+
+/* ---------- Gallery grid ---------- */
+/* HTML 側の親に .gallery を付与する想定。 */
+.gallery{ 
+  display:grid; 
+  grid-template-columns: repeat(2, 1fr);
+  gap: clamp(10px, 2.8vw, 18px);
+  align-items: start;
+}
+@media (min-width: 560px){ .gallery{ grid-template-columns: repeat(3, 1fr);} }
+@media (min-width: 960px){ .gallery{ grid-template-columns: repeat(4, 1fr);} }
+
+/* カード */
+.gallery .card{ position:relative; background: var(--surface); border:1px solid var(--line); border-radius: var(--radius); overflow:hidden; box-shadow: var(--shadow-1); transition: transform .18s ease, box-shadow .18s ease, border-color .18s ease; }
+.gallery .card:focus-within{ outline: 2px solid color-mix(in oklab, var(--accent), #fff 30%); outline-offset: 2px; }
+.gallery .card:hover{ transform: translateY(-2px); box-shadow: var(--shadow-2); border-color: color-mix(in oklab, var(--accent), #000 10%); }
+
+/* 画像ラッパー（正方形トリミング） */
+.card .thumb{ aspect-ratio: 1 / 1; background:#f4f5f7; display:block; overflow:hidden; }
+.card .thumb > img{ width:100%; height:100%; object-fit:cover; display:block; transform: scale(1.001); transition: transform .3s ease; }
+.gallery .card:hover .thumb > img{ transform: scale(1.03); }
+
+/* キャプション */
+.card .meta{ padding: 10px 12px 12px; }
+.card .title{ font-size: clamp(13px, 1.4vw, 15px); line-height:1.45; color: var(--ink); margin: 0 0 6px; }
+.card .spec{ font-size: 12px; color: var(--ink-dim); letter-spacing:.01em; }
+
+/* タグ・チップ（任意） */
+.card .tags{ display:flex; flex-wrap:wrap; gap:6px; margin-top:8px; }
+.card .tag{ font-size:11px; padding:3px 8px; border:1px solid var(--line); border-radius: 999px; color: var(--ink-dim); background: color-mix(in oklab, var(--surface), #000 1%); }
+
+/* ページング（トップ／ギャラリー共通） */
+.pager{ display:flex; justify-content:center; align-items:center; gap:10px; margin: var(--space-6) 0 var(--space-7); }
+.pager a, .pager span{ padding:8px 12px; border-radius: 10px; border:1px solid var(--line); background: var(--surface); color: var(--ink); text-decoration:none; }
+.pager .is-current{ background: var(--accent); color:#fff; border-color: transparent; }
+
+/* ---------- Lazy styles（画像読み込み中のぼかし） ---------- */
+img.lazy{ filter: blur(10px); transform: scale(1.02); }
+img.lazy.is-loaded{ filter: blur(0); transform: none; transition: filter .35s ease, transform .35s ease; }
+
+/* ---------- Breadcrumbs（トップ直下用） ---------- */
+.breadcrumbs{ display:flex; gap:8px; align-items:center; color: var(--ink-dim); font-size: 12px; margin: var(--space-4) 0 var(--space-5); }
+.breadcrumbs a{ color: inherit; text-decoration: none; border-bottom:1px dotted currentColor; }
+.breadcrumbs .sep{ opacity:.5; }
+
+/* ---------- Section spacing utilities ---------- */
+.section{ padding: clamp(24px, 6vw, 64px) 0; }
+.section-tight{ padding: clamp(16px, 4.5vw, 36px) 0; }
+.section-wide{ padding: clamp(36px, 7vw, 80px) 0; }
+
+/* ---------- Top: featured rows（横スクロール行） ---------- */
+.row-scroll{ display:grid; grid-auto-flow: column; grid-auto-columns: 78%; gap: 14px; overflow-x:auto; padding-bottom: 6px; scroll-snap-type: x mandatory; }
+@media (min-width:720px){ .row-scroll{ grid-auto-columns: 43%; } }
+@media (min-width:1024px){ .row-scroll{ grid-auto-columns: 32%; } }
+.row-scroll > *{ scroll-snap-align: start; }
+
+/* ---------- Footer spacing ---------- */
+.footer{ padding: 28px 0 40px; border-top:1px solid var(--line); color: var(--ink-dim); }
+
+/* ---------- Reduced motion ---------- */
+@media (prefers-reduced-motion: reduce){
+  *{ animation: none !important; transition: none !important; }
+}
+
+/* ---------- Helpers ---------- */
+.hidden{ display:none !important; }
+.visually-hidden{ position:absolute !important; width:1px; height:1px; padding:0; margin:-1px; overflow:hidden; clip:rect(0,0,0,0); white-space:nowrap; border:0; }
+
+/* ---------- Optional: small fixes for images in links ---------- */
+.gallery .card a{ text-decoration: none; color: inherit; display:block; }
+.gallery .card a:focus{ outline:none; }
+
+/* =============================================================
+   Rara Lab – Gallery & Top page micro‑tweaks (2025‑11‑12)
+   既存の site.css の末尾に追記してください。
+   ※ 11/11追加分と重複しないよう、同名セレクタには接尾辞を付与。
+   ============================================================= */
+
+/* ---------- CSS Variables (safe defaults) ---------- */
+:root{
+  /* spacing */
+  --space-1: 4px;  --space-2: 8px;  --space-3: 12px;  --space-4: 16px;
+  --space-5: 24px; --space-6: 32px; --space-7: 40px; --space-8: 56px;
+  /* radius & shadow */
+  --radius: 14px; 
+  --shadow-1: 0 1px 2px rgba(0,0,0,.06), 0 6px 18px rgba(0,0,0,.06);
+  --shadow-2: 0 2px 6px rgba(0,0,0,.06), 0 12px 32px rgba(0,0,0,.10);
+  /* colors */
+  --bg: #ffffff;        /* ページ背景 */
+  --surface: #fff;      /* カード背景 */
+  --ink: #2a2a2a;       /* 基本文字 */
+  --ink-dim: #555;      /* 補助文字 */
+  --line: #e9e9ec;      /* 罫線 */
+  --accent: #2f7aa7;    /* アクセント(後で調整可) */
+}
+@media (prefers-color-scheme: dark){
+  /* Brand-first: ダークでも明度は落としすぎず、ライト基調を維持 */
+  :root{
+    --bg: #f7f8fa;        /* わずかに温度を落とした明るい背景 */
+    --surface: #ffffff;   /* カードは白を維持 */
+    --ink: #262a30;       /* 文字はやや濃いめのグレー */
+    --ink-dim: #6b7280;   /* 補助文字は青みグレー */
+    --line:#e7e9f0;       /* 罫線は明るめ */
+    --accent:#2f7aa7;     /* ブランドの青を維持 */
+    --shadow-1: 0 1px 2px rgba(0,0,0,.05), 0 6px 18px rgba(0,0,0,.05);
+    --shadow-2: 0 2px 6px rgba(0,0,0,.06), 0 12px 32px rgba(0,0,0,.08);
+  }
+}
+
+}
+
+/* ---------- Base layout refinements ---------- */
+body{ background: var(--bg); color: var(--ink); }
+.wrapper, .container, .container-narrow{ width: min(1100px, 92%); margin-inline:auto; }
+.container-narrow{ width: min(860px, 90%); }
+
+/* タイポ微調整（トップのヒーロー） */
+.hero .lead{ text-align:center; margin-top: clamp(10px, 2.2vw, 18px); }
+.hero .lead h1{ font-size: clamp(28px, 3.2vw, 38px); line-height:1.18; color: var(--ink); letter-spacing:.02em; margin:0 0 6px; }
+.hero .lead .tagline{ margin:0 0 14px; color: var(--ink-dim); font-size: clamp(14px, 1.6vw, 16px); }
+
+/* ヒーローの下マージン（スマホで詰まりを解消） */
+.section-hero{ padding: clamp(20px, 4.5vw, 40px) 0 clamp(20px, 6vw, 56px); }
+
+/* CTA ボタン（トップ用） */
+.btn, .button{ display:inline-block; padding: 10px 16px; border-radius: calc(var(--radius) - 4px); border:1px solid var(--line); background: var(--surface); color: var(--ink); box-shadow: var(--shadow-1); transition: transform .18s ease, box-shadow .18s ease, border-color .18s ease; }
+.btn:hover, .button:hover{ transform: translateY(-1px); box-shadow: var(--shadow-2); border-color: color-mix(in oklab, var(--accent), #000 15%); }
+.btn-accent{ background: var(--accent); color:#fff; border-color: transparent; }
+.btn-accent:hover{ filter: brightness(1.03); transform: translateY(-1.5px); }
+
+/* ---------- Gallery grid ---------- */
+/* HTML 側の親に .gallery を付与する想定。 */
+.gallery{ 
+  display:grid; 
+  grid-template-columns: repeat(2, 1fr);
+  gap: clamp(10px, 2.8vw, 18px);
+  align-items: start;
+}
+@media (min-width: 560px){ .gallery{ grid-template-columns: repeat(3, 1fr);} }
+@media (min-width: 960px){ .gallery{ grid-template-columns: repeat(4, 1fr);} }
+
+/* カード */
+.gallery .card{ position:relative; background: var(--surface); border:1px solid var(--line); border-radius: var(--radius); overflow:hidden; box-shadow: var(--shadow-1); transition: transform .18s ease, box-shadow .18s ease, border-color .18s ease; }
+.gallery .card:focus-within{ outline: 2px solid color-mix(in oklab, var(--accent), #fff 30%); outline-offset: 2px; }
+.gallery .card:hover{ transform: translateY(-2px); box-shadow: var(--shadow-2); border-color: color-mix(in oklab, var(--accent), #000 10%); }
+
+/* 画像ラッパー（正方形トリミング） */
+.card .thumb{ aspect-ratio: 1 / 1; background:#f4f5f7; display:block; overflow:hidden; }
+.card .thumb > img{ width:100%; height:100%; object-fit:cover; display:block; transform: scale(1.001); transition: transform .3s ease; }
+.gallery .card:hover .thumb > img{ transform: scale(1.03); }
+
+/* キャプション */
+.card .meta{ padding: 10px 12px 12px; }
+.card .title{ font-size: clamp(13px, 1.4vw, 15px); line-height:1.45; color: var(--ink); margin: 0 0 6px; }
+.card .spec{ font-size: 12px; color: var(--ink-dim); letter-spacing:.01em; }
+
+/* タグ・チップ（任意） */
+.card .tags{ display:flex; flex-wrap:wrap; gap:6px; margin-top:8px; }
+.card .tag{ font-size:11px; padding:3px 8px; border:1px solid var(--line); border-radius: 999px; color: var(--ink-dim); background: color-mix(in oklab, var(--surface), #000 1%); }
+
+/* ページング（トップ／ギャラリー共通） */
+.pager{ display:flex; justify-content:center; align-items:center; gap:10px; margin: var(--space-6) 0 var(--space-7); }
+.pager a, .pager span{ padding:8px 12px; border-radius: 10px; border:1px solid var(--line); background: var(--surface); color: var(--ink); text-decoration:none; }
+.pager .is-current{ background: var(--accent); color:#fff; border-color: transparent; }
+
+/* ---------- Lazy styles（画像読み込み中のぼかし） ---------- */
+img.lazy{ filter: blur(10px); transform: scale(1.02); }
+img.lazy.is-loaded{ filter: blur(0); transform: none; transition: filter .35s ease, transform .35s ease; }
+
+/* ---------- Breadcrumbs（トップ直下用） ---------- */
+.breadcrumbs{ display:flex; gap:8px; align-items:center; color: var(--ink-dim); font-size: 12px; margin: var(--space-4) 0 var(--space-5); }
+.breadcrumbs a{ color: inherit; text-decoration: none; border-bottom:1px dotted currentColor; }
+.breadcrumbs .sep{ opacity:.5; }
+
+/* ---------- Section spacing utilities ---------- */
+.section{ padding: clamp(24px, 6vw, 64px) 0; }
+.section-tight{ padding: clamp(16px, 4.5vw, 36px) 0; }
+.section-wide{ padding: clamp(36px, 7vw, 80px) 0; }
+
+/* ---------- Top: featured rows（横スクロール行） ---------- */
+.row-scroll{ display:grid; grid-auto-flow: column; grid-auto-columns: 78%; gap: 14px; overflow-x:auto; padding-bottom: 6px; scroll-snap-type: x mandatory; }
+@media (min-width:720px){ .row-scroll{ grid-auto-columns: 43%; } }
+@media (min-width:1024px){ .row-scroll{ grid-auto-columns: 32%; } }
+.row-scroll > *{ scroll-snap-align: start; }
+
+/* ---------- Footer spacing ---------- */
+.footer{ padding: 28px 0 40px; border-top:1px solid var(--line); color: var(--ink-dim); }
+
+/* ---------- Reduced motion ---------- */
+@media (prefers-reduced-motion: reduce){
+  *{ animation: none !important; transition: none !important; }
+}
+
+/* ---------- Helpers ---------- */
+.hidden{ display:none !important; }
+.visually-hidden{ position:absolute !important; width:1px; height:1px; padding:0; margin:-1px; overflow:hidden; clip:rect(0,0,0,0); white-space:nowrap; border:0; }
+
+/* ---------- Optional: small fixes for images in links ---------- */
+.gallery .card a{ text-decoration: none; color: inherit; display:block; }
+.gallery .card a:focus{ outline:none; }
+
+/* =============================================================
+   Rara Lab – Gallery & Top page micro‑tweaks (2025‑11‑12)
+   既存の site.css の末尾に追記してください。
+   ※ 11/11追加分と重複しないよう、同名セレクタには接尾辞を付与。
+   ============================================================= */
+
+/* ---------- CSS Variables (safe defaults) ---------- */
+:root{
+  /* === Brand tokens (Rara Lab) === */
+  --brand-yellow: #FDCC42;         /* ブランドアイコン黄色 */
+  --brand-yellow-soft: #FCE8B5;    /* 薄い黄色 */
+  --g-xxdark: #2a2a2a;             /* more darker gray */
+  --g-xdark: #3a3a3a;              /* darker gray（タイトル/アイコン） */
+  --g-dark: #555555;               /* 基本文字 */
+  --g-med: #888888;                /* リンク（下線なし） */
+  --g-light: #cccccc;              /* light gray（ホバー等） */
+  --g-xxlight: #eeeeee;            /* ライトライン/面 */
+
+  /* layout */
+  --space-1: 4px;  --space-2: 8px;  --space-3: 12px;  --space-4: 16px;
+  --space-5: 24px; --space-6: 32px; --space-7: 40px; --space-8: 56px;
+  --radius: 14px;
+  --shadow-1: 0 1px 2px rgba(0,0,0,.06), 0 6px 18px rgba(0,0,0,.06);
+  --shadow-2: 0 2px 6px rgba(0,0,0,.06), 0 12px 32px rgba(0,0,0,.10);
+
+  /* mapped theme vars（既存と互換） */
+  --bg: #ffffff;
+  --surface: #ffffff;
+  --ink: var(--g-dark);            /* 本文 */
+  --ink-dim: var(--g-med);         /* 補助文字 */
+  --line: var(--g-xxlight);
+  --accent: var(--brand-yellow);   /* アクセントはブランドの黄 */
+}
+
+@media (prefers-color-scheme: dark){
+  /* Brand-first: 黒に沈めず、明るい基調を維持 */
+  :root{
+    --bg: #fafafa;                 /* ほんの少しだけ落とす */
+    --surface: #ffffff;
+    --ink: var(--g-dark);
+    --ink-dim: var(--g-med);
+    --line: #f0f0f0;
+    --accent: var(--brand-yellow);
+    --shadow-1: 0 1px 2px rgba(0,0,0,.05), 0 6px 18px rgba(0,0,0,.05);
+    --shadow-2: 0 2px 6px rgba(0,0,0,.06), 0 12px 32px rgba(0,0,0,.08);
+  }
+}
+
+/* text selection */
+::selection{ background: var(--brand-yellow-soft); color: var(--g-xxdark); }
+::-moz-selection{ background: var(--brand-yellow-soft); color: var(--g-xxdark); }
+
+@media (prefers-color-scheme: dark){
+  /* Brand-first: 黒に沈めず、明るい基調を維持 */
+  :root{
+    --bg: #fafafa;                 /* ほんの少しだけ落とす */
+    --surface: #ffffff;
+    --ink: var(--g-dark);
+    --ink-dim: var(--g-med);
+    --line: #f0f0f0;
+    --accent: var(--brand-yellow);
+    --shadow-1: 0 1px 2px rgba(0,0,0,.05), 0 6px 18px rgba(0,0,0,.05);
+    --shadow-2: 0 2px 6px rgba(0,0,0,.06), 0 12px 32px rgba(0,0,0,.08);
+  }
+}
+
+}
+
+}
+
+/* ---------- Base layout refinements ---------- */
+body{ background: var(--bg); color: var(--ink); }
+/* タイポのブランド反映 */
+h1, h2, h3, h4, h5{ color: var(--g-xdark); letter-spacing:.01em; line-height:1.25; font-weight:600; }
+.icon, .svg-icon{ color: var(--g-xdark); transition: color .15s ease; }
+.icon:hover, .svg-icon:hover{ color: var(--g-light); }
+
+/* リンク：下線なし、色は #888。ホバー時は濃く */
+a{ color: var(--g-med); text-decoration: none; }
+a:hover{ color: var(--g-xdark); text-decoration: none; }
+a:focus-visible{ outline: 2px solid var(--brand-yellow); outline-offset: 2px; border-radius:6px; }
+
+.wrapper, .container, .container-narrow{ width: min(1100px, 92%); margin-inline:auto; }
+.container-narrow{ width: min(860px, 90%); }
+
+/* 段落の間隔を少しだけ広げて読みやすく */
+p{ line-height:1.75; margin: 0 0 0.9em; }
+ul, ol{ margin: 0 0 1em 1.3em; }
+
+/* タイポ微調整（トップのヒーロー） */
+.hero .lead{ text-align:center; margin-top: clamp(10px, 2.2vw, 18px); }
+.hero .lead h1{ font-size: clamp(28px, 3.2vw, 38px); line-height:1.18; color: var(--g-xdark); letter-spacing:.02em; margin:0 0 6px; }
+.hero .lead .tagline{ margin:0 0 14px; color: var(--ink-dim); font-size: clamp(14px, 1.6vw, 16px); }
+
+/* ヒーローの下マージン（スマホで詰まりを解消） */
+.section-hero{ padding: clamp(20px, 4.5vw, 40px) 0 clamp(20px, 6vw, 56px); }
+
+/* CTA ボタン（トップ用） */
+.btn, .button{ display:inline-block; padding: 10px 16px; border-radius: calc(var(--radius) - 4px); border:1px solid var(--line); background: var(--surface); color: var(--g-xdark); box-shadow: var(--shadow-1); transition: transform .18s ease, box-shadow .18s ease, border-color .18s ease, background-color .18s ease; text-transform: capitalize; }
+.btn:hover, .button:hover{ transform: translateY(-1px); box-shadow: var(--shadow-2); border-color: var(--g-light); }
+/* Primary = ダークグレー基調（黄色は強調やフォーカスに） */
+.btn-primary{ background: var(--g-xdark); color:#fff; border-color: var(--g-xdark); }
+.btn-primary:hover{ filter: brightness(1.05); }
+.btn-primary:focus-visible{ outline: 3px solid var(--brand-yellow); outline-offset: 2px; }
+/* Secondary = 白地アウトライン */
+.btn-secondary{ background: var(--surface); color: var(--g-xdark); border-color: var(--g-light); }
+.btn-secondary:hover{ border-color: var(--g-xdark); }
+.btn-secondary:focus-visible{ outline: 3px solid var(--brand-yellow); outline-offset: 2px; }
+/* Accent = ブランド黄（要所のみ） */
+.btn-accent{ background: var(--accent); color:#fff; border-color: transparent; }
+.btn-accent:hover{ filter: brightness(1.03); transform: translateY(-1.5px); }
+/* Sizes */
+.btn-sm{ padding:8px 12px; font-size:14px; }
+.btn-lg{ padding:14px 18px; font-size:16px; }
+/* Disabled */
+.btn[disabled], .button[disabled]{ opacity:.55; pointer-events:none; }
+
+/* ---------- Gallery grid ---------- */
+/* HTML 側の親に .gallery を付与する想定。 */
+.gallery{ 
+  display:grid; 
+  grid-template-columns: repeat(2, 1fr);
+  gap: clamp(10px, 2.8vw, 18px);
+  align-items: start;
+}
+@media (min-width: 560px){ .gallery{ grid-template-columns: repeat(3, 1fr);} }
+@media (min-width: 960px){ .gallery{ grid-template-columns: repeat(4, 1fr);} }
+
+/* カード */
+.gallery .card{ position:relative; background: var(--surface); border:1px solid var(--line); border-radius: var(--radius); overflow:hidden; box-shadow: var(--shadow-1); transition: transform .18s ease, box-shadow .18s ease, border-color .18s ease; }
+.gallery .card:focus-within{ outline: 2px solid var(--brand-yellow); outline-offset: 2px; }
+.gallery .card:hover{ transform: translateY(-2px); box-shadow: var(--shadow-2); border-color: var(--g-light); }
+
+/* 画像ラッパー（正方形トリミング） */
+.card .thumb{ aspect-ratio: 1 / 1; background:#f7f7f7; display:block; overflow:hidden; }
+.card .thumb > img{ width:100%; height:100%; object-fit:cover; display:block; transform: scale(1.001); transition: transform .3s ease; }
+.gallery .card:hover .thumb > img{ transform: scale(1.03); }
+
+/* キャプション */
+.card .meta{ padding: 10px 12px 12px; }
+.card .title{ font-size: clamp(13px, 1.4vw, 15px); line-height:1.45; color: var(--g-xdark); margin: 0 0 6px; display:-webkit-box; -webkit-line-clamp:2; -webkit-box-orient: vertical; overflow:hidden; }
+.card .spec{ font-size: 12px; color: var(--ink-dim); letter-spacing:.01em; }
+/* 売約/新着などのチップにブランドの薄黄 */
+.card .chip{ display:inline-block; font-size:11px; padding:2px 8px; border-radius: 999px; background: var(--brand-yellow-soft); color: var(--g-xdark); border:1px solid var(--g-xxlight); }
+.card .title{ font-size: clamp(13px, 1.4vw, 15px); line-height:1.45; color: var(--g-xdark); margin: 0 0 6px; }
+.card .spec{ font-size: 12px; color: var(--ink-dim); letter-spacing:.01em; }
+/* 売約/新着などのチップにブランドの薄黄 */
+.card .chip{ display:inline-block; font-size:11px; padding:2px 8px; border-radius: 999px; background: var(--brand-yellow-soft); color: var(--g-xdark); border:1px solid var(--g-xxlight); }
+.card .title{ font-size: clamp(13px, 1.4vw, 15px); line-height:1.45; color: var(--ink); margin: 0 0 6px; }
+.card .spec{ font-size: 12px; color: var(--ink-dim); letter-spacing:.01em; }
+
+/* タグ・チップ（任意） */
+.card .tags{ display:flex; flex-wrap:wrap; gap:6px; margin-top:8px; }
+.card .tag{ font-size:11px; padding:3px 8px; border:1px solid var(--line); border-radius: 999px; color: var(--ink-dim); background: color-mix(in oklab, var(--surface), #000 1%); }
+
+/* ページング（トップ／ギャラリー共通） */
+.pager{ display:flex; justify-content:center; align-items:center; gap:10px; margin: var(--space-6) 0 var(--space-7); }
+.pager a, .pager span{ padding:8px 12px; border-radius: 10px; border:1px solid var(--line); background: var(--surface); color: var(--ink); text-decoration:none; }
+.pager .is-current{ background: var(--accent); color:#fff; border-color: transparent; }
+
+/* ---------- Lazy styles（画像読み込み中のぼかし） ---------- */
+img.lazy{ filter: blur(10px); transform: scale(1.02); }
+img.lazy.is-loaded{ filter: blur(0); transform: none; transition: filter .35s ease, transform .35s ease; }
+
+/* ---------- Breadcrumbs（トップ直下用） ---------- */
+.breadcrumbs{ display:flex; gap:8px; align-items:center; color: var(--ink-dim); font-size: 12px; margin: var(--space-4) 0 var(--space-5); }
+.breadcrumbs a{ color: inherit; text-decoration: none; border-bottom:1px dotted currentColor; }
+.breadcrumbs .sep{ opacity:.5; }
+
+/* ---------- Forms （検索/問い合わせの最低限） ---------- */
+input[type="text"], input[type="search"], input[type="email"], textarea{
+  width:100%; padding:10px 12px; border:1px solid var(--line); border-radius:10px; background: var(--surface); color: var(--ink);
+}
+input::placeholder, textarea::placeholder{ color: var(--g-light); }
+input:focus-visible, textarea:focus-visible{ outline: 3px solid var(--brand-yellow); outline-offset:2px; }
+
+/* ---------- Section spacing utilities ---------- */
+.section{ padding: clamp(24px, 6vw, 64px) 0; }
+.section-tight{ padding: clamp(16px, 4.5vw, 36px) 0; }
+.section-wide{ padding: clamp(36px, 7vw, 80px) 0; }
+.section-tight{ padding: clamp(16px, 4.5vw, 36px) 0; }
+.section-wide{ padding: clamp(36px, 7vw, 80px) 0; }
+
+/* ---------- Top: featured rows（横スクロール行） ---------- */
+.row-scroll{ display:grid; grid-auto-flow: column; grid-auto-columns: 78%; gap: 14px; overflow-x:auto; padding-bottom: 6px; scroll-snap-type: x mandatory; }
+@media (min-width:720px){ .row-scroll{ grid-auto-columns: 43%; } }
+@media (min-width:1024px){ .row-scroll{ grid-auto-columns: 32%; } }
+.row-scroll > *{ scroll-snap-align: start; }
+
+/* ---------- Footer spacing ---------- */
+.footer{ padding: 28px 0 40px; border-top:1px solid var(--line); color: var(--ink-dim); }
+
+/* ---------- Reduced motion ---------- */
+@media (prefers-reduced-motion: reduce){
+  *{ animation: none !important; transition: none !important; }
+}
+
+/* ---------- Accessibility helpers ---------- */
+.skip-link{ position:absolute; left:-9999px; top:auto; width:1px; height:1px; overflow:hidden; }
+.skip-link:focus{ position:static; width:auto; height:auto; padding:8px 12px; background: var(--brand-yellow); color:#000; border-radius:8px; }
+
+}
+
+/* ---------- Helpers ---------- */
+.hidden{ display:none !important; }
+.visually-hidden{ position:absolute !important; width:1px; height:1px; padding:0; margin:-1px; overflow:hidden; clip:rect(0,0,0,0); white-space:nowrap; border:0; }
+
+/* ---------- Optional: small fixes for images in links ---------- */
+.gallery .card a{ text-decoration: none; color: inherit; display:block; }
+.gallery .card a:focus{ outline:none; }
+
+/* ====== Rara Lab custom additions (after Squarespace export) ====== */
+
+/* =============================================================
+   Rara Lab – Gallery & Top page micro‑tweaks (2025‑11‑12)
+   既存の site.css の末尾に追記してください。
+   ※ 11/11追加分と重複しないよう、同名セレクタには接尾辞を付与。
+   ============================================================= */
+
+/* ---------- CSS Variables (safe defaults) ---------- */
+:root{
+  /* global container width */
+  --container-max:1120px;
+  /* === Brand tokens (Rara Lab) === */
+  --brand-yellow: #FDCC42;         /* ブランドアイコン黄色 */
+  --brand-yellow-soft: #FCE8B5;    /* 薄い黄色 */
+  --g-xxdark: #2a2a2a;             /* more darker gray */
+  --g-xdark: #3a3a3a;              /* darker gray（タイトル/アイコン） */
+  --g-dark: #555555;               /* 基本文字 */
+  --g-med: #888888;                /* リンク（下線なし） */
+  --g-light: #cccccc;              /* light gray（ホバー等） */
+  --g-xxlight: #eeeeee;            /* ライトライン/面 */
+
+  /* layout */
+  --space-1: 4px;  --space-2: 8px;  --space-3: 12px;  --space-4: 16px;
+  --space-5: 24px; --space-6: 32px; --space-7: 40px; --space-8: 56px;
+  --radius: 14px;
+  --shadow-1: 0 1px 2px rgba(0,0,0,.06), 0 6px 18px rgba(0,0,0,.06);
+  --shadow-2: 0 2px 6px rgba(0,0,0,.06), 0 12px 32px rgba(0,0,0,.10);
+
+  /* mapped theme vars（既存と互換） */
+  --bg: #ffffff;
+  --surface: #ffffff;
+  --ink: var(--g-dark);            /* 本文 */
+  --ink-dim: var(--g-med);         /* 補助文字 */
+  --line: var(--g-xxlight);
+  --accent: var(--brand-yellow);   /* アクセントはブランドの黄 */
+}
+
+@media (prefers-color-scheme: dark){
+  /* Brand-first: 黒に沈めず、明るい基調を維持 */
+  :root{
+    --bg: #fafafa;                 /* ほんの少しだけ落とす */
+    --surface: #ffffff;
+    --ink: var(--g-dark);
+    --ink-dim: var(--g-med);
+    --line: #f0f0f0;
+    --accent: var(--brand-yellow);
+    --shadow-1: 0 1px 2px rgba(0,0,0,.05), 0 6px 18px rgba(0,0,0,.05);
+    --shadow-2: 0 2px 6px rgba(0,0,0,.06), 0 12px 32px rgba(0,0,0,.08);
+  }
+}
+
+/* text selection */
+::selection{ background: var(--brand-yellow-soft); color: var(--g-xxdark); }
+::-moz-selection{ background: var(--brand-yellow-soft); color: var(--g-xxdark); }
+
+@media (prefers-color-scheme: dark){
+  /* Brand-first: 黒に沈めず、明るい基調を維持 */
+  :root{
+    --bg: #fafafa;                 /* ほんの少しだけ落とす */
+    --surface: #ffffff;
+    --ink: var(--g-dark);
+    --ink-dim: var(--g-med);
+    --line: #f0f0f0;
+    --accent: var(--brand-yellow);
+    --shadow-1: 0 1px 2px rgba(0,0,0,.05), 0 6px 18px rgba(0,0,0,.05);
+    --shadow-2: 0 2px 6px rgba(0,0,0,.06), 0 12px 32px rgba(0,0,0,.08);
+  }
+}
+
+}
+
+}
+
+/* ---------- Base layout refinements ---------- */
+body{ background: var(--bg); color: var(--ink); }
+/* タイポのブランド反映 */
+h1, h2, h3, h4, h5{ color: var(--g-xdark); letter-spacing:.01em; line-height:1.25; font-weight:600; }
+.icon, .svg-icon{ color: var(--g-xdark); transition: color .15s ease; }
+.icon:hover, .svg-icon:hover{ color: var(--g-light); }
+
+/* リンク：下線なし、色は #888。ホバー時は濃く */
+a{ color: var(--g-med); text-decoration: none; }
+a:hover{ color: var(--g-xdark); text-decoration: none; }
+a:focus-visible{ outline: 2px solid var(--brand-yellow); outline-offset: 2px; border-radius:6px; }
+/* helpful: ホバーで点線下線を追加 */
+body.mode-helpful a:hover{ text-decoration: underline dotted; }
+
+
+.wrapper, .container, .container-narrow{ width: min(var(--container-max, 1100px), 92%); margin-inline:auto; }
+.container-narrow{ width: min(860px, 90%); }
+
+/* 段落の間隔を少しだけ広げて読みやすく */
+p{ line-height:1.75; margin: 0 0 0.9em; }
+ul, ol{ margin: 0 0 1em 1.3em; }
+
+/* タイポ微調整（トップのヒーロー） */
+.hero .lead{ text-align:center; margin-top: clamp(10px, 2.2vw, 18px); }
+.hero .lead h1{ font-size: clamp(28px, 3.2vw, 38px); line-height:1.18; color: var(--g-xdark); letter-spacing:.02em; margin:0 0 6px; }
+.hero .lead .tagline{ margin:0 0 14px; color: var(--ink-dim); font-size: clamp(14px, 1.6vw, 16px); }
+
+/* ヒーローの下マージン（スマホで詰まりを解消） */
+.section-hero{ padding: clamp(20px, 4.5vw, 40px) 0 clamp(20px, 6vw, 56px); }
+
+/* CTA ボタン（トップ用） */
+.btn, .button{ display:inline-block; padding: 10px 16px; border-radius: calc(var(--radius) - 4px); border:1px solid var(--line); background: var(--surface); color: var(--g-xdark); box-shadow: var(--shadow-1); transition: transform .18s ease, box-shadow .18s ease, border-color .18s ease, background-color .18s ease; text-transform: capitalize; }
+.btn:hover, .button:hover{ transform: translateY(-1px); box-shadow: var(--shadow-2); border-color: var(--g-light); }
+.btn-primary{ background: var(--g-xdark); color:#fff; border-color: var(--g-xdark); }
+.btn-primary:hover{ filter: brightness(1.05); }
+.btn-primary:focus-visible{ outline: 3px solid var(--brand-yellow); outline-offset: 2px; }
+.btn-secondary{ background: var(--surface); color: var(--g-xdark); border-color: var(--g-light); }
+.btn-secondary:hover{ border-color: var(--g-xdark); }
+.btn-secondary:focus-visible{ outline: 3px solid var(--brand-yellow); outline-offset: 2px; }
+.btn-accent{ background: var(--accent); color:#fff; border-color: transparent; }
+.btn-accent:hover{ filter: brightness(1.03); transform: translateY(-1.5px); }
+.btn-sm{ padding:8px 12px; font-size:14px; }
+.btn-lg{ padding:14px 18px; font-size:16px; }
+.btn[disabled], .button[disabled]{ opacity:.55; pointer-events:none; }
+/* CTA 配置：helpful は2個、immersive は1個推奨（HTMLの .cta-row を制御） */
+.cta-row{ display:flex; gap:10px; justify-content:center; flex-wrap:wrap; }
+body.mode-immersive .cta-row .btn-secondary{ display:none; }
+
+
+/* ---------- Gallery grid ---------- */
+:root{ --gallery-gap-min: 12px; --gallery-gap-max: 20px; }
+/* ホームはやや広め＆ワイド */
+.page-home{ --gallery-gap-min:14px; --gallery-gap-max:22px; --container-max:1200px; }
+/* HTML 側の親に .gallery を付与する想定。 */
+.gallery{ 
+  display:grid; 
+  grid-template-columns: repeat(2, 1fr);
+  gap: clamp(var(--gallery-gap-min), 2.8vw, var(--gallery-gap-max));
+  align-items: start;
+}
+@media (min-width: 560px){ .gallery{ grid-template-columns: repeat(3, 1fr);} }
+@media (min-width: 960px){ .gallery{ grid-template-columns: repeat(4, 1fr);} }
+
+/* カード */
+.gallery .card{ position:relative; background: var(--surface); border:1px solid var(--line); border-radius: var(--radius); overflow:hidden; box-shadow: var(--shadow-1); transition: transform .18s ease, box-shadow .18s ease, border-color .18s ease; }
+.gallery .card:focus-within{ outline: 2px solid var(--brand-yellow); outline-offset: 2px; }
+.gallery .card:hover{ transform: translateY(-2px); box-shadow: var(--shadow-2); border-color: var(--g-light); }
+
+/* 画像ラッパー（正方形・原寸優先 = contain） */
+.card .thumb{ aspect-ratio: 1 / 1; background:#f7f7f7; display:block; overflow:hidden; }
+.card .thumb > img{ width:100%; height:100%; object-fit: contain; object-position:center; display:block; transform: none; transition: transform .3s ease, filter .3s ease; }
+/* 必要なら .thumb--crop を画像ラッパーに足すと cover で大胆にトリム */
+.card .thumb.thumb--crop > img{ object-fit: cover; transform: scale(1.001); }
+.gallery .card:hover .thumb.thumb--crop > img{ transform: scale(1.03); }
+
+/* キャプション */
+.card .meta{ padding: 10px 12px 12px; }
+.card .title{ font-size: clamp(13px, 1.4vw, 15px); line-height:1.45; color: var(--g-xdark); margin: 0 0 6px; display:-webkit-box; -webkit-line-clamp:2; -webkit-box-orient: vertical; overflow:hidden; }
+.card .spec{ font-size: 12px; color: var(--ink-dim); letter-spacing:.01em; }
+/* バッジ（新着など） */
+.card .badge{ display:none; font-size:11px; padding:2px 8px; border-radius: 999px; background: var(--brand-yellow-soft); color: var(--g-xdark); border:1px solid var(--g-xxlight); }
+.card .badge.badge--new{ }
+/* helpful モードでは表示 */
+body.mode-helpful .card .badge{ display:inline-block; }
+
+.card .title{ font-size: clamp(13px, 1.4vw, 15px); line-height:1.45; color: var(--g-xdark); margin: 0 0 6px; }
+.card .spec{ font-size: 12px; color: var(--ink-dim); letter-spacing:.01em; }
+/* 売約/新着などのチップにブランドの薄黄 */
+.card .chip{ display:inline-block; font-size:11px; padding:2px 8px; border-radius: 999px; background: var(--brand-yellow-soft); color: var(--g-xdark); border:1px solid var(--g-xxlight); }
+.card .title{ font-size: clamp(13px, 1.4vw, 15px); line-height:1.45; color: var(--ink); margin: 0 0 6px; }
+.card .spec{ font-size: 12px; color: var(--ink-dim); letter-spacing:.01em; }
+
+/* タグ・チップ（任意） */
+.card .tags{ display:flex; flex-wrap:wrap; gap:6px; margin-top:8px; }
+.card .tag{ font-size:11px; padding:3px 8px; border:1px solid var(--line); border-radius: 999px; color: var(--ink-dim); background: color-mix(in oklab, var(--surface), #000 1%); }
+
+/* ページング（トップ／ギャラリー共通） */
+.pager{ display:flex; justify-content:center; align-items:center; gap:10px; margin: var(--space-6) 0 var(--space-7); }
+.pager a, .pager span{ padding:8px 12px; border-radius: 10px; border:1px solid var(--line); background: var(--surface); color: var(--ink); text-decoration:none; }
+.pager .is-current{ background: var(--accent); color:#fff; border-color: transparent; }
+
+/* ---------- Lazy styles（画像読み込み中のぼかし） ---------- */
+img.lazy{ filter: blur(10px); transform: scale(1.02); }
+img.lazy.is-loaded{ filter: blur(0); transform: none; transition: filter .35s ease, transform .35s ease; }
+
+/* ---------- Breadcrumbs（トップ直下用） ---------- */
+.breadcrumbs{ display:flex; gap:8px; align-items:center; color: var(--ink-dim); font-size: 12px; margin: var(--space-4) 0 var(--space-5); }
+.breadcrumbs a{ color: inherit; text-decoration: none; border-bottom:1px dotted currentColor; }
+.breadcrumbs .sep{ opacity:.5; }
+
+/* ---------- Forms （検索/問い合わせの最低限） ---------- */
+input[type="text"], input[type="search"], input[type="email"], textarea{
+  width:100%; padding:10px 12px; border:1px solid var(--line); border-radius:10px; background: var(--surface); color: var(--ink);
+}
+input::placeholder, textarea::placeholder{ color: var(--g-light); }
+input:focus-visible, textarea:focus-visible{ outline: 3px solid var(--brand-yellow); outline-offset:2px; }
+
+/* ---------- Section spacing utilities ---------- */
+.section{ padding: clamp(24px, 6vw, 64px) 0; }
+.section-tight{ padding: clamp(16px, 4.5vw, 36px) 0; }
+.section-wide{ padding: clamp(36px, 7vw, 80px) 0; }
+.section-tight{ padding: clamp(16px, 4.5vw, 36px) 0; }
+.section-wide{ padding: clamp(36px, 7vw, 80px) 0; }
+
+/* ---------- Top: featured rows（横スクロール行） ---------- */
+.row-scroll{ display:grid; grid-auto-flow: column; grid-auto-columns: 78%; gap: 14px; overflow-x:auto; padding-bottom: 6px; scroll-snap-type: x mandatory; }
+@media (min-width:720px){ .row-scroll{ grid-auto-columns: 43%; } }
+@media (min-width:1024px){ .row-scroll{ grid-auto-columns: 32%; } }
+.row-scroll > *{ scroll-snap-align: start; }
+
+/* ---------- Footer spacing ---------- */
+.footer{ padding: 28px 0 40px; border-top:1px solid var(--line); color: var(--ink-dim); }
+/* immersive: ナビやフッターのコントラストをわずかに下げて没入感を上げる */
+body.mode-immersive .nav a{ color: #777; }
+body.mode-immersive .footer{ color:#777; }
+
+
+/* ---------- Reduced motion ---------- */
+@media (prefers-reduced-motion: reduce){
+  *{ animation: none !important; transition: none !important; }
+}
+
+/* ---------- Accessibility helpers ---------- */
+.skip-link{ position:absolute; left:-9999px; top:auto; width:1px; height:1px; overflow:hidden; }
+.skip-link:focus{ position:static; width:auto; height:auto; padding:8px 12px; background: var(--brand-yellow); color:#000; border-radius:8px; }
+
+/* 既定は immersive ／ helpful のときのみ上書き */
+/* （body に .mode-helpful を付けたページだけ親切設計に切替） */
+
+/* =========================
+   Finish phase – Nov 12
+   見出しスケール / NEWバッジ / 売約トーン / フッター
+   ========================= */
+
+/* 見出しスケール（記事/ギャラリー共通） */
+h1{ font-size: clamp(28px, 3.4vw, 40px); line-height:1.18; letter-spacing:.01em; margin: .6em 0 .35em; color: var(--g-xdark); }
+h2{ font-size: clamp(22px, 2.6vw, 30px); line-height:1.22; letter-spacing:.005em; margin: .9em 0 .45em; color: var(--g-xdark); }
+h3{ font-size: clamp(18px, 2.0vw, 22px); line-height:1.28; margin: 1.1em 0 .5em; color: var(--g-xdark); }
+h4{ font-size: clamp(16px, 1.6vw, 18px); line-height:1.32; margin: 1.1em 0 .5em; color: var(--g-xdark); }
+h5{ font-size: clamp(14px, 1.4vw, 16px); line-height:1.4;  margin: 1.2em 0 .55em; color: var(--g-xdark); }
+
+/* NEWバッジ（mode-helpfulのみ表示） */
+.card .badge{ display:none; font-size:11px; padding:2px 8px; border-radius:999px; background: var(--brand-yellow-soft); color: var(--g-xdark); border:1px solid var(--g-xxlight); }
+.card .badge.badge--new{ }
+body.mode-helpful .card .badge{ display:inline-block; }
+
+/* 将来拡張：売約時トーン（shop未搭載のためデフォルト非表示） */
+.card.is-sold{ position:relative; }
+.card.is-sold .thumb > img{ filter: grayscale(80%) saturate(60%) brightness(0.95); }
+.card.is-sold .title{ color:#777; }
+.card.is-sold a{ pointer-events:none; }
+/* リボンを使う場合は下をコメントアウト解除
+.card.is-sold::after{
+  content:"SOLD"; position:absolute; top:10px; left:-6px; padding:2px 10px;
+  background: #1f2937; color:#fff; font-size:11px; letter-spacing:.08em;
+  transform: rotate(-6deg); border-radius:4px; opacity:.9;
+}
+*/
+
+/* フッターの情報設計（レスポンシブ） */
+.footer .cols{ display:grid; gap:14px; grid-template-columns: 1fr; margin-top:16px; }
+@media (min-width:720px){ .footer .cols{ grid-template-columns: 1fr 1fr; } }
+@media (min-width:1024px){ .footer .cols{ grid-template-columns: 1fr 1fr 1fr; } }
+.footer .cols h5{ margin:0 0 8px; font-weight:600; }
+.footer .cols a{ color: var(--g-med); text-decoration:none; }
+.footer .cols a:hover{ color: var(--g-xdark); text-decoration: underline dotted; }
+/* =============================================================
+   Rara Lab – Gallery & Top page micro‑tweaks (2025‑11‑12)
+   既存の site.css の末尾に追記してください。
+   ※ 11/11追加分と重複しないよう、同名セレクタには接尾辞を付与。
+   ============================================================= */
+
+/* ---------- CSS Variables (safe defaults) ---------- */
+:root{
+  /* global container width */
+  --container-max:1120px;
+  /* === Brand tokens (Rara Lab) === */
+  --brand-yellow: #FDCC42;         /* ブランドアイコン黄色 */
+  --brand-yellow-soft: #FCE8B5;    /* 薄い黄色 */
+  --g-xxdark: #2a2a2a;             /* more darker gray */
+  --g-xdark: #3a3a3a;              /* darker gray（タイトル/アイコン） */
+  --g-dark: #555555;               /* 基本文字 */
+  --g-med: #888888;                /* リンク（下線なし） */
+  --g-light: #cccccc;              /* light gray（ホバー等） */
+  --g-xxlight: #eeeeee;            /* ライトライン/面 */
+
+  /* layout */
+  --space-1: 4px;  --space-2: 8px;  --space-3: 12px;  --space-4: 16px;
+  --space-5: 24px; --space-6: 32px; --space-7: 40px; --space-8: 56px;
+  --radius: 14px;
+  --shadow-1: 0 1px 2px rgba(0,0,0,.06), 0 6px 18px rgba(0,0,0,.06);
+  --shadow-2: 0 2px 6px rgba(0,0,0,.06), 0 12px 32px rgba(0,0,0,.10);
+
+  /* mapped theme vars（既存と互換） */
+  --bg: #ffffff;
+  --surface: #ffffff;
+  --ink: var(--g-dark);            /* 本文 */
+  --ink-dim: var(--g-med);         /* 補助文字 */
+  --line: var(--g-xxlight);
+  --accent: var(--brand-yellow);   /* アクセントはブランドの黄 */
+}
+
+@media (prefers-color-scheme: dark){
+  /* Brand-first: 黒に沈めず、明るい基調を維持 */
+  :root{
+    --bg: #fafafa;                 /* ほんの少しだけ落とす */
+    --surface: #ffffff;
+    --ink: var(--g-dark);
+    --ink-dim: var(--g-med);
+    --line: #f0f0f0;
+    --accent: var(--brand-yellow);
+    --shadow-1: 0 1px 2px rgba(0,0,0,.05), 0 6px 18px rgba(0,0,0,.05);
+    --shadow-2: 0 2px 6px rgba(0,0,0,.06), 0 12px 32px rgba(0,0,0,.08);
+  }
+}
+
+/* text selection */
+::selection{ background: var(--brand-yellow-soft); color: var(--g-xxdark); }
+::-moz-selection{ background: var(--brand-yellow-soft); color: var(--g-xxdark); }
+
+@media (prefers-color-scheme: dark){
+  /* Brand-first: 黒に沈めず、明るい基調を維持 */
+  :root{
+    --bg: #fafafa;                 /* ほんの少しだけ落とす */
+    --surface: #ffffff;
+    --ink: var(--g-dark);
+    --ink-dim: var(--g-med);
+    --line: #f0f0f0;
+    --accent: var(--brand-yellow);
+    --shadow-1: 0 1px 2px rgba(0,0,0,.05), 0 6px 18px rgba(0,0,0,.05);
+    --shadow-2: 0 2px 6px rgba(0,0,0,.06), 0 12px 32px rgba(0,0,0,.08);
+  }
+}
+
+}
+
+}
+
+/* ---------- Base layout refinements ---------- */
+body{ background: var(--bg); color: var(--ink); }
+/* タイポのブランド反映 */
+h1, h2, h3, h4, h5{ color: var(--g-xdark); letter-spacing:.01em; line-height:1.25; font-weight:600; }
+.icon, .svg-icon{ color: var(--g-xdark); transition: color .15s ease; }
+.icon:hover, .svg-icon:hover{ color: var(--g-light); }
+
+/* リンク：下線なし、色は #888。ホバー時は濃く */
+a{ color: var(--g-med); text-decoration: none; }
+a:hover{ color: var(--g-xdark); text-decoration: none; }
+a:focus-visible{ outline: 2px solid var(--brand-yellow); outline-offset: 2px; border-radius:6px; }
+
+.wrapper, .container, .container-narrow{ width: min(var(--container-max, 1100px), 92%); margin-inline:auto; }
+.container-narrow{ width: min(860px, 90%); }
+
+/* 段落の間隔を少しだけ広げて読みやすく */
+p{ line-height:1.75; margin: 0 0 0.9em; }
+ul, ol{ margin: 0 0 1em 1.3em; }
+
+/* ヒーロー（端正系） */
+.section-hero{ padding: clamp(20px, 4.5vw, 40px) 0 clamp(20px, 6vw, 56px); }
+.hero .lead{ text-align:center; max-width: 820px; margin: 0 auto; }
+.hero .lead h1{ font-size: clamp(28px, 3.2vw, 38px); line-height:1.16; color: var(--g-xdark); letter-spacing:.01em; margin:0 0 10px; }
+.hero .lead .tagline{ margin:0 0 14px; color: var(--ink-dim); font-size: clamp(14px, 1.6vw, 16px); }
+/* ヒーローのナビ/ボタンを端正に：サイズダウン・行間を詰める */
+.hero .pills{ display:flex; flex-wrap:wrap; justify-content:center; gap:8px 10px; margin-top: 12px; }
+.hero .pill{ font-size:13px; line-height:1; padding:8px 10px; border-radius:999px; border:1px solid var(--line); background: var(--surface); color: var(--g-xdark); box-shadow:none; }
+.hero .pill:hover{ border-color: var(--g-light); }
+.hero .lead + .pills{ margin-top: 16px; }
+/* リード文下とギャラリーの間に、静かな区切り */
+.section-hero + .section{ border-top: 1px solid var(--line); }
+
+/* CTA ボタン（トップ用） */
+.btn, .button{ display:inline-block; padding: 10px 16px; border-radius: calc(var(--radius) - 4px); border:1px solid var(--line); background: var(--surface); color: var(--g-xdark); box-shadow: var(--shadow-1); transition: transform .18s ease, box-shadow .18s ease, border-color .18s ease, background-color .18s ease; text-transform: capitalize; }
+.btn:hover, .button:hover{ transform: translateY(-1px); box-shadow: var(--shadow-2); border-color: var(--g-light); }
+.btn-primary{ background: var(--g-xdark); color:#fff; border-color: var(--g-xdark); }
+.btn-primary:hover{ filter: brightness(1.05); }
+.btn-primary:focus-visible{ outline: 3px solid var(--brand-yellow); outline-offset: 2px; }
+.btn-secondary{ background: var(--surface); color: var(--g-xdark); border-color: var(--g-light); }
+.btn-secondary:hover{ border-color: var(--g-xdark); }
+.btn-secondary:focus-visible{ outline: 3px solid var(--brand-yellow); outline-offset: 2px; }
+.btn-accent{ background: var(--accent); color:#fff; border-color: transparent; }
+.btn-accent:hover{ filter: brightness(1.03); transform: translateY(-1.5px); }
+.btn-sm{ padding:8px 12px; font-size:14px; }
+.btn-lg{ padding:14px 18px; font-size:16px; }
+.btn[disabled], .button[disabled]{ opacity:.55; pointer-events:none; }
+/* CTA 配置：helpful は2個、immersive は1個推奨（HTMLの .cta-row を制御） */
+.cta-row{ display:flex; gap:10px; justify-content:center; flex-wrap:wrap; }
+body.mode-immersive .cta-row .btn-secondary{ display:none; }
+
+
+/* ---------- Gallery grid ---------- */
+:root{ --gallery-gap-min: 12px; --gallery-gap-max: 20px; }
+/* HTML 側の親に .gallery を付与する想定。 */
+.gallery{ 
+  display:grid; 
+  grid-template-columns: repeat(2, 1fr);
+  gap: clamp(var(--gallery-gap-min), 2.8vw, var(--gallery-gap-max));
+  align-items: start;
+}
+@media (min-width: 560px){ .gallery{ grid-template-columns: repeat(3, 1fr);} }
+@media (min-width: 960px){ .gallery{ grid-template-columns: repeat(4, 1fr);} }
+
+/* カード（既定：カード型） */
+.gallery .card{ position:relative; background: var(--surface); border:1px solid var(--line); border-radius: var(--radius); overflow:hidden; box-shadow: var(--shadow-1); transition: transform .18s ease, box-shadow .18s ease, border-color .18s ease; }
+.gallery .card:focus-within{ outline: 2px solid var(--brand-yellow); outline-offset: 2px; }
+.gallery .card:hover{ transform: translateY(-2px); box-shadow: var(--shadow-2); border-color: var(--g-light); }
+.gallery .card:focus-within{ outline: 2px solid var(--brand-yellow); outline-offset: 2px; }
+.gallery .card:hover{ transform: translateY(-2px); box-shadow: var(--shadow-2); border-color: var(--g-light); }
+
+/* 画像ラッパー（正方形・原寸優先 = contain） */
+.card .thumb{ aspect-ratio: 1 / 1; background:#f7f7f7; display:block; overflow:hidden; }
+.card .thumb > img{ width:100%; height:100%; object-fit: contain; object-position:center; display:block; transform: none; transition: transform .3s ease, filter .3s ease; }
+/* 必要なら .thumb--crop を画像ラッパーに足すと cover で大胆にトリム */
+.card .thumb.thumb--crop > img{ object-fit: cover; transform: scale(1.001); }
+.gallery .card:hover .thumb.thumb--crop > img{ transform: scale(1.03); }
+
+/* ====== Gallery modes ======
+   1) .gallery--frameless  : 余計な枠を消し、写真を最前面に
+   2) .gallery--plate      : ルースケース風の“台紙プレート”で上質に
+*/
+/* 1) 写真最優先：枠や影を消してスッキリ */
+.gallery.gallery--frameless .card{ background: transparent; border:none; box-shadow:none; border-radius: 0; }
+.gallery.gallery--frameless .card .thumb{ background: transparent; border-radius: 12px; box-shadow: 0 0 0 1px var(--g-xxlight) inset; }
+.gallery.gallery--frameless .card .meta{ padding: 8px 2px 0; }
+
+/* 2) ルースケース風：薄い“台紙”の上に正方サムネを置く */
+.gallery.gallery--plate .card{ background: #fff; border:1px solid var(--g-xxlight); box-shadow: var(--shadow-1); border-radius: 16px; }
+.gallery.gallery--plate .card .thumb{ margin: 10px; border-radius: 12px; background:#fafafa; box-shadow: 0 0 0 1px var(--g-xxlight) inset; }
+.gallery.gallery--plate .card .meta{ padding: 6px 12px 12px; }
+
+
+/* キャプション */
+.card .meta{ padding: 10px 12px 12px; }
+.card .title{ font-size: clamp(13px, 1.4vw, 15px); line-height:1.45; color: var(--g-xdark); margin: 0 0 6px; display:-webkit-box; -webkit-line-clamp:2; -webkit-box-orient: vertical; overflow:hidden; }
+.card .spec{ font-size: 12px; color: var(--ink-dim); letter-spacing:.01em; }
+/* バッジ（新着など） */
+.card .badge{ display:none; font-size:11px; padding:2px 8px; border-radius: 999px; background: var(--brand-yellow-soft); color: var(--g-xdark); border:1px solid var(--g-xxlight); }
+.card .badge.badge--new{ }
+/* helpful モードでは表示 */
+body.mode-helpful .card .badge{ display:inline-block; }
+
+.card .title{ font-size: clamp(13px, 1.4vw, 15px); line-height:1.45; color: var(--g-xdark); margin: 0 0 6px; }
+.card .spec{ font-size: 12px; color: var(--ink-dim); letter-spacing:.01em; }
+/* 売約/新着などのチップにブランドの薄黄 */
+.card .chip{ display:inline-block; font-size:11px; padding:2px 8px; border-radius: 999px; background: var(--brand-yellow-soft); color: var(--g-xdark); border:1px solid var(--g-xxlight); }
+.card .title{ font-size: clamp(13px, 1.4vw, 15px); line-height:1.45; color: var(--ink); margin: 0 0 6px; }
+.card .spec{ font-size: 12px; color: var(--ink-dim); letter-spacing:.01em; }
+
+/* タグ・チップ（任意） */
+.card .tags{ display:flex; flex-wrap:wrap; gap:6px; margin-top:8px; }
+.card .tag{ font-size:11px; padding:3px 8px; border:1px solid var(--line); border-radius: 999px; color: var(--ink-dim); background: color-mix(in oklab, var(--surface), #000 1%); }
+
+/* ページング（トップ／ギャラリー共通） */
+.pager{ display:flex; justify-content:center; align-items:center; gap:10px; margin: var(--space-6) 0 var(--space-7); }
+.pager a, .pager span{ padding:8px 12px; border-radius: 10px; border:1px solid var(--line); background: var(--surface); color: var(--ink); text-decoration:none; }
+.pager .is-current{ background: var(--accent); color:#fff; border-color: transparent; }
+
+/* ---------- Lazy styles（画像読み込み中のぼかし） ---------- */
+img.lazy{ filter: blur(10px); transform: scale(1.02); }
+img.lazy.is-loaded{ filter: blur(0); transform: none; transition: filter .35s ease, transform .35s ease; }
+
+/* ---------- Breadcrumbs（トップ直下用） ---------- */
+.breadcrumbs{ display:flex; gap:8px; align-items:center; color: var(--ink-dim); font-size: 12px; margin: var(--space-4) 0 var(--space-5); }
+.breadcrumbs a{ color: inherit; text-decoration: none; border-bottom:1px dotted currentColor; }
+.breadcrumbs .sep{ opacity:.5; }
+
+/* ---------- Forms （検索/問い合わせの最低限） ---------- */
+input[type="text"], input[type="search"], input[type="email"], textarea{
+  width:100%; padding:10px 12px; border:1px solid var(--line); border-radius:10px; background: var(--surface); color: var(--ink);
+}
+input::placeholder, textarea::placeholder{ color: var(--g-light); }
+input:focus-visible, textarea:focus-visible{ outline: 3px solid var(--brand-yellow); outline-offset:2px; }
+
+/* ---------- Section spacing utilities ---------- */
+.section{ padding: clamp(24px, 6vw, 64px) 0; }
+.section-tight{ padding: clamp(16px, 4.5vw, 36px) 0; }
+.section-wide{ padding: clamp(36px, 7vw, 80px) 0; }
+.section-tight{ padding: clamp(16px, 4.5vw, 36px) 0; }
+.section-wide{ padding: clamp(36px, 7vw, 80px) 0; }
+
+/* ---------- Top: featured rows（横スクロール行） ---------- */
+.row-scroll{ display:grid; grid-auto-flow: column; grid-auto-columns: 78%; gap: 14px; overflow-x:auto; padding-bottom: 6px; scroll-snap-type: x mandatory; }
+@media (min-width:720px){ .row-scroll{ grid-auto-columns: 43%; } }
+@media (min-width:1024px){ .row-scroll{ grid-auto-columns: 32%; } }
+.row-scroll > *{ scroll-snap-align: start; }
+
+/* ---------- Footer spacing ---------- */
+.footer{ padding: 28px 0 40px; border-top:1px solid var(--line); color: var(--ink-dim); }
+/* immersive: ナビやフッターのコントラストをわずかに下げて没入感を上げる */
+body.mode-immersive .nav a{ color: #777; }
+body.mode-immersive .footer{ color:#777; }
+
+
+/* ---------- Reduced motion ---------- */
+@media (prefers-reduced-motion: reduce){
+  *{ animation: none !important; transition: none !important; }
+}
+
+/* ---------- Accessibility helpers ---------- */
+.skip-link{ position:absolute; left:-9999px; top:auto; width:1px; height:1px; overflow:hidden; }
+.skip-link:focus{ position:static; width:auto; height:auto; padding:8px 12px; background: var(--brand-yellow); color:#000; border-radius:8px; }
+
+/* 既定は immersive ／ helpful のときのみ上書き */
+/* （body に .mode-helpful を付けたページだけ親切設計に切替） */
+
+/* =========================
+   Finish phase – Nov 12
+   見出しスケール / NEWバッジ / 売約トーン / フッター
+   ========================= */
+
+/* 見出しスケール（記事/ギャラリー共通） */
+h1{ font-size: clamp(28px, 3.4vw, 40px); line-height:1.18; letter-spacing:.01em; margin: .6em 0 .35em; color: var(--g-xdark); }
+h2{ font-size: clamp(22px, 2.6vw, 30px); line-height:1.22; letter-spacing:.005em; margin: .9em 0 .45em; color: var(--g-xdark); }
+h3{ font-size: clamp(18px, 2.0vw, 22px); line-height:1.28; margin: 1.1em 0 .5em; color: var(--g-xdark); }
+h4{ font-size: clamp(16px, 1.6vw, 18px); line-height:1.32; margin: 1.1em 0 .5em; color: var(--g-xdark); }
+h5{ font-size: clamp(14px, 1.4vw, 16px); line-height:1.4;  margin: 1.2em 0 .55em; color: var(--g-xdark); }
+
+/* NEWバッジ（mode-helpfulのみ表示） */
+.card .badge{ display:none; font-size:11px; padding:2px 8px; border-radius:999px; background: var(--brand-yellow-soft); color: var(--g-xdark); border:1px solid var(--g-xxlight); }
+.card .badge.badge--new{ }
+body.mode-helpful .card .badge{ display:inline-block; }
+
+/* 将来拡張：売約時トーン（shop未搭載のためデフォルト非表示） */
+.card.is-sold{ position:relative; }
+.card.is-sold .thumb > img{ filter: grayscale(80%) saturate(60%) brightness(0.95); }
+.card.is-sold .title{ color:#777; }
+.card.is-sold a{ pointer-events:none; }
+/* リボンを使う場合は下をコメントアウト解除
+.card.is-sold::after{
+  content:"SOLD"; position:absolute; top:10px; left:-6px; padding:2px 10px;
+  background: #1f2937; color:#fff; font-size:11px; letter-spacing:.08em;
+  transform: rotate(-6deg); border-radius:4px; opacity:.9;
+}
+*/
+
+/* フッターの情報設計（レスポンシブ） */
+.footer .cols{ display:grid; gap:14px; grid-template-columns: 1fr; margin-top:16px; }
+@media (min-width:720px){ .footer .cols{ grid-template-columns: 1fr 1fr; } }
+@media (min-width:1024px){ .footer .cols{ grid-template-columns: 1fr 1fr 1fr; } }
+.footer .cols h5{ margin:0 0 8px; font-weight:600; }
+.footer .cols a{ color: var(--g-med); text-decoration:none; }
+.footer .cols a:hover{ color: var(--g-xdark); text-decoration: underline dotted; }
+
+/* =============================================================
+   Rara Lab – Gallery & Top page micro‑tweaks (2025‑11‑12)
+   既存の site.css の末尾に追記してください。
+   ※ 11/11追加分と重複しないよう、同名セレクタには接尾辞を付与。
+   ============================================================= */
+
+/* ---------- CSS Variables (safe defaults) ---------- */
+:root{
+  /* global container width */
+  --container-max:1120px;
+  /* === Brand tokens (Rara Lab) === */
+  --brand-yellow: #FDCC42;         /* ブランドアイコン黄色 */
+  --brand-yellow-soft: #FCE8B5;    /* 薄い黄色 */
+  --g-xxdark: #2a2a2a;             /* more darker gray */
+  --g-xdark: #3a3a3a;              /* darker gray（タイトル/アイコン） */
+  --g-dark: #555555;               /* 基本文字 */
+  --g-med: #888888;                /* リンク（下線なし） */
+  --g-light: #cccccc;              /* light gray（ホバー等） */
+  --g-xxlight: #eeeeee;            /* ライトライン/面 */
+
+  /* layout */
+  --space-1: 4px;  --space-2: 8px;  --space-3: 12px;  --space-4: 16px;
+  --space-5: 24px; --space-6: 32px; --space-7: 40px; --space-8: 56px;
+  --radius: 14px;
+  --shadow-1: 0 1px 2px rgba(0,0,0,.06), 0 6px 18px rgba(0,0,0,.06);
+  --shadow-2: 0 2px 6px rgba(0,0,0,.06), 0 12px 32px rgba(0,0,0,.10);
+
+  /* mapped theme vars（既存と互換） */
+  --bg: #ffffff;
+  --surface: #ffffff;
+  --ink: var(--g-dark);            /* 本文 */
+  --ink-dim: var(--g-med);         /* 補助文字 */
+  --line: var(--g-xxlight);
+  --accent: var(--brand-yellow);   /* アクセントはブランドの黄 */
+}
+
+@media (prefers-color-scheme: dark){
+  /* Brand-first: 黒に沈めず、明るい基調を維持 */
+  :root{
+    --bg: #fafafa;                 /* ほんの少しだけ落とす */
+    --surface: #ffffff;
+    --ink: var(--g-dark);
+    --ink-dim: var(--g-med);
+    --line: #f0f0f0;
+    --accent: var(--brand-yellow);
+    --shadow-1: 0 1px 2px rgba(0,0,0,.05), 0 6px 18px rgba(0,0,0,.05);
+    --shadow-2: 0 2px 6px rgba(0,0,0,.06), 0 12px 32px rgba(0,0,0,.08);
+  }
+}
+
+/* text selection */
+::selection{ background: var(--brand-yellow-soft); color: var(--g-xxdark); }
+::-moz-selection{ background: var(--brand-yellow-soft); color: var(--g-xxdark); }
+
+@media (prefers-color-scheme: dark){
+  /* Brand-first: 黒に沈めず、明るい基調を維持 */
+  :root{
+    --bg: #fafafa;                 /* ほんの少しだけ落とす */
+    --surface: #ffffff;
+    --ink: var(--g-dark);
+    --ink-dim: var(--g-med);
+    --line: #f0f0f0;
+    --accent: var(--brand-yellow);
+    --shadow-1: 0 1px 2px rgba(0,0,0,.05), 0 6px 18px rgba(0,0,0,.05);
+    --shadow-2: 0 2px 6px rgba(0,0,0,.06), 0 12px 32px rgba(0,0,0,.08);
+  }
+}
+
+}
+
+}
+
+/* ---------- Base layout refinements ---------- */
+body{ background: var(--bg); color: var(--ink); }
+/* タイポのブランド反映 */
+h1, h2, h3, h4, h5{ color: var(--g-xdark); letter-spacing:.01em; line-height:1.25; font-weight:600; }
+.icon, .svg-icon{ color: var(--g-xdark); transition: color .15s ease; }
+.icon:hover, .svg-icon:hover{ color: var(--g-light); }
+
+/* ヘッダー（Rara Lab 表記の有無を切替可能） */
+.header{ padding: 10px 0 6px; }
+.header .site-title{ font-size:14px; color: var(--g-med); font-weight:600; letter-spacing:.02em; margin:0; }
+.header .site-title a{ color: inherit; text-decoration:none; }
+/* ロゴのみ運用にしたい時は .header に .header--logo-only を付与 */
+.header.header--logo-only .site-title{ display:none; }
+
+/* リンク：下線なし、色は #888。ホバー時は濃く */
+a{ color: var(--g-med); text-decoration: none; }
+a:hover{ color: var(--g-xdark); text-decoration: none; }
+a:focus-visible{ outline: 2px solid var(--brand-yellow); outline-offset: 2px; border-radius:6px; }
+a:hover{ color: var(--g-xdark); text-decoration: none; }
+a:focus-visible{ outline: 2px solid var(--brand-yellow); outline-offset: 2px; border-radius:6px; }
+
+.wrapper, .container, .container-narrow{ width: min(var(--container-max, 1100px), 92%); margin-inline:auto; }
+.container-narrow{ width: min(860px, 90%); }
+
+/* 段落の間隔を少しだけ広げて読みやすく */
+p{ line-height:1.75; margin: 0 0 0.9em; }
+ul, ol{ margin: 0 0 1em 1.3em; }
+
+/* ヒーロー（端正系） */
+.section-hero{ padding: clamp(20px, 4.5vw, 40px) 0 clamp(20px, 6vw, 56px); }
+.hero .lead{ text-align:center; max-width: 820px; margin: 0 auto; }
+.hero .lead h1{ font-size: clamp(28px, 3.2vw, 38px); line-height:1.16; color: var(--g-xdark); letter-spacing:.01em; margin:0 0 14px; }
+.hero .lead .tagline{ margin:0 0 10px; color: var(--ink-dim); font-size: clamp(14px, 1.6vw, 16px); }
+.hero .lead h1{ font-size: clamp(28px, 3.2vw, 38px); line-height:1.16; color: var(--g-xdark); letter-spacing:.01em; margin:0 0 10px; }
+.hero .lead .tagline{ margin:0 0 14px; color: var(--ink-dim); font-size: clamp(14px, 1.6vw, 16px); }
+/* ヒーローのナビ/ボタンを端正に：サイズダウン・行間を詰める */
+.hero .pills{ display:flex; flex-wrap:wrap; justify-content:center; gap:8px 10px; margin-top: 10px; }
+.hero .pill{ font-size:13px; line-height:1; padding:7px 10px; border-radius:999px; border:1px solid var(--line); background: var(--surface); color: var(--g-xdark); box-shadow:none; }
+.hero .pill:hover{ border-color: var(--g-light); }
+.hero .lead + .pills{ margin-top: 14px; }
+.hero .pill{ font-size:13px; line-height:1; padding:8px 10px; border-radius:999px; border:1px solid var(--line); background: var(--surface); color: var(--g-xdark); box-shadow:none; }
+.hero .pill:hover{ border-color: var(--g-light); }
+.hero .lead + .pills{ margin-top: 16px; }
+/* リード文下とギャラリーの間に、静かな区切り */
+.section-hero + .section{ border-top: 1px solid var(--line); }
+
+/* CTA ボタン（トップ用） */
+.btn, .button{ display:inline-block; padding: 10px 16px; border-radius: calc(var(--radius) - 4px); border:1px solid var(--line); background: var(--surface); color: var(--g-xdark); box-shadow: var(--shadow-1); transition: transform .18s ease, box-shadow .18s ease, border-color .18s ease, background-color .18s ease; text-transform: capitalize; }
+.btn:hover, .button:hover{ transform: translateY(-1px); box-shadow: var(--shadow-2); border-color: var(--g-light); }
+.btn-primary{ background: var(--g-xdark); color:#fff; border-color: var(--g-xdark); }
+.btn-primary:hover{ filter: brightness(1.05); }
+.btn-primary:focus-visible{ outline: 3px solid var(--brand-yellow); outline-offset: 2px; }
+.btn-secondary{ background: var(--surface); color: var(--g-xdark); border-color: var(--g-light); }
+.btn-secondary:hover{ border-color: var(--g-xdark); }
+.btn-secondary:focus-visible{ outline: 3px solid var(--brand-yellow); outline-offset: 2px; }
+.btn-accent{ background: var(--accent); color:#fff; border-color: transparent; }
+.btn-accent:hover{ filter: brightness(1.03); transform: translateY(-1.5px); }
+.btn-sm{ padding:8px 12px; font-size:14px; }
+.btn-lg{ padding:14px 18px; font-size:16px; }
+.btn[disabled], .button[disabled]{ opacity:.55; pointer-events:none; }
+/* CTA 配置：helpful は2個、immersive は1個推奨（HTMLの .cta-row を制御） */
+.cta-row{ display:flex; gap:10px; justify-content:center; flex-wrap:wrap; }
+body.mode-immersive .cta-row .btn-secondary{ display:none; }
+
+
+/* ---------- Gallery grid ---------- */
+:root{ --gallery-gap-min: 12px; --gallery-gap-max: 20px; }
+/* HTML 側の親に .gallery を付与する想定。 */
+.gallery{ 
+  display:grid; 
+  grid-template-columns: repeat(2, 1fr);
+  gap: clamp(var(--gallery-gap-min), 2.8vw, var(--gallery-gap-max));
+  align-items: start;
+}
+@media (min-width: 560px){ .gallery{ grid-template-columns: repeat(3, 1fr);} }
+@media (min-width: 960px){ .gallery{ grid-template-columns: repeat(4, 1fr);} }
+
+/* カード（既定：カード型） */
+.gallery .card{ position:relative; background: var(--surface); border:1px solid var(--line); border-radius: var(--radius); overflow:hidden; box-shadow: var(--shadow-1); transition: transform .18s ease, box-shadow .18s ease, border-color .18s ease; }
+.gallery .card:focus-within{ outline: 2px solid var(--brand-yellow); outline-offset: 2px; }
+.gallery .card:hover{ transform: translateY(-2px); box-shadow: var(--shadow-2); border-color: var(--g-light); }
+.gallery .card:focus-within{ outline: 2px solid var(--brand-yellow); outline-offset: 2px; }
+.gallery .card:hover{ transform: translateY(-2px); box-shadow: var(--shadow-2); border-color: var(--g-light); }
+
+/* 画像ラッパー（正方形・原寸優先 = contain） */
+.card .thumb{ aspect-ratio: 1 / 1; background:#f7f7f7; display:block; overflow:hidden; }
+.card .thumb > img{ width:100%; height:100%; object-fit: contain; object-position:center; display:block; transform: none; transition: transform .3s ease, filter .3s ease; }
+/* 必要なら .thumb--crop を画像ラッパーに足すと cover で大胆にトリム */
+.card .thumb.thumb--crop > img{ object-fit: cover; transform: scale(1.001); }
+.gallery .card:hover .thumb.thumb--crop > img{ transform: scale(1.03); }
+
+/* ====== Gallery modes ======
+   1) .gallery--frameless  : 余計な枠を消し、写真を最前面に
+   2) .gallery--plate      : ルースケース風の“台紙プレート”で上質に
+*/
+/* 1) 写真最優先：枠や影を消してスッキリ */
+.gallery.gallery--frameless .card{ background: transparent; border:none; box-shadow:none; border-radius: 0; }
+.gallery.gallery--frameless .card .thumb{ background: transparent; border-radius: 12px; box-shadow: 0 1px 2px rgba(0,0,0,.04), 0 0 0 1px var(--g-xxlight) inset; }
+.gallery.gallery--frameless .card .meta{ padding: 8px 2px 0; }
+
+/* 2) ルースケース風：薄い“台紙”の上に正方サムネを置く */
+.gallery.gallery--plate .card{ background: #fff; border:1px solid var(--g-xxlight); box-shadow: var(--shadow-1); border-radius: 16px; }
+.gallery.gallery--plate .card .thumb{ margin: 10px; border-radius: 12px; background:#fafafa; box-shadow: 0 0 0 1px var(--g-xxlight) inset; }
+.gallery.gallery--plate .card .meta{ padding: 6px 12px 12px; }
+
+
+/* キャプション */
+.card .meta{ padding: 10px 12px 12px; }
+.card .title{ font-size: clamp(13px, 1.4vw, 15px); line-height:1.45; color: var(--g-xdark); margin: 0 0 6px; display:-webkit-box; -webkit-line-clamp:2; -webkit-box-orient: vertical; overflow:hidden; }
+.card .spec{ font-size: 12px; color: var(--ink-dim); letter-spacing:.01em; }
+/* バッジ（新着など） */
+.card .badge{ display:none; font-size:11px; padding:2px 8px; border-radius: 999px; background: var(--brand-yellow-soft); color: var(--g-xdark); border:1px solid var(--g-xxlight); }
+.card .badge.badge--new{ }
+/* helpful モードでは表示 */
+body.mode-helpful .card .badge{ display:inline-block; }
+
+.card .title{ font-size: clamp(13px, 1.4vw, 15px); line-height:1.45; color: var(--g-xdark); margin: 0 0 6px; }
+.card .spec{ font-size: 12px; color: var(--ink-dim); letter-spacing:.01em; }
+/* 売約/新着などのチップにブランドの薄黄 */
+.card .chip{ display:inline-block; font-size:11px; padding:2px 8px; border-radius: 999px; background: var(--brand-yellow-soft); color: var(--g-xdark); border:1px solid var(--g-xxlight); }
+.card .title{ font-size: clamp(13px, 1.4vw, 15px); line-height:1.45; color: var(--ink); margin: 0 0 6px; }
+.card .spec{ font-size: 12px; color: var(--ink-dim); letter-spacing:.01em; }
+
+/* タグ・チップ（任意） */
+.card .tags{ display:flex; flex-wrap:wrap; gap:6px; margin-top:8px; }
+.card .tag{ font-size:11px; padding:3px 8px; border:1px solid var(--line); border-radius: 999px; color: var(--ink-dim); background: color-mix(in oklab, var(--surface), #000 1%); }
+
+/* ページング（トップ／ギャラリー共通） */
+.pager{ display:flex; justify-content:center; align-items:center; gap:10px; margin: var(--space-6) 0 var(--space-7); }
+.pager a, .pager span{ padding:8px 12px; border-radius: 10px; border:1px solid var(--line); background: var(--surface); color: var(--ink); text-decoration:none; }
+.pager .is-current{ background: var(--accent); color:#fff; border-color: transparent; }
+
+/* ---------- Lazy styles（画像読み込み中のぼかし） ---------- */
+img.lazy{ filter: blur(10px); transform: scale(1.02); }
+img.lazy.is-loaded{ filter: blur(0); transform: none; transition: filter .35s ease, transform .35s ease; }
+
+/* ---------- Breadcrumbs（トップ直下用） ---------- */
+.breadcrumbs{ display:flex; gap:8px; align-items:center; color: var(--ink-dim); font-size: 12px; margin: var(--space-4) 0 var(--space-5); }
+.breadcrumbs a{ color: inherit; text-decoration: none; border-bottom:1px dotted currentColor; }
+.breadcrumbs .sep{ opacity:.5; }
+
+/* ---------- Forms （検索/問い合わせの最低限） ---------- */
+input[type="text"], input[type="search"], input[type="email"], textarea{
+  width:100%; padding:10px 12px; border:1px solid var(--line); border-radius:10px; background: var(--surface); color: var(--ink);
+}
+input::placeholder, textarea::placeholder{ color: var(--g-light); }
+input:focus-visible, textarea:focus-visible{ outline: 3px solid var(--brand-yellow); outline-offset:2px; }
+
+/* ---------- Section spacing utilities ---------- */
+.section{ padding: clamp(24px, 6vw, 64px) 0; }
+.section-tight{ padding: clamp(16px, 4.5vw, 36px) 0; }
+.section-wide{ padding: clamp(36px, 7vw, 80px) 0; }
+.section-tight{ padding: clamp(16px, 4.5vw, 36px) 0; }
+.section-wide{ padding: clamp(36px, 7vw, 80px) 0; }
+
+/* ---------- Top: featured rows（横スクロール行） ---------- */
+.row-scroll{ display:grid; grid-auto-flow: column; grid-auto-columns: 78%; gap: 14px; overflow-x:auto; padding-bottom: 6px; scroll-snap-type: x mandatory; }
+@media (min-width:720px){ .row-scroll{ grid-auto-columns: 43%; } }
+@media (min-width:1024px){ .row-scroll{ grid-auto-columns: 32%; } }
+.row-scroll > *{ scroll-snap-align: start; }
+
+/* ---------- Footer spacing ---------- */
+.footer{ padding: 40px 0 56px; border-top:1px solid var(--line); color: var(--ink-dim); }
+/* ダミーのコンテンツ間余白（後で本文を入れる前提） */
+.footer .cols{ display:grid; gap:14px; grid-template-columns: 1fr; margin-top:16px; }
+@media (min-width:720px){ .footer .cols{ grid-template-columns: 1fr 1fr; } }
+@media (min-width:1024px){ .footer .cols{ grid-template-columns: 1fr 1fr 1fr; } }
+.footer .cols h5{ margin:0 0 8px; font-weight:600; }
+.footer .cols a{ color: var(--g-med); text-decoration:none; }
+.footer .cols a:hover{ color: var(--g-xdark); text-decoration: underline dotted; }
+/* immersive: ナビやフッターのコントラストをわずかに下げて没入感を上げる */
+body.mode-immersive .nav a{ color: #777; }
+body.mode-immersive .footer{ color:#777; }
+
+
+/* ---------- Reduced motion ---------- */
+@media (prefers-reduced-motion: reduce){
+  *{ animation: none !important; transition: none !important; }
+}
+
+/* ---------- Accessibility helpers ---------- */
+.skip-link{ position:absolute; left:-9999px; top:auto; width:1px; height:1px; overflow:hidden; }
+.skip-link:focus{ position:static; width:auto; height:auto; padding:8px 12px; background: var(--brand-yellow); color:#000; border-radius:8px; }
+
+/* 既定は immersive ／ helpful のときのみ上書き */
+/* （body に .mode-helpful を付けたページだけ親切設計に切替） */
+
+/* =========================
+   Finish phase – Nov 12
+   見出しスケール / NEWバッジ / 売約トーン / フッター
+   ========================= */
+
+/* 見出しスケール（記事/ギャラリー共通） */
+h1{ font-size: clamp(28px, 3.4vw, 40px); line-height:1.18; letter-spacing:.01em; margin: .6em 0 .35em; color: var(--g-xdark); }
+h2{ font-size: clamp(22px, 2.6vw, 30px); line-height:1.22; letter-spacing:.005em; margin: .9em 0 .45em; color: var(--g-xdark); }
+h3{ font-size: clamp(18px, 2.0vw, 22px); line-height:1.28; margin: 1.1em 0 .5em; color: var(--g-xdark); }
+h4{ font-size: clamp(16px, 1.6vw, 18px); line-height:1.32; margin: 1.1em 0 .5em; color: var(--g-xdark); }
+h5{ font-size: clamp(14px, 1.4vw, 16px); line-height:1.4;  margin: 1.2em 0 .55em; color: var(--g-xdark); }
+
+/* NEWバッジ（mode-helpfulのみ表示） */
+.card .badge{ display:none; font-size:11px; padding:2px 8px; border-radius:999px; background: var(--brand-yellow-soft); color: var(--g-xdark); border:1px solid var(--g-xxlight); }
+.card .badge.badge--new{ }
+body.mode-helpful .card .badge{ display:inline-block; }
+
+/* 将来拡張：売約時トーン（shop未搭載のためデフォルト非表示） */
+.card.is-sold{ position:relative; }
+.card.is-sold .thumb > img{ filter: grayscale(80%) saturate(60%) brightness(0.95); }
+.card.is-sold .title{ color:#777; }
+.card.is-sold a{ pointer-events:none; }
+/* リボンを使う場合は下をコメントアウト解除
+.card.is-sold::after{
+  content:"SOLD"; position:absolute; top:10px; left:-6px; padding:2px 10px;
+  background: #1f2937; color:#fff; font-size:11px; letter-spacing:.08em;
+  transform: rotate(-6deg); border-radius:4px; opacity:.9;
+}
+*/
+
+/* フッターの情報設計（レスポンシブ） */
+.footer .cols{ display:grid; gap:14px; grid-template-columns: 1fr; margin-top:16px; }
+@media (min-width:720px){ .footer .cols{ grid-template-columns: 1fr 1fr; } }
+@media (min-width:1024px){ .footer .cols{ grid-template-columns: 1fr 1fr 1fr; } }
+.footer .cols h5{ margin:0 0 8px; font-weight:600; }
+.footer .cols a{ color: var(--g-med); text-decoration:none; }
+.footer .cols a:hover{ color: var(--g-xdark); text-decoration: underline dotted; }
+
+
+/* ==== Rara Lab Gallery (added 2025-11-12) ==== */
+:root{
+  --content-max: 1120px;
+  --gap: 32px;
+  --gap-sm: 24px;
+  --radius: 10px;
+
+  /* ブランドカラー */
+  --c-accent: #FFCC33;   /* Yellow */
+  --c-lightgray: #CCCCCC;
+  --c-text: #555555;     /* Dark gray */
+  --c-dim: #777777;
+  --c-border: #E6E6E6;
+  --shadow: 0 2px 16px rgba(0,0,0,.06);
+}
+
+/* 基本文字設定 */
+html{font-size:100%;}
+body{
+  color: var(--c-text);
+  font-size:17px;
+  line-height:1.7;
+  letter-spacing:.02em;
+}
+
+/* 見出し・段落 */
+.rl h1{font-size:clamp(28px,3.2vw,36px); line-height:1.2; margin:0 0 12px;}
+.rl h3{font-size:clamp(18px,2vw,22px); line-height:1.35; margin:0 0 8px;}
+.rl p{margin:0 0 1em;}
+
+/* コンテナ */
+.rl .container{max-width:var(--content-max); margin:0 auto; padding:0 20px;}
+
+/* フィルタバー */
+.rl .filterbar{
+  display:flex; gap:12px; align-items:center; flex-wrap:wrap;
+  margin:10px 0 18px;
+}
+.rl .filterbar .chip{
+  border:1px solid var(--c-border);
+  padding:6px 10px; border-radius:999px;
+  background:#fff; cursor:pointer;
+  font-size:.95rem; color:var(--c-text);
+  transition:all .2s ease;
+}
+.rl .filterbar .chip[aria-pressed="true"]{
+  border-color:var(--c-accent);
+  box-shadow:inset 0 0 0 1px var(--c-accent);
+  background:var(--c-accent);
+  color:#2A2A2A;
+}
+.rl .filterbar .search{
+  flex:1 1 220px; min-width:220px;
+  border:1px solid var(--c-border);
+  border-radius:999px; padding:8px 12px;
+}
+
+/* グリッドとカード */
+.rl .grid{display:grid; grid-template-columns:repeat(3,1fr); gap:var(--gap);}
+@media (max-width:980px){ .rl .grid{grid-template-columns:repeat(2,1fr); gap:var(--gap-sm);} }
+@media (max-width:640px){ .rl .grid{grid-template-columns:1fr;} }
+
+.rl .card{display:flex; flex-direction:column; gap:12px; min-width:0;}
+.rl .card .thumb{
+  aspect-ratio:1/1; border-radius:var(--radius);
+  overflow:hidden; background:#f7f7f7; box-shadow:var(--shadow);
+}
+.rl .card .thumb img{
+  width:100%; height:100%; object-fit:cover; display:block;
+  transition:transform .3s ease;
+}
+@media (hover:hover){
+  .rl .card:hover .thumb img{transform:scale(1.02);}
+}
+.rl .card .meta{color:var(--c-dim); font-size:.9rem;}
+.rl .card .title{font-size:1.05rem; font-weight:600; line-height:1.35; margin:0;}
+.rl .card .desc{
+  color:#444;
+  display:-webkit-box; -webkit-line-clamp:3; -webkit-box-orient:vertical; overflow:hidden;
+}
+
+/* read more */
+.rl .readmore{font-weight:600; display:inline-flex; align-items:center; gap:6px; color:var(--c-text);}
+.rl .readmore::after{content:"↗"; font-size:.95em;}
+
+/* セクションヘッダ */
+.rl .section-head{display:flex; align-items:baseline; justify-content:space-between; margin:24px 0 8px;}
+.rl .count{color:var(--c-dim); font-size:.9rem;}
+
+/* フォーカス */
+.rl a:focus-visible, .rl button:focus-visible, .rl input:focus-visible{
+  outline:2px solid #222; outline-offset:2px;
+}
+
+/* ==== Section Headings (ダブルライン) ==== */
+.section-doubleline {
+  position: relative;
+  text-align: center;
+  font-weight: 600;
+  font-size: clamp(18px, 2vw, 22px);
+  color: var(--c-text);
+  margin: 40px 0 28px;
+  letter-spacing: .03em;
+  padding: 10px 0;
+}
+.section-doubleline::before,
+.section-doubleline::after {
+  content: "";
+  position: absolute;
+  left: 0; right: 0;
+  height: 1px;
+  background: var(--c-lightgray);
+}
+.section-doubleline::before { top: 0; }
+.section-doubleline::after  { bottom: 0; }
+
+/* ==== Gem info plate ==== */
+.gem-info {
+  border: 1px solid var(--c-lightgray);
+  border-radius: 8px;
+  padding: 16px 20px;
+  background: #fff;
+  display: inline-block;
+  margin-top: 16px;
+  line-height: 1.6;
+  font-size: 0.95rem;
+}
+
+.gem-info strong {
+  display: inline-block;
+  min-width: 80px;
+  font-weight: 600;
+  color: var(--c-text);
+}
+
+.gem-info p {
+  margin: 4px 0;
+}
+
+.section-doubleline {
+  position: relative;
+  text-align: center;
+  font-weight: 600;
+  font-size: clamp(18px, 2vw, 22px);
+  color: var(--c-text);
+  margin: 40px 0 28px;
+  letter-spacing: .03em;
+  padding: 12px 0;
+}
+
+.section-doubleline::before,
+.section-doubleline::after {
+  content: "";
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 80%;              /* 線が端まで行かないように中央寄せ */
+  height: 1px;
+  background: var(--c-lightgray);
+}
+
+.section-doubleline::before { top: 0; }
+.section-doubleline::after  { bottom: 0; }
+
+/* ---- Detail: work plate & CTA ---- */
+
+.detail .cta-block {
+  margin: 12px auto 24px;
+  max-width: 320px;
+  border-top: 1px solid #eee;
+  padding-top: 10px;
+  text-align: left;
+}
+
+
+
+//* ------------------------------------------- */
+/*  Detail page: Work plate & CTA (最終調整)   */
+/* ------------------------------------------- */
+
+/* プレートとCTAを同じ位置にそろえる */
+/*.detail .plate,
+.detail .cta-block {
+  max-width: 320px;
+  margin-left: auto;
+  margin-right: auto;
+  text-align: left;
+}*/
+
+/* プレート内の行間＆色を統一（全部同じ色） */
+.detail .plate p {
+  margin: 4px 0;
+  line-height: 1.6;
+  color: var(--g-dark);     /* ← 全行同じ色 */
+}
+
+/* デザイン名はイタリックをやめて通常表示 */
+.detail .plate .design {
+  font-style: normal;
+}
+
+/* 余計な色指定は打ち消す（過去の指定が残っていても上書き） */
+.detail .plate .en,
+.detail .plate .meta {
+  color: var(--g-dark);
+}
+
+/* CTAブロック：区切り線は完全にナシ 
+.detail .cta-block {
+  margin-top: 20px;
+  border: none !important;
+}
+*/
+
+
+
+/* プレート内の左インデントを強制リセット */
+.detail .plate,
+.detail .plate * {
+  margin-left: 0 !important;
+  padding-left: 0 !important;
+  text-indent: 0 !important;
+}
+
+/* CTAブロックも左インデントをリセット */
+.detail .cta-block,
+.detail .cta-block * {
+  margin-left: 0 !important;
+  padding-left: 0 !important;
+  text-indent: 0 !important;
+}
+
+/* Origin と CTA の間に少しだけ余白を追加 */
+.detail .plate {
+  margin-bottom: 16px;  /* ← ここを 12〜16px にすると一番自然 */
+}
+
+/* ------------------------------------------- */
+/*  Detail page: タイトル非表示（スマホ＆PC） */
+/* ------------------------------------------- */
+
+.detail h1,
+.detail h2 {
+  display: none !important;
+}
+
+/* ------------------------------------------- */
+/*  Detail page: hero / thumb / layout tuning */
+/* ------------------------------------------- */
+
+/* 1) ページ上部の余白（H1/H2削除後の詰まり防止） */
+.detail {
+  padding-top: 24px;
+}
+
+/* 2) H1 / H2 を非表示（スマホ・PC共通） */
+.detail h1,
+.detail h2 {
+  display: none !important;
+}
+
+/* 3) メイン画像（.hero 内の画像）の枠・影を完全オフ */
+.detail section.hero img.hero {
+  display: block;
+  width: 100%;
+  height: auto;
+  background: transparent !important;
+  border: none !important;
+  box-shadow: none !important;
+  padding: 0 !important;
+  border-radius: 10px;  /* ← お好みで 10〜16px。控えめ＆上品 */
+}
+
+/* hero を包む section の不要な影・背景を削除 */
+.detail section.hero {
+  background: transparent !important;
+  box-shadow: none !important;
+  border: none !important;
+  padding: 0 !important;
+  margin-bottom: 20px;   /* メイン画像 → サムネの間 */
+}
+
+/* ==== Detail: thumbnails (mobile-first, all equal) ==== */
+.detail .thumbs img {
+  display: block;
+  width: 140px;
+  height: 140px;
+  object-fit: cover;
+  border-radius: 8px;
+  box-shadow: none;
+  background: transparent;
+}
+
+
+/* サムネイルの上下余白さっぱりめに */
+.detail .thumbs {
+  margin-bottom: 16px;
+}
+
+/* 5) 作品プレート部分（spec）をあなたの新しいプレートに合わせてフラットに */
+/*.detail .spec {
+  max-width: 320px;
+  margin-left: auto;
+  margin-right: auto;
+  margin-top: 0;
+  background: transparent !important;
+  padding: 0;
+  border: none !important;
+}*/
+
+/* spec 内のリスト項目の余白＆色 */
+.detail .spec li {
+  list-style: none;
+  margin: 4px 0;
+  color: var(--g-dark);
+}
+
+/* ------------------------------------------- */
+/* Detail page: PC時の横幅と配置調整          */
+/* ------------------------------------------- */
+
+@media (min-width: 768px) {
+
+  /* メイン画像＆サムネは広めに（作品としてドン） */
+  .detail section.hero,
+  .detail .thumbs {
+    max-width: 720px;
+    margin-left: auto;
+    margin-right: auto;
+  }
+
+  /* プレート＆CTAは細めのカラムにして中央寄せ */
+  .detail .plate,
+  .detail .spec,
+  .detail .cta-block {
+    max-width: 360px;   /* お好みで 320〜400 に調整OK */
+    margin-left: auto;
+    margin-right: auto;
+  }
+
+  /* PCで少しだけ上の余白を増やす */
+  .detail {
+    padding-top: 32px;
+  }
+}
+
+
+/* PCで少しだけ上の余白を増やす（写真が窮屈にならないように） */
+@media (min-width: 768px) {
+  .detail {
+    padding-top: 32px;
+  }
+}
+
+.detail .thumbs {
+  margin-bottom: 20px;   /* 16px → 20px にしてもよさそう */
+}
+
+/* ------------------------------------------- */
+/* Detail page: PC時の横幅と配置調整（決定版） */
+/* ------------------------------------------- */
+
+@media (min-width: 768px) {
+
+  /* メイン画像＆サムネは広め */
+  .detail section.hero,
+  .detail .thumbs {
+    max-width: 720px;
+    margin-left: auto;
+    margin-right: auto;
+  }
+
+  /* プレート＆CTA（.spec は .detail spec の両方付いている） */
+  .detail.spec,
+  .detail .spec,
+  .detail .cta-block {
+    max-width: 360px;   /* ここをお好みで調整：320〜400px */
+    margin-left: auto;
+    margin-right: auto;
+  }
+
+  /* ページ全体の上の余白 */
+  .detail {
+    padding-top: 32px;
+  }
+}
+
+/* ------------------------------------------- */
+/* Detail page: PCでプレート幅を強制的に絞る Active-2025-1130  */
+/* ------------------------------------------- */
+@media (min-width: 768px) {
+  .detail .spec {
+    max-width: 360px !important;      /* お好みで 320〜400 に調整可 */
+    margin-left: auto !important;
+    margin-right: auto !important;
+  }
+}
+
+/* ------------------------------------------- */
+/* Detail page: PCレイアウト（決定版）        */
+/* ------------------------------------------- */
+
+@media (min-width: 768px) {
+
+  /* 記事全体の幅を決める（PCだけ） */
+  .detail {
+    max-width: 720px;        /* ページ全体の幅。広すぎなら 680 や 640 に調整OK */
+    margin-left: auto;
+    margin-right: auto;
+    padding-top: 32px;
+  }
+
+  /* メイン画像は記事幅いっぱいに */
+  .detail section.hero {
+    margin-bottom: 24px;
+  }
+
+  .detail section.hero img.hero {
+    width: 100%;
+  }
+
+  /* サムネは左揃えでそのまま（今の位置を活かす） */
+  .detail .thumbs {
+    margin-bottom: 20px;
+  }
+
+  /* プレート＆CTAは「ちょい細め」にして左揃え */
+  .detail .plate,
+  .detail .cta-block {
+    max-width: 360px;        /* 320〜400pxの範囲でお好み調整OK */
+  }
+}
+
+/* ------------------------------------------- */
+/* Detail page：プレートの行間を整える */
+/* ------------------------------------------- */
+
+.detail .plate p {
+  line-height: 1.55;
+  margin-bottom: 8px;
+}
+
+.detail .plate p:last-of-type {
+  margin-bottom: 0;
+}
+
+/* ==== Detail Plate (Rara Lab stable spacing) ==== */
+
+/* ベース：すべてのpタグの行間をフラットに */
+.detail .plate p {
+  margin: 0;
+  line-height: 1.8;
+}
+
+/* ==== Detail Plate (Rara Lab stable spacing) ==== */
+
+/* ベース：すべてのpタグの行間をフラットに */
+.detail .plate p {
+  margin: 0;
+  line-height: 1.8;
+}
+
+/* ★追加：プレート内の meta はカード用の padding を無効化 */
+.detail .plate .meta {
+  padding: 0;
+}
+
+/* A（日本語） → B のブロック間 */
+.detail .plate p.jp {
+  margin-bottom: 20px;
+}
+
+/* B ブロック内：1行目(en)と2行目(en)の間 */
+.detail .plate p.en + p.en {
+  margin-top: 4px;
+}
+
+/* B → C のブロック間（必要なら調整） */
+.detail .plate p.en + p.meta {
+  margin-top: 0;
+}
+
+/* C ブロック内（Faceted → Origin の2行） */
+.detail .plate p.meta + p.meta {
+  margin-top: 4px;
+}
+
+/* C ブロックの頭の余白 */
+.detail .plate p.meta:first-of-type {
+  margin-top: 0;
+}
+
+/* A（日本語） → B のブロック間 */
+.detail .plate p.jp {
+  margin-bottom: 20px;
+}
+
+/* Bブロック内（英語1行目→2行目） */
+.detail .plate p.en + p.en {
+  margin-top: 4px;        /* Bブロック内の行間 */
+  margin-bottom: 20px;    /* Bブロック → Cブロックのスキマ */
+}
+
+
+/* B → C のブロック間（必要なら使う。基本は0でOK） */
+.detail .plate p.en + p.meta {
+  margin-top: 0;
+}
+
+/* Cブロック内（Faceted → Origin の2行） */
+.detail .plate p.meta + p.meta {
+  margin-top: 4px;
+}
+/* 最終調整：Cブロックの頭の余白をゼロにする */
+.detail .plate p.meta:first-of-type {
+  margin-top: 0;
+}
+
+.detail .cta-block {
+  margin-top: 20px;   /* 今より少しだけ詰める（24〜28px でもOK） */
+}
+
+.detail .cta-block {
+  margin-top: 20px;
+}
+
+/* -----------------------------
+   Detail: hero-video (動画) Active-251201
+   ----------------------------- */
+
+/* 動画全体の枠：角丸＋白背景でクリップする */
+.detail .hero-video{
+  max-width:720px;
+  margin:16px auto 0;       /* hero のすぐ下 */
+  border-radius:18px;       /* 4K画像と同じ角丸にそろえる */
+  overflow:hidden;          /* 内側をこの枠でクリップ */
+  background:#fff;          /* 黒やグレーが透けないように白で固定 */
+  border:none;
+}
+
+/* アスペクト比 16:9 を作る箱（角丸はここには付けない） */
+.hero-video-inner{
+  position:relative;
+  width:100%;
+  padding-top:56.25%;       /* 16:9 */
+}
+
+/* 実際の動画（iframe） */
+.hero-video-inner iframe{
+  position:absolute;
+  top:-1px;
+  left:-1px;
+  width:calc(100% + 2px);   /* サブピクセル誤差吸収 */
+  height:calc(100% + 2px);
+  border:0;
+  background:#fff;          /* iframe 内部の黒帯も白でマスク */
+}
+
+/* detail ページのメインビジュアル帯：hero / 動画 / サムネを 720px にそろえる */
+.detail .hero,
+.detail .hero-video,
+.detail .thumbs{
+  max-width:720px;
+  margin-left:auto;
+  margin-right:auto;
+}
+
+/* ─────────────────────────
+   detail ページ：縦方向のリズム
+   ───────────────────────── */
+
+/* タイトルまわり */
+/*.detail h1.title{
+  margin-top:0;
+  margin-bottom:8px;
+}
+
+.detail .subtitle{
+  margin-bottom:16px;
+}*/
+
+/* hero / 動画 / サムネの上下余白 */
+/*.detail .hero{
+  margin-top:0;
+  margin-bottom:16px;
+}*/
+
+/* 動画がある場合：heroのすぐ下に入る */
+/*.detail .hero-video{
+  margin-top:0;
+  margin-bottom:12px;
+}*/
+
+/* サムネ帯：上はぴったり、下だけ広め */
+/*.detail .thumbs{
+  margin-top:0;
+  margin-bottom:24px;
+}*/
+
+/* プレートとCTA */
+/*.detail .plate{
+  margin-top:24px;
+  margin-bottom:8px;
+}*/
+
+/*.detail .cta-block{
+  margin-top:8px;
+  margin-bottom:40px;
+}*/
+
+/* === Lightbox (detail page overlay) === */
+
+/* hidden 属性が付いている間は非表示にする */
+[data-lb-root][hidden] {
+  display: none !important;
+}
+
+html.lb-open,
+body.lb-open {
+  overflow: hidden;
+}
+
+.lb-root {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  margin: 0 !important;
+  padding: 0 !important;
+  max-width: none !important;
+  box-sizing: border-box;
+  z-index: 999;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(0,0,0,0.85);
+}
+...
+
+.lb-backdrop {
+  position: absolute;
+  inset: 0;
+}
+
+.lb-frame {
+  position: relative;
+  max-width: 100vw;
+  max-height: 100vh;
+  padding: 16px;
+  box-sizing: border-box;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.lb-img {
+  /* 画面ぴったりではなく、まわりに余白を残す */
+  max-width: calc(100vw - 64px);
+  max-height: calc(100vh - 96px);
+  display: block;
+  border-radius: 8px;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.4);
+}
+
+/* Controls */
+.lb-close,
+.lb-prev,
+.lb-next {
+  position: absolute;
+  border: none;
+  background: rgba(0,0,0,0.6);
+  color: #fff;
+  padding: 8px 10px;
+  border-radius: 999px;
+  cursor: pointer;
+  font-size: 16px;
+  line-height: 1;
+}
+
+.lb-close {
+  top: 16px;
+  right: 16px;
+}
+
+.lb-prev,
+.lb-next {
+  top: 50%;
+  transform: translateY(-50%);
+}
+
+.lb-prev {
+  left: 10px;
+}
+
+.lb-next {
+  right: 10px;
+}
+
+@media (max-width: 600px) {
+  .lb-frame {
+    padding: 16px;
+  }
+  .lb-img {
+    max-width: calc(100vw - 48px);
+    max-height: calc(100vh - 120px);
+  }
+  .lb-prev { left: 8px; }
+  .lb-next { right: 8px; }
+}
+
+/* --- Lightbox UI adjustments --- */
+.lb-close {
+  top: 10px !important;
+  right: 10px !important;
+}
+
+/* =======================================
+   Detail page: final overrides（最終調整用）
+   ここ以降だけ触る運用にする
+   ======================================= */
+
+/* タイトルまわりの縦リズム */
+.detail h1.title{
+  margin-top:0;
+  margin-bottom:8px;
+}
+
+.detail .subtitle{
+  margin-bottom:16px;
+}
+
+/* Hero：幅720px・中央揃え・角丸統一 */
+.detail .hero{
+  max-width:720px;
+  margin:0 auto 16px;
+}
+
+.detail .hero img{
+  display:block;
+  width:100%;
+  height:auto;
+  border-radius:18px;
+  box-shadow:var(--rl-card-shadow);
+}
+
+/* 動画：hero と同じ幅・角丸でクリップ＋黒帯対策 */
+.detail .hero-video{
+  max-width:720px;
+  margin:16px auto 22px;   /* ← 下を16pxに変更して隙間確保 */
+  border-radius:18px;
+  overflow:hidden;
+  background:#fff;
+  -webkit-transform: translateZ(0);
+}
+
+/* 16:9 の箱（角丸はここには付けない） */
+.hero-video-inner{
+  position:relative;
+  width:100%;
+  padding-top:56.25%;       /* 16:9 */
+}
+
+/* 実際の動画（iframe）を少し大きくして黒帯を外に追い出す */
+.hero-video-inner iframe{
+  position:absolute;
+  top:-1px;
+  left:-1px;
+  width:calc(100% + 2px);   /* サブピクセル誤差吸収 */
+  height:calc(100% + 2px);
+  border:0;
+  background:#fff;          /* iframe 内部の黒帯も白でマスク */
+}
+
+/* サムネ帯：中央寄せでレイアウト安定 */
+.detail .thumbs{
+  max-width:720px;
+  margin:0 auto 24px;
+  display:flex;
+  flex-wrap:wrap;
+  gap:10px;
+  justify-content:center; /* ← これが効く */
+}
+
+/* サムネ画像：hero と同じ角丸にそろえる */
+.detail .thumbs img{
+  width:140px;
+  height:140px;
+  object-fit:cover;
+  display:block;
+  border-radius:18px;
+}
+
+/* プレート＆CTA：320px幅のプレートとして中央揃え */
+.detail .plate{
+  max-width:320px;
+  margin:24px auto 8px;
+}
+
+.detail .cta-block{
+  max-width:320px;
+  margin:8px auto 40px;
+}
+
+/* =======================================
+   Safari & rounding consistency tweaks
+   ======================================= */
+
+/* ヒーロー画像の角丸統一 */
+.detail .hero img{
+  border-radius:18px;
+}
+
+/* サムネ画像の角丸統一 */
+.detail .thumbs img{
+  border-radius:18px;
+}
+
+/* 動画枠の角丸をヒーローと統一 + クリッピング */
+.detail .hero-video{
+  border-radius:18px;
+  overflow:hidden;
+
+  /* Safari の描画バグ対策 */
+  -webkit-transform: translateZ(0);
+}
+
+/* =======================================
+   Detail: plate & CTA final layout
+   ======================================= */
+
+/* プレート：320pxで中央、thumbsから24pxあける */
+.detail .plate{
+  max-width:320px;
+  margin:32px auto 32px;   /* 上：thumbsとの間 / 下：CTAとの間 */
+  text-align:left;
+}
+
+/* CTA：プレートのすぐ下、下にゆとりを持たせる */
+.detail .cta-block{
+  max-width:320px;
+  margin:8px auto 56px;   /* 上：plateとの間 / 下：ページ末までの余白 */
+/*  border-top:1px solid #eee;*/
+  padding-top:10px;
+  text-align:left;
+}
+
+
+/* =======================================
+   Detail: CTA visual tweaks
+   ======================================= */
+
+/*.detail .cta-block a{
+  display:inline-block;
+  padding:6px 0 3px;
+  text-decoration:none;
+  border-bottom:1px solid #555;  
+  color: var(--g-dark);
+}*/
+
+/*@media (hover: hover) and (pointer: fine){
+  .detail .cta-block a:hover,
+  .detail .cta-block a:focus{
+    opacity: 0.85;
+    border-bottom-color: #555;   
+  }
+}*/
+
+  /* ========== Gallery list layout ========== Active-251130*/
+
+/* 見出し＆案内文 */
+.gallery-head{
+  max-width: var(--rl-max);
+  margin: 48px auto 24px;   /* ここはさっきのまま */
+  padding: 12px 30px 0;      /* ← 上に 8px の余白を追加（0 30px → 8px 30px 0） */
+}
+
+.gallery-head h1{
+  margin: 0 0 8px;
+  font-size: 26px;
+  letter-spacing: .08em;
+}
+
+.gallery-note{
+  margin: 0;
+  font-size: 0.9rem;
+  line-height: 1.8;       /* 1.6 → 1.8 にすると読みやすい */
+  color: var(--rl-text-weak);
+}
+
+/* 一覧本体 */
+/* ベース（全画面共通） */
+.rl-gallery {
+  max-width: var(--rl-max);   /* ニュースと同じ最大幅。なければ 1080px でもOK */
+  margin: 32px auto 72px;     /* 上 32 / 下 72 はそのまま、左右だけ auto に */
+  padding: 0 30px 48px;       /* 今 Computed に出ていた値をベースに統一 */
+
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: var(--rl-gap);  /* 32px とかでもOK。既にある値に合わせる */
+}
+
+/* PC幅：3列表示に変更 */
+@media (min-width: 1024px) {  /* 768のままでもOK。好みで */
+  .rl-gallery {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+}
+
+/* カード内のリンクと画像 */
+.rl-gallery .rl-link{
+  display: block;
+  text-decoration: none;
+  color: inherit;
+}
+
+.rl-gallery img{
+  display: block;
+  width: 100%;
+  height: auto;      /* 元の正方形をそのまま使う */
+  border-radius: var(--rl-radius);
+}
+
+/* キャプション（タイトル） */
+.rl-caption{
+  margin-top: .5rem;
+}
+
+/* PC・タブレット向け */
+.rl-title{
+  display: block;
+  font-size: 0.95rem;
+  line-height: 1.6;          /* 1.5 → 1.6 で読みやすさUP */
+  letter-spacing: 0.01em;    /* 石名の英字に効果あり */
+  overflow: hidden;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;     /* 基本は2行 */
+  -webkit-box-orient: vertical;
+}
+
+/* スマホ（横幅640px以下）は3行まで許可 */
+@media (max-width: 640px){
+  .rl-title{
+    font-size: 0.85rem;
+    line-height: 1.5;        /* スマホは少しタイトに */
+    -webkit-line-clamp: 3;
+  }
+}
+
+/* ページャー */
+.gallery-pager{
+  max-width: var(--rl-max);
+  margin: 48px auto;          /* 上に余白、下も少しゆったり */
+  padding: 0 30px 64px;       /* 左右はギャラリーと揃え、下を広く */
+  display: flex;
+  justify-content: center;    /* 中央揃え */
+  gap: 32px;                  /* 「前」と「次」の間隔 */
+  font-size: 0.9rem;
+}
+
+
+
+/* =======================================
+   Fix: Gallery Pager look & feel Active-2025-11-30
+   Detail CTA (.cta-link) の挙動に合わせる
+   ======================================= */
+
+.gallery-pager a {
+  text-decoration: none;
+  border-bottom: 1px solid #aaa;
+  padding-bottom: 2px;
+  
+  /* CTAに合わせて明示的に指定 */
+  color: #555;
+  
+  /* なめらかに変化させる */
+  transition: border-color 0.2s ease, color 0.2s ease;
+}
+
+@media (hover: hover) {
+  .gallery-pager a:hover {
+    /* ホバー時は文字も線も濃くする */
+    border-bottom-color: #555;
+    color: #333;
+  }
+}
+
+.gallery-pager .pager-prev{
+  /* 左側（前のページ）用。必要ならあとで装飾を足す */
+}
+
+.gallery-pager .pager-next{
+  text-align: right;
+}
+
+/* ==== Gallery: 外枠カードを消す ==== */
+.rl-item{
+  margin: 0;
+  padding: 0;
+  background: none;
+  box-shadow: none;
+  border-radius: 0;
+}
+
+/* 念のためリンク側もフラットにしておく */
+.rl-gallery .rl-link{
+  display: block;
+  text-decoration: none;
+  color: inherit;
+  padding: 0;
+  background: none;
+}
+
+/* ==== Gallery: カード背景を完全に消す ==== */
+.rl-item,
+.rl-item *{
+  background: transparent !important;
+  box-shadow: none !important;
+  border: none !important;
+}
+
+/* ==== Gallery / Detail: 角丸を統一 ==== */
+
+/* 一覧サムネ・個別ページの4K画像・動画・サムネを全部そろえる */
+.rl-gallery img,
+.detail .hero img,
+.detail .hero-video,
+.detail .thumbs img{
+  border-radius: 0 !important;
+}
+
+/* =======================================
+   Detail CTA: final overrides（修正版 v2）Active-251130
+   ======================================= */
+
+/* CTAブロック：レイアウト */
+.detail .cta-block{
+  max-width: 320px;
+  margin: 16px auto 56px;
+  border-top: none;
+  padding-top: 10px;
+  text-align: left;
+}
+
+/* CTAリンク：通常状態 */
+.detail .cta-block .cta-link{
+  display: inline-block;
+  padding: 6px 0 3px;
+  font-size: 14px;
+  letter-spacing: .05em;
+  text-decoration: none;
+
+  /* ★ここを修正: 色をギャラリー本文と同じグレー(#555)にする */
+  color: #555;
+  
+  /* ★ここを追加: 太さを「普通」に強制する */
+  font-weight: 400;
+
+  /* 線の色（薄いグレー） */
+  border-bottom: 1px solid #aaa;
+  transition: border-color 0.2s ease, color 0.2s ease;
+}
+
+/* PC / ホバー時 */
+@media (hover: hover) and (pointer: fine){
+  .detail .cta-block .cta-link:hover,
+  .detail .cta-block .cta-link:focus{
+    /* ホバー時は線を少し濃く */
+    border-bottom-color: #555;
+    
+    /* 文字色は少しだけ濃くして反応をよくする（お好みで #555 のままでもOK） */
+    color: #333;
+    
+    text-decoration: none;
+    opacity: 1;
+  }
+}
+
+/* =======================================
+   Improvement: Hit Area Expansion Active-20251201
+   見た目は変えず、タップ判定だけ上下左右に10px広げる
+   ======================================= */
+
+.gallery-pager a,
+.detail .cta-block .cta-link {
+  position: relative; /* 拡張エリアの基準点 */
+}
+
+.gallery-pager a::after,
+.detail .cta-block .cta-link::after {
+  content: "";
+  position: absolute;*/
+  /* 上下左右に -10px ずつ透明な座布団を敷くイメージ */
+  top: -12px;
+  bottom: -12px;
+  left: -10px;
+  right: -10px;
+  
+  /* デバッグ用（確認が終わったら削除または transparent に） */
+  /*background: transparent; 
+  cursor: pointer;　*/
+
+/* ---------------------------------------------
+   トップページ：セクション共通
+--------------------------------------------- */
+.top-section {
+  padding: 40px 0;
+}
+
+.top-section h2.section-doubleline {
+  margin-bottom: 24px;
+}
+
+/* ---------------------------------------------
+   新着ギャラリーブロック
+--------------------------------------------- */
+.top-gallery .rl-gallery {
+  margin-top: 8px;
+}
+
+/* ---------------------------------------------
+   お知らせブロック
+--------------------------------------------- */
+.top-news .news-list ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.top-news .news-item {
+  margin-bottom: 8px;
+  font-size: 0.9rem;
+  line-height: 1.4;
+}
+
+.top-news .news-date {
+  color: #777;
+  margin-right: 0.5em;
+}
+
+.top-news .news-title {
+  text-decoration: underline;
+  color: inherit;
+}
+
+.top-news .news-more {
+  margin-top: 12px;
+}
+
+/* ---------------------------------------------
+   News 一覧ページ
+   --------------------------------------------- */
+
+/*.news-index {
+  max-width: 720px;
+  margin: 40px auto 72px;   /* 上：見出し周り / 下：フッターとの距離 */
+  padding: 0 16px;
+}*/
+
+/*.news-index h1 {
+  margin-top: 0;
+  margin-bottom: 24px;
+}*/
+
+/* トップページのお知らせと同じノリでリストを整える★ */
+/*.news-index .news-list ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.news-index .news-item {
+  margin-bottom: 8px;
+  font-size: 0.9rem;
+  line-height: 1.4;
+}
+
+.news-index .news-date {
+  color: #777;
+  margin-right: 0.5em;
+  white-space: nowrap;
+}
+
+.news-index .news-title {
+  text-decoration: underline;
+  color: inherit;
+}*/
+
+/* ---------------------------------------------
+   News 個別ページ
+   --------------------------------------------- */
+
+.news-detail {
+  max-width: 720px;
+  margin: 40px auto 72px;
+  padding: 0 16px;
+}
+
+.news-detail .news-date {
+  color: #777;
+  font-size: 0.9rem;
+  margin: 0 0 4px;
+}
+
+.news-detail h1 {
+  margin-top: 0;
+  margin-bottom: 16px;
+  font-size: 26px;      /* Galleryと同じサイズにそろえる */
+  line-height: 1.3;     /* 2行になった時の詰まり防止（お好みで） */
+}
+
+.news-detail p {
+  line-height: 1.7;
+  margin: 0 0 1.1em;
+}
+
+.news-detail .news-back {
+  margin-top: 32px;
+  font-size: 0.9rem;
+}
+
+.news-detail .news-back a {
+  text-decoration: underline;
+  color: inherit;
+}
+
+/* ---------------------------------------------
+   Note／GemDiary／About への導線
+--------------------------------------------- */
+.home-link-list {
+  display: grid;
+  gap: 20px;
+}
+
+@media (min-width: 640px) {
+  .home-link-list {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+.home-link-card h3 {
+  margin: 0 0 6px;
+}
+
+.home-link-text {
+  margin: 0;
+  font-size: 0.9rem;
+  line-height: 1.5;
+}
+
+/* 2025-11-26: Top & Gallery 影と角丸リセット */
+:root{
+  --rl-radius: 0px;        /* カード角丸をゼロに */
+  --rl-card-shadow: none;  /* 共通シャドウもゼロに */
+}
+
+/* ギャラリーカード・個別ページのヒーローも影なしに */
+.rl-item{
+  box-shadow: none;
+}
+
+.detail .hero img,
+.detail .hero-video{
+  box-shadow: none;
+}
+
+
+/* 「New」見出しまわりの余白を広げる */
+.h-sec{
+  max-width: 1200px;
+  margin: 40px auto 16px;
+  padding: 0 16px;
+  font-size: 18px;
+  color: #3a3a3a;
+}
+
+/* ギャラリー全体の上下マージンを少しだけ増やす ★251204*/
+/*.rl-gallery{
+  margin: 32px 0 72px;
+}*/
+
+
+
+
+/* ----------------------------------------------------
+   2025-11-26 Hero: 完全フラット化パッチ
+   ---------------------------------------------------- */
+
+
+/* rl-card の影・角丸をヒーローに適用させない */
+.hero .rl-card{
+  background: transparent !important;
+  box-shadow: none !important;
+  border-radius: 0 !important;
+  padding: 0 !important;
+}
+
+
+
+/* containモードでもカード感を出さない */
+.hero.hero--contain img{
+  object-fit: contain !important;
+}
+
+/* 2025-11-29: トップページのヒーローから白枠を消す */
+.hero.hero--contain .frame{
+  background: transparent;
+  padding: 0;
+}
+
+/* 角丸が残っていたらついでに消す */
+.hero.hero--contain img{
+  border-radius: 0;
+}
+
+.hero.hero--contain > img{
+  display:block;
+  width:100%;
+  height:auto;
+  border-radius:0;
+}
+
+/* ----------------------------------------------------
+   2025-11-30 トップページのメニュー暫定版
+   ---------------------------------------------------- */
+
+a {
+  text-decoration: underline;
+  color: #333;
+}
+a:hover {
+  color: #111;
+}
+
+/* =========================================
+   Global background（ここを修正）
+   ========================================= */
+/* いま：
+body {
+  background: #FAFAFA !important;
+}
+*/
+
+html,
+body,
+main {
+  background-color: #FAFAFA !important;
+}
+
+/* =========================================
+   Link underline control
+   ========================================= */
+
+/* デフォルト：下線なし */
+a {
+  text-decoration: none;
+}
+
+/* 下線が必要な要素だけ指定 */
+
+/* ギャラリーのCTA（既存クラスを尊重） */
+.cta-block a {
+  text-decoration: underline;
+}
+
+/* Next / Prev ナビ */
+.page-navi a {
+  text-decoration: underline;
+}
+
+/* ニュース個別：戻るリンク */
+.news-detail .news-back a {
+  text-decoration: underline;
+}
+
+/* ニュース一覧ページ：カテゴリー類 → 下線なし */
+.news-index .news-cat a,
+.news-index .news-label a {
+  text-decoration: none;
+}
+
+/* =========================================
+   News list page
+   ========================================= */
+/*.news-index {
+  max-width: 720px;
+  margin: 40px auto 72px;
+  padding: 0 16px;
+}*/
+
+/* 見出し */
+.news-index h1 {
+  margin-top: 0;
+  margin-bottom: 8px;
+}
+
+/* リスト */
+.news-index .news-list ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.news-index .news-item {
+  margin-bottom: 8px;
+  font-size: 0.9rem;
+  line-height: 1.45;
+}
+
+.news-index .news-date {
+  color: #777;
+  margin-right: 0.5em;
+  white-space: nowrap;
+}
+
+/* 「タイトル」は下線なし */
+.news-index .news-title {
+  color: inherit;
+  text-decoration: none;
+}
+*/
+
+/* =========================================
+   News detail page
+   ========================================= */
+.news-detail {
+  max-width: 720px;
+  margin: 40px auto 72px;
+  padding: 0 16px;
+}
+
+.news-detail .news-date {
+  color: #777;
+  font-size: 0.9rem;
+  margin: 0 0 4px;
+}
+
+/* =========================================
+   News detail: 画像幅と角丸＆リンクの挙動調整
+   ========================================= */
+
+/* 1) コンテンツ幅：ギャラリー個別と同じベース幅にそろえる */
+/*.news-detail {
+  max-width: var(--rl-max);   /* 1080px: ギャラリー .detail と同じ幅に */
+  margin: 40px auto 72px;
+  padding: 0 16px;
+}
+
+/* News detail：テキストの横幅もヒーロー画像と揃えて中央寄せにする */
+
+@media (min-width: 768px){
+  .news-detail article {
+    max-width: 720px;        /* ギャラリー個別と合わせる */
+    margin-left: auto;
+    margin-right: auto;       /* 中央にそろえる */
+    padding: 0 16px;          /* スマホ時の見やすさ維持（必要なら調整） */
+  }
+}
+
+/* 2) 画像ブロック：親幅にフィットさせる */
+.news-detail .news-image {
+  max-width: 100%;           /* 独自の 720px 制限を外すイメージ */
+  margin: 0 0 32px;          /* 下だけ余白 */
+  padding: 0;                /* 左右の余白は .news-detail の padding に任せる */
+}
+
+/* 画像そのもの：角丸禁止を明示しておく */
+.news-detail .news-image img {
+  display: block;
+  width: 100%;
+  height: auto;
+  border-radius: 0;          /* ギャラリーの方針に合わせてフラットに */
+}
+
+/* News 個別：画像サイズをPCだけギャラリーに合わせる */
+
+/* ベース：スマホ〜タブレット用（今のままでOKなら流用） */
+.news-detail .news-image img{
+  display: block;
+  width: 100%;
+  height: auto;
+  border-radius: 0;   /* ギャラリー方針に合わせて角丸ナシを明示 */
+}
+
+/* PC以上のときだけ、ギャラリーの .hero と同じ横幅に制限する */
+@media (min-width: 768px){
+  .news-detail .news-image{
+    max-width: 720px;   /* .hero と同じ幅 */
+    margin-left: auto;
+    margin-right: auto; /* 中央寄せ */
+  }
+}
+
+/* 3) News のリンク見た目＆ホバー演出 */
+
+/* 一覧のタイトル＆個別の「News一覧へ戻る」リンクを共通トーンに */
+.news-index .news-title,
+.news-detail .news-back a {
+  position: relative;
+  display: inline-block;
+  padding: 4px 0 2px;
+  text-decoration: none;     /* デフォルトの下線は切る */
+  color: #555;               /* ギャラリー本文と同系のグレー */
+  border-bottom: 1px solid #aaa;
+  font-weight: 400;
+  transition: border-color 0.2s ease, color 0.2s ease;
+}
+
+/* PC / ホバー時に「ふわっと」変化させる */
+@media (hover: hover) and (pointer: fine){
+  .news-index .news-title:hover,
+  .news-index .news-title:focus,
+  .news-detail .news-back a:hover,
+  .news-detail .news-back a:focus {
+    border-bottom-color: #555;  /* 線を少し濃く */
+    color: #333;                /* 文字色もほんの少しだけ濃く */
+  }
+}
+
+/* クリックしやすいように、透明な座布団を足す */
+.news-index .news-title::after,
+.news-detail .news-back a::after {
+  content: "";
+  position: absolute;
+  top: -10px;
+  bottom: -10px;
+  left: -8px;
+  right: -8px;
+  /* background: transparent;  必要ならデバッグ用に色をつけてもOK */
+}*/
+
+/* =======================================
+   News detail layout (gallery に寄せる)
+   ======================================= */
+
+/* 1) コンテンツ全体のベース幅：ギャラリー .detail と同じベースに */
+.news-detail {
+  max-width: var(--rl-max);   /* 1080px: ギャラリー個別と同じベース幅 */
+  margin: 40px auto 72px;
+  padding: 0 16px;
+}
+
+/* 2) 本文ブロックの幅：テキストは適度に狭く中央寄せ */
+.news-detail .news-body {
+  max-width: 720px;           /* 読みやすい本文幅 */
+  margin-left: auto;
+  margin-right: auto;
+}
+
+/* 3) ヒーロー画像ブロック：ギャラリーの .detail .hero に寄せる */
+.news-detail .news-hero {
+  margin: 0 auto 24px;
+}
+
+@media (min-width: 768px) {
+  .news-detail .news-hero {
+    width: min(900px, 100%);  /* ギャラリーのヒーローとほぼ同じスケール感 */
+  }
+}
+
+/* 画像自体はフル幅。角丸は使わない方針に合わせる */
+.news-detail .news-image {
+  margin: 0;
+}
+
+.news-detail .news-image img {
+  display: block;
+  width: 100%;
+  height: auto;
+  border-radius: 0;
+}
+
+/* 4) 見出し・本文のタイポグラフィは既存の .news-detail h1 / p を流用
+   （すでに定義済みのためここでは追加しない） */
+
+/* 5) 「News 一覧へ戻る」の位置調整：news-body の下で余白を確保 */
+.news-detail .news-back {
+  margin-top: 32px;
+  font-size: 0.9rem;
+}
+
+/* ==============================
+   CTAリンク / News戻るリンク 共通
+   ============================== */
+
+/* 通常状態：ギャラリーCTAとNews戻るを統一 */
+.detail .cta-block .cta-link,
+.news-detail .news-back a{
+  display: inline-block;
+  padding: 6px 0 3px;
+  font-size: 14px;
+  letter-spacing: .05em;
+  text-decoration: none;
+
+  color: #555;
+  font-weight: 400;
+
+  border-bottom: 1px solid #aaa;
+  transition: border-color 0.2s ease, color 0.2s ease;
+}
+
+/* PC / ホバー時 */
+@media (hover: hover) and (pointer: fine){
+  .detail .cta-block .cta-link:hover,
+  .detail .cta-block .cta-link:focus,
+  .news-detail .news-back a:hover,
+  .news-detail .news-back a:focus{
+    border-bottom-color: #555;
+    color: #333;
+    text-decoration: none;
+    opacity: 1;
+  }
+}
+
+/* クリック可能エリア拡張：ギャラリーページャーと同じ座布団をNewsにも */
+.gallery-pager a,
+.detail .cta-block .cta-link,
+.news-detail .news-back a{
+  position: relative; /* 拡張エリアの基準点 */
+}
+
+.gallery-pager a::after,
+.detail .cta-block .cta-link::after,
+.news-detail .news-back a::after{
+  content: "";
+  position: absolute;
+  /* 上下左右に透明な座布団を敷く */
+  top: -12px;
+  bottom: -12px;
+  left: -10px;
+  right: -10px;
+}
+
+/* ---------------------------------------------
+   News 一覧ページ：ギャラリーと横幅・余白を揃える
+   --------------------------------------------- */
+
+/* 全体コンテナ：gallery-head と同じ max-width / padding に合わせる */
+/*.news-index {
+  max-width: var(--rl-max);
+  margin: 48px auto 72px;*/   /* 上：ギャラリー見出しと揃える / 下：少しゆったり */
+  /*padding: 12px 30px 64px;*/  /* 左右30pxでギャラリーと同じレールに乗せる */
+}*/
+
+/* 見出し：Gallery と同じトーンに合わせる */
+.news-index h1 {
+  margin: 0 0 16px;
+  font-size: 26px;
+  letter-spacing: .08em;
+}
+
+/* リスト本体の位置（h1直下に少しだけ間隔） */
+.news-index .news-list {
+  margin-top: 8px;
+}
+
+/* 1件ぶんの行間と下余白を少しゆるめて読みやすく */
+.news-index .news-item {
+  margin-bottom: 10px;
+  font-size: 0.9rem;
+  line-height: 1.6;
+}
+
+/* 日付＋タイトルまわりは既存の指定を活かしてそのまま
+   （下線・色などはギャラリーのリンクトーンと揃っている想定） */
+
+/* ---------------------------------------------
+   News 一覧ページ（ギャラリー型カード）
+--------------------------------------------- */
+
+/* ニュース一覧ページの外枠：横余白をギャラリーと揃える */
+.news-index {
+  padding-left: 0;
+  padding-right: 0;
+}
+
+/* ギャラリーと同じ .rl-gallery を利用するので、
+   ここでは「ニュースページ専用の細かい調整」だけ */
+.news-gallery {
+  /* 今のところ特別な指定は不要。
+     ギャラリーと違う余白が欲しくなったらここに書く。 
+}
+
+/* カード内の「日付」と「要約」 */
+.news-index .rl-caption .news-date {
+  display: block;
+  margin-top: 4px;
+  font-size: 0.8rem;
+  color: #777;
+}
+
+.news-index .rl-caption .news-summary {
+  margin: 4px 0 0;
+  font-size: 0.85rem;
+  line-height: 1.5;
+}
+
+/* =========================================================
+   News 一覧：スマホ向けの微調整（タイトル／日付／要約）
+   Active-20251203
+   ========================================================= */
+@media (max-width: 768px) {
+
+  /* タイトル：縦の詰まりを軽くする */
+  .rl-caption .rl-title {
+    line-height: 1.8;     /* ほんの少しゆるく */
+    margin-bottom: 4px;   /* タイトル → 日付の間に余白 */
+  }
+
+  /* 日付：下に少し余白 */
+  .rl-caption .news-date {
+    margin-bottom: 6px;
+    display: inline-block; /* margin-bottom を効かせるため */
+  }
+
+  /* 要約：読みやすくするため行間を広げる */
+  .rl-caption .news-summary {
+    line-height: 1.6;
+  }
+}
+
+/* =========================================================
+   News 一覧：スマホ向けカード間の縦余白調整
+   Active-20251203
+   ========================================================= */
+@media (max-width: 768px) {
+  /* グリッドの縦の間隔だけ少し広げる */
+  .news-index .rl-gallery {
+    row-gap: 32px;   /* お好みで 28〜40px もアリ */
+  }
+}

@@ -930,14 +930,7 @@ def build():
     ensure_webp_thumbs()
     ensure_webp_news_images()
 
-    items = read_items()
-    
-    # サムネ & ニュース画像の WebP を事前に揃えておく
-    ensure_webp_thumbs()
-    ensure_webp_news_images()
-
     items = read_items()  # date 降順（新しい順）でソート済み
-
 
     # ---- ギャラリー一覧（ページ分割）----
     pages = []
@@ -982,46 +975,46 @@ def build():
         d.mkdir(parents=True, exist_ok=True)
         (d / "index.html").write_text(detail_html(it), encoding="utf-8")
 
-    # ---- News 251204----
-news_items = read_news_items()
+    # ---- News ----
+    news_items = read_news_items()
 
-# ニュース一覧 /news/index.html ＋ /news/page-2.html ... （ギャラリーと同じノリで分割）
-if news_items:
-    pages = []
-    for i in range(0, len(news_items), PAGE_SIZE):  # PAGE_SIZE はギャラリーと共通の想定
-        pages.append(news_items[i:i + PAGE_SIZE])
+    # ニュース一覧 /news/index.html ＋ /news/page-2.html ... （ギャラリーと同じノリで分割）
+    if news_items:
+        pages = []
+        for i in range(0, len(news_items), PAGE_SIZE):  # PAGE_SIZE はギャラリーと共通の想定
+            pages.append(news_items[i:i + PAGE_SIZE])
 
-    page_count = len(pages)
+        page_count = len(pages)
 
-    for idx, page_items in enumerate(pages):
-        page_num = idx + 1
+        for idx, page_items in enumerate(pages):
+            page_num = idx + 1
 
-        # カードHTML（ギャラリーと同じ .rl-item 構造）
-        cards = "\n".join([news_card_html(n) for n in page_items])
+            # カードHTML（ギャラリーと同じ .rl-item 構造）
+            cards = "\n".join([news_card_html(n) for n in page_items])
 
-        # 出力パス
-        if page_num == 1:
-            out_path = OUT_NEWS / "index.html"
-        else:
-            out_path = OUT_NEWS / f"page-{page_num}.html"
-
-        # 前後ページリンク
-        prev_link = None
-        next_link = None
-
-        if page_num > 1:
-            if page_num == 2:
-                prev_link = "/news/"
+            # 出力パス
+            if page_num == 1:
+                out_path = OUT_NEWS / "index.html"
             else:
-                prev_link = f"/news/page-{page_num-1}.html"
+                out_path = OUT_NEWS / f"page-{page_num}.html"
 
-        if page_num < page_count:
-            next_link = f"/news/page-{page_num+1}.html"
+            # 前後ページリンク
+            prev_link = None
+            next_link = None
 
-        out_path.write_text(
-            news_index_html(cards, prev_link=prev_link, next_link=next_link),
-            encoding="utf-8"
-        )
+            if page_num > 1:
+                if page_num == 2:
+                    prev_link = "/news/"
+                else:
+                    prev_link = f"/news/page-{page_num-1}.html"
+
+            if page_num < page_count:
+                next_link = f"/news/page-{page_num+1}.html"
+
+            out_path.write_text(
+                news_index_html(cards, prev_link=prev_link, next_link=next_link),
+                encoding="utf-8"
+            )
 
         # 個別ページ /news/[slug].html
         for n in news_items:
@@ -1060,6 +1053,7 @@ if news_items:
         top_index_html(new_cards, top_news_list),
         encoding="utf-8"
     )
+
 
 if __name__ == "__main__":
     build()
