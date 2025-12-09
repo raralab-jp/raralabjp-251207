@@ -1,7 +1,7 @@
 slug,date,title,summary,body_file,image_file
-site-renewal-20251210,2025-12-10,公式サイトをリニューアルしました,公式サイトをリニューアルしました。ギャラリー見てね,data/news_body/news/site-renewal-20251210.html,DSC_1796.jpg
-gallery-updated-20251212,2025-12-12,ギャラリーに写真を追加しました,新しい写真を追加したよ！,data/news_body/news/gallery-updated-20251212.html,DSC_1777.jpg
-holiday-20251231,2025-12-31,おやすみです,2025年12/31までよろしくお願いいたします。,data/news_body/news/holiday-20251231.html,news/images/DSC_1777.jpg
+site-renewal-20251210,2025-12-10,公式サイトをリニューアルしました,石の細部まで見られるギャラリーを追加しました。note の公開準備も進めています。,data/news_body/news/site-renewal-20251210.html,DSC_4769.jpg
+gallery-updated-20251212,2025-11-12,ギャラリーに写真を追加しました,新しい写真を追加したよ！,data/news_body/news/gallery-updated-20251212.html,DSC_1777.jpg
+holiday-20251231,2025-11-31,おやすみです,2025年12/31までよろしくお願いいたします。,data/news_body/news/holiday-20251231.html,news/images/DSC_1777.jpg
 news-dummy-0001,2025-11-20,研磨作業日誌を更新しました,今回のカット工程を写真とともにまとめました。,data/news_body/news/dummy.html,news/images/DSC_1777.jpg
 news-dummy-0002,2025-11-18,モンタナサファイアの在庫を調整しました,一部の石を調整し、在庫を更新しています。,data/news_body/news/dummy.html,news/images/DSC_1796.jpg
 news-dummy-0003,2025-11-15,作業台のライトを交換しました,光の質が安定し研磨効率が向上しました。,data/news_body/news/dummy.html,news/images/DSC_1777.jpg
@@ -17,9 +17,9 @@ news-dummy-0012,2025-10-22,研磨工程の記録写真を追加しました,作�
 news-dummy-0013,2025-10-20,梱包材の見直しを行いました,より安定した配送を目指して変更しました。,data/news_body/news/dummy.html,news/images/DSC_1777.jpg
 news-dummy-0014,2025-10-18,デザイン案を整理しました,次の制作分の構成を固めました。,data/news_body/news/dummy.html,news/images/DSC_1796.jpg
 news-dummy-0015,2025-10-15,作業室の照明を再調整しました,均一な光になるよう位置を微調整しました。,data/news_body/news/dummy.html,news/images/DSC_1777.jpg
-site-renewal-20251210,2025-12-10,公式サイトをリニューアルしました,公式サイトをリニューアルしました。ギャラリー見てね,data/news_body/news/site-renewal-20251210.html,news/images/DSC_1796.jpg
-gallery-updated-20251212,2025-12-12,ギャラリーに写真を追加しました,新しい写真を追加したよ！,data/news_body/news/gallery-updated-20251212.html,news/images/DSC_1777.jpg
-holiday-20251231,2025-12-31,おやすみです,2025年12/31までよろしくお願いいたします。,data/news_body/news/holiday-20251231.html,news/images/DSC_1777.jpg
+site-renewal-20251210,2025-11-10,公式サイトをリニューアルしました,公式サイトをリニューアルしました。ギャラリー見てね,data/news_body/news/site-renewal-20251210.html,news/images/DSC_1796.jpg
+gallery-updated-20251212,2025-11-12,ギャラリーに写真を追加しました,新しい写真を追加したよ！,data/news_body/news/gallery-updated-20251212.html,news/images/DSC_1777.jpg
+holiday-20251231,2025-11-31,おやすみです,2025年12/31までよろしくお願いいたします。,data/news_body/news/holiday-20251231.html,news/images/DSC_1777.jpg
 news-dummy-0001,2025-09-20,研磨作業日誌を更新しました,今回のカット工程を写真とともにまとめました。,data/news_body/news/dummy.html,news/images/DSC_1777.jpg
 news-dummy-0002,2025-09-18,モンタナサファイアの在庫を調整しました,一部の石を調整し、在庫を更新しています。,data/news_body/news/dummy.html,news/images/DSC_1796.jpg
 news-dummy-0003,2025-09-15,作業台のライトを交換しました,光の質が安定し研磨効率が向上しました。,data/news_body/news/dummy.html,news/images/DSC_1777.jpg
