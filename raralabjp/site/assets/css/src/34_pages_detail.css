@@ -19,9 +19,6 @@ main.detail {
 }
 
 /* titles */
-/* タイトルを表示する場合はこっちを有効化 */
-/* main.detail .title { margin: 0 0 6px; }
-main.detail .subtitle { margin: 0 0 var(--detail-gap); }*/
 
 /* hide title/subtitle on detail page */
 main.detail .title,
