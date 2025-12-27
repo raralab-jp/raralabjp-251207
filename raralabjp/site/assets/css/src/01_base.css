@@ -1,0 +1,11 @@
+body {
+  font-family: system-ui, -apple-system, "Helvetica Neue", Arial, sans-serif;
+  line-height: 1.6;
+}
+
+a { color: inherit; }
+
+/* ---------- base color tokens ---------- */
+:root {
+  --panel-bg: #f3f3f3;
+}

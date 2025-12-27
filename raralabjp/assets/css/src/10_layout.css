@@ -1,0 +1,12 @@
+/* page width + basic spacing */
+main {
+  max-width: 980px;
+  margin: 0 auto;
+  padding: 24px 16px;
+}
+
+.top-section {
+  max-width: 980px;
+  margin: 0 auto;
+  padding: 24px 16px;
+}

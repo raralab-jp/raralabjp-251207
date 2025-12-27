@@ -1,0 +1,19 @@
+/* =================================================
+   Gallery page
+   ================================================= */
+
+.gallery-list {
+  margin-top: 24px;
+}
+
+/* gallery uses shared grid */
+.gallery-list .rl-grid {
+  margin-top: 12px;
+}
+
+/* Gallery: mobile 2 columns */
+@media (max-width: 600px) {
+  .rl-gallery {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}

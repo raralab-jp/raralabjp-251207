@@ -1,0 +1,56 @@
+/* =========================================
+   News page (derived from Gallery)
+   ========================================= */
+
+/* 一覧ページの余白 */
+.news-index .rl-gallery {
+  margin-top: 24px;
+}
+
+/* 日付 */
+.news-date {
+  display: block;
+  margin-top: 4px;
+  font-size: 0.8rem;
+  color: #777;
+}
+
+/* 要約 */
+.news-summary {
+  margin-top: 6px;
+  font-size: 0.85rem;
+  line-height: 1.4;
+  color: #333;
+}
+
+/* カード内の余白微調整（Newsのみ） */
+.news-index .rl-caption {
+  padding-bottom: 6px;
+}
+
+/* =========================================
+   News list: placeholder for no image
+   ========================================= */
+
+/* img が無いカード用の擬似サムネ */
+.news-index .rl-link::before {
+  content: "";
+  display: block;
+  width: 100%;
+  aspect-ratio: 1 / 1;
+  background: #f3f3f3;
+}
+
+/* img がある場合は擬似要素を消す */
+.news-index .rl-link > img + .rl-caption {
+  /* img がある構造では before が不要なので打ち消す */
+}
+
+.news-index .rl-link > img {
+  position: relative;
+}
+
+/* img があるときは before を無効化 */
+.news-index .rl-link > img {
+  margin-top: -100%;
+}

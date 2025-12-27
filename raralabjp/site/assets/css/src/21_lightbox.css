@@ -1,0 +1,63 @@
+/* ---- 21_lightbox.css ---- */
+/* Lightbox: make it truly viewport-fixed and centered */
+
+.lb-root[hidden] { display: none; }
+
+.lb-root {
+  position: fixed;
+  inset: 0;
+  z-index: 9999;
+
+  display: grid;
+  place-items: center;
+  padding: 24px 16px; /* 端末端でボタンが欠けないように */
+}
+
+.lb-backdrop {
+  position: absolute;
+  inset: 0;
+  background: rgba(0,0,0,0.7);
+}
+
+.lb-frame {
+  position: relative;
+  z-index: 1;
+
+  max-width: min(1100px, 94vw);
+  max-height: 90vh;
+
+  display: grid;
+  place-items: center;
+}
+
+.lb-img {
+  max-width: 100%;
+  max-height: 90vh;
+  width: auto;
+  height: auto;
+  display: block;
+  object-fit: contain;
+}
+
+/* ボタン類：位置だけ（見た目は後で） */
+.lb-close {
+  position: absolute;
+  top: -6px;
+  right: -6px;
+}
+
+.lb-prev, .lb-next {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+}
+
+.lb-prev { left: -10px; }
+.lb-next { right: -10px; }
+
+/* 小さい画面で外に飛びやすいので内側に寄せる */
+@media (max-width: 480px) {
+  .lb-prev { left: 6px; }
+  .lb-next { right: 6px; }
+  .lb-close { top: 6px; right: 6px; }
+}

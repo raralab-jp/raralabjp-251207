@@ -1,0 +1,164 @@
+/* ---- 34_pages_detail.css ---- */
+/* Gallery detail: Step 1 skeleton + thumbs grid option */
+
+/* Gallery detail: align everything to the same centered column */
+
+main.detail {
+  --detail-max: 980px;
+  --detail-pad-x: 16px;
+  --detail-pad-y-top: 12px;
+  --detail-pad-y-bottom: 48px;
+  --detail-gap: 20px;
+
+  /* ここが重要：main自体を中央カラムにする */
+  max-width: var(--detail-max);
+  margin: 0 auto;
+
+  /* 10_layout.css の padding を detail 用に上書き */
+  padding: var(--detail-pad-y-top) var(--detail-pad-x) var(--detail-pad-y-bottom);
+}
+
+/* titles */
+/* タイトルを表示する場合はこっちを有効化 */
+/* main.detail .title { margin: 0 0 6px; }
+main.detail .subtitle { margin: 0 0 var(--detail-gap); }*/
+
+/* hide title/subtitle on detail page */
+main.detail .title,
+main.detail .subtitle {
+  display: none;
+}
+
+/* detail: vertical rhythm for direct sections */
+main.detail > section{
+  margin: 0 0 var(--detail-gap);
+}
+main.detail > section:last-of-type{
+  margin-bottom: 0;
+}
+
+
+@media (min-width: 768px) {
+  main.detail {
+    --detail-pad-x: 24px;
+    --detail-pad-y-top: 32px;
+    --detail-pad-y-bottom: 64px;
+  }
+}
+
+@media (min-width: 1024px) {
+  main.detail { --detail-pad-x: 28px; }
+}
+
+
+/* ================================
+   Detail thumbs: horizontal scroll (Photos + Process)
+   No-crop thumbnails
+   ================================ */
+
+main.detail .thumbs-label {
+  margin: 0 0 10px;
+}
+
+/* bar */
+main.detail .thumbs {
+  width: 100%;
+  display: flex;
+  flex-wrap: nowrap;
+  gap: 12px;
+
+  overflow-x: auto;
+  overflow-y: hidden;
+  -webkit-overflow-scrolling: touch;
+
+  justify-content: flex-start;
+  padding-bottom: 6px;
+}
+
+/* each thumb cell */
+main.detail .thumbs a.thumb {
+  flex: 0 0 auto;          /* これがないと縮んで崩れます */
+  display: grid;
+  place-items: center;
+  min-width: 44px;
+  min-height: 44px;
+  padding: 2px;
+  text-decoration: none;
+}
+
+/* image: NO CROP */
+main.detail .thumbs a.thumb img {
+  width: 72px;
+  aspect-ratio: 1 / 1;
+  height: auto;
+
+  object-fit: contain;     /* ← cover をやめる */
+  background: var(--panel-bg);     /* 余白が出るので下地を敷く */
+  display: block;
+}
+
+@media (min-width: 481px){
+  main.detail .thumbs a.thumb img{
+    width: 80px;
+  }
+}
+
+@media (min-width: 1024px){
+  main.detail .thumbs a.thumb img{
+    width: 88px;
+  }
+}
+
+/* ================================
+   Detail hero: 1:1 frame (no crop)
+   ================================ */
+
+main.detail section.hero .hero-link{
+  display:block;
+  width:100%;
+  aspect-ratio: 1 / 1;   /* ←枠を正方形に固定 */
+  background:var(--panel-bg);
+  overflow:hidden;
+}
+
+main.detail section.hero img.hero{
+  width:100%;
+  height:100%;           /* ←枠に合わせる */
+  object-fit: contain;   /* ←トリミングなし */
+  display:block;
+  max-height: none;      /* 1:1枠運用では不要 */
+}
+
+/* ================================
+   Detail video: keep aspect ratio
+   stable (no transform)
+   ================================ */
+
+/* 動画枠：比率固定＋はみ出し隠し */
+main.detail .hero-video-inner{
+  width: 100%;
+  aspect-ratio: 16 / 9;
+  position: relative;
+  overflow: hidden;
+  background: var(--panel-bg);
+}
+
+/* iframe：transform は使わず、1〜2pxだけ大きくして切る */
+main.detail .hero-video-inner iframe{
+  position: absolute;
+  inset: -1px;                 /* 1pxの線対策 */
+  width: calc(100% + 2px);
+  height: calc(100% + 2px);
+  border: 0;
+  display: block;
+  background: var(--panel-bg);
+}
+
+/* iPad系だけ“ほんの少し”だけ強めに（iPhoneを巻き込まない） */
+@media (min-width: 744px) and (max-width: 1024px){
+  main.detail .hero-video-inner iframe{
+    inset: -2px;
+    width: calc(100% + 4px);
+    height: calc(100% + 4px);
+  }
+}

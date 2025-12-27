@@ -23,13 +23,42 @@ OUT_GALLERY = SITE_ROOT / "gallery"
 OUT_GALLERY.mkdir(parents=True, exist_ok=True)
 PAGE_SIZE = 24
 
-NEWS_CSV      = ROOT / "data" / "news.csv"
-NEWS_BODY_DIR = ROOT / "data" / "news_body"
-OUT_NEWS      = SITE_ROOT / "news"
+NEWS_CSV       = ROOT / "assets" / "news" / "news.csv"
+NEWS_BODY_DIR  = ROOT / "assets" / "news" / "body"
+NEWS_IMAGES_DIR = ROOT / "assets" / "news" / "images"
+
+OUT_NEWS       = SITE_ROOT / "news"
 OUT_NEWS.mkdir(parents=True, exist_ok=True)
 
 TOP_HERO     = ROOT / "assets" / "partials" / "top_hero.html"
 TOP_SECTIONS = ROOT / "assets" / "partials" / "top_sections.html"
+
+PARTIALS_DIR = ROOT / "assets" / "partials"
+
+def render_partial(name: str) -> str:
+    """
+    assets/partials/ 以下の HTML partial を読み込んで文字列として返す。
+    例: render_partial("top_logo.html")
+    """
+    p = PARTIALS_DIR / name.strip()
+    return p.read_text(encoding="utf-8") if p.exists() else ""
+
+def inject_footer(html_text: str) -> str:
+    footer_html = render_partial("footer.html")
+    footer_html = footer_html.strip()
+    if not footer_html:
+        return html_text
+
+    # 1) </main> の直後（指示どおり）
+    if "</main>" in html_text:
+        return html_text.replace("</main>", "</main>\n" + footer_html + "\n", 1)
+
+    # 2) main がないページ向けの保険： </body> 直前
+    if "</body>" in html_text:
+        return html_text.replace("</body>", footer_html + "\n</body>", 1)
+
+    # 3) それも無いなら何もしない
+    return html_text
 
 def read_file(p: Path) -> str:
     return p.read_text(encoding="utf-8") if p.exists() else ""
@@ -75,14 +104,15 @@ def ensure_webp_thumbs():
             print(f"[webp] failed to convert {p.name}: {e}")
 
 def ensure_webp_news_images():
+    """
+    assets/news/images/ 以下の JPG/PNG から、同名の .webp を自動生成する。
+    ・すでに .webp がある場合は何もしない
+    ・Pillow が無い場合も何もしない
+    """
     if Image is None:
         return
 
-    news_dir = SITE_ROOT / "news" / "images"
-    if not news_dir.exists():
-        return
-
-    news_dir = ROOT / "news" / "images"
+    news_dir = NEWS_IMAGES_DIR
     if not news_dir.exists():
         return
 
@@ -96,7 +126,7 @@ def ensure_webp_news_images():
 
         webp_path = p.with_suffix(".webp")
         if webp_path.exists():
-            continue  # すでに作ってある
+            continue
 
         try:
             img = Image.open(p)
@@ -170,6 +200,9 @@ def resolve_news_image_src(image_file: str) -> str:
     if not image_file:
         return ""
 
+    if image_file.upper() in {"NO_IMAGE", "NONE", "N/A", "-"}:
+        return ""
+
     # "news/images/xxx.jpg" / "/news/images/xxx.jpg" / "xxx.jpg" どれでも受ける
     if "/" in image_file:
         rel = image_file.lstrip("/")  # "news/images/DSC_1777.jpg"
@@ -199,36 +232,9 @@ def resolve_news_image_src(image_file: str) -> str:
     # まだ実ファイルが無くても URL だけは返しておく
     return "/" + rel
 
-def render_news_list_items(news_items, limit=None) -> str:
-    """
-    トップページ用のテキストリスト（既存仕様を維持）
-    """
-    rows = news_items
-    if limit is not None:
-        rows = news_items[:limit]
-
-    lis = []
-    for n in rows:
-        date    = html.escape(n.get("date") or "")
-        title   = html.escape(n.get("title") or "")
-        summary = html.escape(n.get("summary") or "")
-        slug    = n.get("slug") or ""
-        url     = f"/news/{slug}.html" if slug else "#"
-
-        # summary が空なら <p> ごと出さないようにする
-        summary_html = f'\n            <p class="news-summary">{summary}</p>' if summary else ""
-
-        lis.append(
-f'''          <li class="news-item">
-            <span class="news-date">{date}</span>
-            <a class="news-title" href="{url}">{title}</a>{summary_html}
-          </li>'''
-        )
-    return "\n".join(lis)
-
 def news_card_html(n: dict) -> str:
     """
-    ニュース一覧用：ギャラリーと同じカード構造（rl-item / rl-link / rl-caption）
+    ニュース一覧用：ギャラリー寄せのカード構造（.rl-item）
     画像サムネ＋タイトル＋日付＋要約を表示する。
     """
     slug    = (n.get("slug") or "").strip()
@@ -238,7 +244,7 @@ def news_card_html(n: dict) -> str:
     image   = (n.get("image_file") or "").strip()
 
     # 詳細ページURL
-    url = f"/news/{slug}.html" if slug else "#"
+    url = f"/news/{slug}/" if slug else "#"
 
     # 表示テキスト
     title_text   = title or slug
@@ -257,7 +263,7 @@ def news_card_html(n: dict) -> str:
         )
 
     # 要約は空なら出さない
-    summary_block = f'\n      <p class="news-summary">{summary_html}</p>' if summary_html else ""
+    summary_block = f'\n      <p class="news-summary">{summary_html}</p>' if summary else ""
 
     return f'''<figure class="rl-item">
   <a href="{url}" class="rl-link">
@@ -269,11 +275,80 @@ def news_card_html(n: dict) -> str:
   </a>
 </figure>'''
 
+def render_news_list_items(news_items, limit=None) -> str:
+    """
+    トップページ用のテキストリスト（既存仕様を維持）
+    """
+    rows = news_items
+    if limit is not None:
+        rows = news_items[:limit]
+
+    lis = []
+    for n in rows:
+        date    = html.escape(n.get("date") or "")
+        title   = html.escape(n.get("title") or "")
+        summary = html.escape(n.get("summary") or "")
+        slug    = n.get("slug") or ""
+        url     = f"/news/{slug}/" if slug else "#"
+
+        summary_html = f'\n            <p class="news-summary">{summary}</p>' if summary else ""
+
+        lis.append(
+f'''          <li class="news-item">
+            <span class="news-date">{date}</span>
+            <a class="news-title" href="{url}">{title}</a>{summary_html}
+          </li>'''
+        )
+    return "\n".join(lis)
+
+def top_news_card_html(n: dict) -> str:
+    """
+    トップページ用ニュースカード（.news-card 依存）。
+    - サムネあり: <img>
+    - サムネなし: .news-card-thumb--empty を出す（CSSでグレー枠）
+    """
+    slug    = (n.get("slug") or "").strip()
+    date    = (n.get("date") or "").strip()
+    title   = (n.get("title") or "").strip()
+    summary = (n.get("summary") or "").strip()
+    image   = (n.get("image_file") or "").strip()
+
+    url = f"/news/{slug}/" if slug else "#"
+
+    title_html = html.escape(title or slug)
+    date_html  = html.escape(date)
+    summary_html = html.escape(summary)
+
+    img_src = resolve_news_image_src(image) if image else ""
+
+    if img_src:
+        thumb_html = f'<img src="{img_src}" alt="{title_html}" loading="lazy" decoding="async">'
+        thumb_class = "news-card-thumb"
+    else:
+        thumb_html = ""
+        thumb_class = "news-card-thumb news-card-thumb--empty"
+
+    summary_block = f'<p class="news-card-summary">{summary_html}</p>' if summary else ""
+
+    return f'''<article class="news-card">
+  <a class="news-card-link" href="{url}">
+    <div class="{thumb_class}">
+      {thumb_html}
+    </div>
+    <div class="news-card-body">
+      <h3 class="news-card-title">{title_html}</h3>
+      <p class="news-card-date">{date_html}</p>
+      {summary_block}
+    </div>
+  </a>
+</article>'''
+
 def news_index_html(cards: str, prev_link: str = None, next_link: str = None) -> str:
     """
     ニュース一覧ページ全体のHTML。
-    ギャラリーと同じ .gallery-head / .rl-gallery / .gallery-pager を使う。
+    ヘッダーは「ロゴ → メニュー」を共通で表示する。
     """
+
     # ページャーHTML（ギャラリーと同じクラス名）
     pager_parts = []
     if prev_link or next_link:
@@ -292,7 +367,9 @@ def news_index_html(cards: str, prev_link: str = None, next_link: str = None) ->
 
     pager_html = "\n".join(pager_parts)
 
-    intro_html = read_intro()
+    # 共通ヘッダー
+    logo_html = render_partial("top_logo.html")
+    nav_html  = render_partial("nav_main.html")
 
     return f'''<!doctype html>
 <meta charset="utf-8">
@@ -300,14 +377,20 @@ def news_index_html(cards: str, prev_link: str = None, next_link: str = None) ->
 <title>News | Rara Lab</title>
 <link rel="stylesheet" href="/assets/css/site.css">
 <body>
-{intro_html}
+{logo_html}
+{nav_html}
 <main class="news-index">
 
   <section class="gallery-head">
     <h1>News</h1>
-    <p class="gallery-note">
-      Rara Lab からのお知らせをまとめています。
-    </p>
+    <div class="gallery-note">
+      <p>
+        Rara Labの活動に関する更新情報をまとめています。
+      </p>
+      <p>
+        出品やサイト更新など、節目となる内容を掲載しています。
+      </p>
+    </div>
   </section>
 
   <section class="rl-gallery news-gallery">
@@ -327,7 +410,6 @@ def news_detail_html(news: dict, body_html: str) -> str:
     ※ ギャラリー個別ページの構造に寄せて、
        「画像ブロック（news-hero）」と「本文ブロック（news-body）」に分割する。
     """
-    intro_html = read_intro()  # 上部の共通リンクなど
     date  = html.escape(news.get("date") or "")
     title = html.escape(news.get("title") or "")
 
@@ -364,13 +446,18 @@ def news_detail_html(news: dict, body_html: str) -> str:
         <p class="news-back"><a href="/news/">News 一覧へ戻る</a></p>
       </section>'''
 
+    # 共通ヘッダー
+    logo_html = render_partial("top_logo.html")
+    nav_html  = render_partial("nav_main.html")
+
     return f'''<!doctype html>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>{title} | Rara Lab</title>
 <link rel="stylesheet" href="/assets/css/site.css">
 <body>
-  {intro_html}
+{logo_html}
+{nav_html}
   <main class="news-detail">
     <article>
 {hero_block}{body_block}
@@ -661,6 +748,10 @@ def card_html(it):
 </figure>'''
 
 def gallery_index_html(cards: str, prev_link: str = None, next_link: str = None) -> str:
+    """
+    ギャラリー一覧ページ全体のHTML。
+    ヘッダーは「ロゴ → メニュー」を共通で表示する。
+    """
     # ページャーHTML
     pager_parts = []
     if prev_link or next_link:
@@ -677,105 +768,96 @@ def gallery_index_html(cards: str, prev_link: str = None, next_link: str = None)
 
     pager_html = "\n".join(pager_parts)
 
+    # 共通ヘッダー
+    logo_html = render_partial("top_logo.html")
+    nav_html  = render_partial("nav_main.html")
+
     return f'''<!doctype html>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>Gallery – Rara Lab</title>
 <link rel="stylesheet" href="/assets/css/site.css">
+<body>
+{logo_html}
+{nav_html}
+<main class="gallery-index">
 
-<section class="gallery-head">
-  <h1>Gallery</h1>
-  <p class="gallery-note">
-    このギャラリーには、現在は販売を終了している作品も含まれています。
-    販売状況はショップの商品ページでご確認ください。
-  </p>
-</section>
+  <section class="gallery-head">
+    <h1>Gallery</h1>
+    <div class="gallery-note">
+      <p>
+      このギャラリーでは、Rara Labがこれまでに制作した作品をご紹介しています。
+      </p>
+      <p>
+      一部に販売を終了している作品も含まれます。現在の販売状況は、ショップの商品ページでご確認いただけます。
+      </p>
+    </div>
+  </section>
 
-<section class="rl-gallery">
+  <section class="rl-gallery">
 {cards}
-</section>
+  </section>
 
 {pager_html}
+
+</main>
+</body>
 '''
 
-def top_index_html(new_cards: str, news_list_html: str) -> str:
-    intro_html = read_intro() if 'read_intro' in globals() else ""
-    hero_html  = read_top_hero() if 'read_top_hero' in globals() else ""
+def top_index_html(new_cards: str, news_cards_html: str) -> str:
+    """
+    トップページ（/index.html）のHTML。
+    News は「画像の下にテキスト」カードを3件表示する（追加のテキスト一覧は出さない）。
+    """
+
+    logo_html      = render_partial("top_logo.html")
+    hero_html      = read_top_hero()
+    nav_html       = render_partial("nav_main.html")
+    intro_html     = read_intro()
+    sections_html  = read_file(ROOT / "assets" / "partials" / "top_sections.html")
+    more_html      = read_file(ROOT / "assets" / "partials" / "top_more.html")
+    cta_html       = read_cta()
+
+    gallery_block = f'''
+<section class="top-section top-gallery">
+  <h2 class="section-doubleline">Current Works</h2>
+  <section class="rl-gallery">
+{new_cards}
+  </section>
+</section>
+'''
+
+    news_block = f'''
+<section class="top-section top-news">
+  <h2 class="section-doubleline">News</h2>
+  <div class="news-cards">
+{news_cards_html}
+  </div>
+  <div class="news-more">
+    <a href="/news/">News 一覧を見る</a>
+  </div>
+</section>
+'''
 
     return f'''<!doctype html>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>Rara Lab</title>
 <link rel="stylesheet" href="/assets/css/site.css">
-<body>
-  {intro_html}
-  {hero_html}
-  <main class="top">
-
-    <!-- ① 新着ギャラリー -->
-    <section class="top-section top-gallery">
-      <h2 class="section-doubleline">New</h2>
-      <section class="rl-gallery">
-{new_cards}
-      </section>
-    </section>
-
-    <!-- ② News -->
-    <section class="top-section top-news">
-      <h2 class="section-doubleline">News</h2>
-      <div class="news-list">
-        <ul>
-{news_list_html}
-        </ul>
-      </div>
-      <div class="news-more">
-        <a href="/news/">News 一覧を見る</a>
-      </div>
-    </section>
-
-    <!-- ③ Note / GemDiary / About -->
-    <section class="top-section top-links">
-      <h2 class="section-doubleline">More</h2>
-      <div class="home-link-list">
-        <article class="home-link-card">
-          <h3 class="home-link-title">
-            <a href="https://note.com/raralab" target="_blank" rel="noopener">
-              Note
-            </a>
-          </h3>
-          <p class="home-link-text">
-            制作記録やコラムなど、ゆるい読みものはこちら。
-          </p>
-        </article>
-
-        <article class="home-link-card">
-          <h3 class="home-link-title">
-            <a href="/gemdiary/">
-              Gem Diary（アーカイブ）
-            </a>
-          </h3>
-          <p class="home-link-text">
-            旧サイト時代の Gem Diary 記事をまとめています。
-          </p>
-        </article>
-
-        <article class="home-link-card">
-          <h3 class="home-link-title">
-            <a href="/about/">
-              About
-            </a>
-          </h3>
-          <p class="home-link-text">
-            Rara Lab と運営者について。
-          </p>
-        </article>
-      </div>
-    </section>
-
-  </main>
+<body class="home">
+{logo_html}
+{hero_html}
+{nav_html}
+{intro_html}
+{sections_html}
+{gallery_block}
+{news_block}
+{more_html}
+{cta_html}
 </body>'''
 
 def detail_html(it):
+    """ギャラリー／詳細ページ（1石）のフルHTMLを返す。"""
     slug   = it["slug"]
     stone  = it.get("stone","")
     carat  = it.get("carat","")
@@ -788,8 +870,46 @@ def detail_html(it):
 
     # ---- 画像 ----
     hero_thumb, hero_4k = primary_images(slug)
+
     image_order = it.get("image_order", "")
-    thumbs = all_images(slug, image_order=image_order)
+    thumbs_all = all_images(slug, image_order=image_order)
+
+    process_order = it.get("process_image_order", "").strip()
+
+    from pathlib import Path as _Path
+    import re as _re
+
+    def _thumb_id(path: str) -> str:
+        """
+        /assets/images/thumb/<slug>-DSC_9991.webp から 'DSC_9991' を取り出す
+        cover は 'cover' になる（Photos側に残す想定）
+        """
+        stem = _Path(path).stem  # 拡張子なし
+        for pref in (slug, slug.replace("-", "_")):
+            if stem.startswith(pref + "-"):
+                return stem[len(pref) + 1 :]
+            if stem.startswith(pref + "_"):
+                return stem[len(pref) + 1 :]
+            if stem == pref:
+                return ""
+        return stem
+
+    process_ids = []
+    if process_order:
+        for token in _re.split(r"[,\s]+", process_order):
+            t = token.strip()
+            if t:
+                process_ids.append(t)
+
+    process_set = set(process_ids)
+    order_index = {pid: i for i, pid in enumerate(process_ids)}
+
+    # Process は「指定IDだけ」に絞り込み（順序もCSV指定に合わせる）
+    process_thumbs = [p for p in thumbs_all if _thumb_id(p) in process_set]
+    process_thumbs.sort(key=lambda p: order_index.get(_thumb_id(p), 10**9))
+
+    # Photos は Process 分を除外（cover は残る）
+    thumbs = [p for p in thumbs_all if _thumb_id(p) not in process_set]
 
     hero_img  = hero_4k or hero_thumb or ""
     hero_href = hero_4k or hero_thumb or ""
@@ -817,21 +937,44 @@ def detail_html(it):
   </section>
 '''
 
-# ---- サムネ一覧 ----
-    thumbs_html = ""
-    if thumbs:
+    # ---- サムネ一覧 ----
+
+    def render_thumbs_block(th_list, label_text=None, kind="photos"):
+        if not th_list:
+            return ""
+
         items = []
-        for t in thumbs:
-            f4k = thumb_to_4k(t)  # ← ここだけ変更
+        for t in th_list:
+            f4k = thumb_to_4k(t)
             active = "active" if (t == hero_thumb) else ""
             img_class_attr = f' class="{active}"' if active else ""
-            
             items.append(
                 f'<a class="thumb" href="#" data-full="{f4k}">'
                 f'<img src="{t}"{img_class_attr} alt="{html.escape(title)}" loading="lazy" decoding="async"></a>'
             )
-            
-        thumbs_html = '<div class="thumbs">\n' + "\n".join(items) + "\n</div>"
+
+        label_html = f'<p class="thumbs-label">{html.escape(label_text)}</p>\n' if label_text else ""
+        return label_html + f'<div class="thumbs thumbs--{kind}">\n' + "\n".join(items) + "\n</div>"
+
+    blocks = []
+
+    if thumbs:
+        blocks.append(render_thumbs_block(
+            thumbs,
+            f"Photos ({len(thumbs)})",
+            kind="photos"
+        ))
+
+    if process_thumbs:
+        blocks.append(render_thumbs_block(
+            process_thumbs,
+            f"Process ({len(process_thumbs)})",
+            kind="process"
+        ))
+
+    thumbs_html = ""
+    if blocks:
+        thumbs_html = '<section class="thumbs-wrap">\n' + "\n".join(blocks) + "\n</section>"
 
     # ---- プレート＋CTA ----
     plate_html = ""
@@ -883,12 +1026,19 @@ def detail_html(it):
   <a href="{html.escape(product_url)}" class="cta-link">ご購入はこちら →</a>
 </section>'''
 
+    # 共通ヘッダー
+    logo_html = render_partial("top_logo.html")
+    nav_html  = render_partial("nav_main.html")
+
     # ---- 出力 ----
     return f'''<!doctype html>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>{html.escape(title)} – Rara Lab</title>
 <link rel="stylesheet" href="/assets/css/site.css">
+<body>
+{logo_html}
+{nav_html}
 <main class="detail">
   {breadcrumb}
   <h1 class="title">{html.escape(title)}</h1>
@@ -913,22 +1063,64 @@ def detail_html(it):
 </div>
 
 <script src="/assets/js/lightbox.js"></script>
+</body>
 '''
+
+def build_site_css():
+    """
+    assets/css/src/*.css を名前順に結合して assets/css/site.css を生成する。
+    ※ assets/css/site.css は生成物扱い（人間は編集しない）
+    """
+    src_dir = ROOT / "assets" / "css" / "src"
+    out_css = ROOT / "assets" / "css" / "site.css"
+
+    if not src_dir.exists():
+        print("[css] skip: assets/css/src not found")
+        return
+
+    parts = []
+    for p in sorted(src_dir.glob("*.css")):
+        parts.append(f"/* ---- {p.name} ---- */\n")
+        parts.append(p.read_text(encoding="utf-8", errors="ignore").rstrip() + "\n\n")
+
+    out_css.write_text("".join(parts), encoding="utf-8")
+    print(f"[css] generated: {out_css.relative_to(ROOT)}")
 
 # ---- Build ----
 def build():
+    # 先に CSS を生成してから assets をコピーする（生成物を site 側に反映させるため）
+    build_site_css()
+
+    # サムネ & ニュース画像の WebP を事前に揃えておく
+    ensure_webp_thumbs()
+    ensure_webp_news_images()
+
     # 公開用 assets を site/assets にコピー
     src_assets = ROOT / "assets"
     dst_assets = SITE_ROOT / "assets"
 
     if dst_assets.exists():
-        shutil.rmtree(dst_assets)
-    if src_assets.exists():
-        shutil.copytree(src_assets, dst_assets)
+        for p in dst_assets.rglob(".DS_Store"):
+            try:
+                p.unlink()
+            except Exception:
+                pass
 
-    # サムネ & ニュース画像の WebP を事前に揃えておく
-    ensure_webp_thumbs()
-    ensure_webp_news_images()
+    # まず消せるだけ消す（失敗しても致命傷にしない）
+    if dst_assets.exists():
+        shutil.rmtree(dst_assets, ignore_errors=True)
+
+    if src_assets.exists():
+        shutil.copytree(src_assets, dst_assets, dirs_exist_ok=True)
+
+    # ニュース画像を site/news/images に集約コピー
+    src_news_images = NEWS_IMAGES_DIR
+    dst_news_images = SITE_ROOT / "news" / "images"
+    if dst_news_images.exists():
+        shutil.rmtree(dst_news_images)
+    if src_news_images.exists():
+        dst_news_images.parent.mkdir(parents=True, exist_ok=True)
+        shutil.copytree(src_news_images, dst_news_images)
 
     items = read_items()  # date 降順（新しい順）でソート済み
 
@@ -965,7 +1157,7 @@ def build():
             next_link = f"/gallery/page-{page_num+1}.html"
 
         out_path.write_text(
-            gallery_index_html(cards, prev_link=prev_link, next_link=next_link),
+            inject_footer(gallery_index_html(cards, prev_link=prev_link, next_link=next_link)),
             encoding="utf-8"
         )
 
@@ -973,7 +1165,7 @@ def build():
     for it in items:
         d = OUT_GALLERY / it["slug"]
         d.mkdir(parents=True, exist_ok=True)
-        (d / "index.html").write_text(detail_html(it), encoding="utf-8")
+        (d / "index.html").write_text(inject_footer(detail_html(it)), encoding="utf-8")
 
     # ---- News ----
     news_items = read_news_items()
@@ -981,7 +1173,7 @@ def build():
     # ニュース一覧 /news/index.html ＋ /news/page-2.html ... （ギャラリーと同じノリで分割）
     if news_items:
         pages = []
-        for i in range(0, len(news_items), PAGE_SIZE):  # PAGE_SIZE はギャラリーと共通の想定
+        for i in range(0, len(news_items), PAGE_SIZE):
             pages.append(news_items[i:i + PAGE_SIZE])
 
         page_count = len(pages)
@@ -1012,48 +1204,42 @@ def build():
                 next_link = f"/news/page-{page_num+1}.html"
 
             out_path.write_text(
-                news_index_html(cards, prev_link=prev_link, next_link=next_link),
+                inject_footer(news_index_html(cards, prev_link=prev_link, next_link=next_link)),
                 encoding="utf-8"
             )
 
-        # 個別ページ /news/[slug].html
+        # 個別ページ /news/<slug>/index.html（本文は assets/news/body/<slug>.html 固定）
         for n in news_items:
-            slug = n["slug"]
+            slug = (n.get("slug") or "").strip()
+            if not slug:
+                continue
 
-            # -------- 本文ファイルを読み込む --------
-            body_file = (n.get("body_file") or "").strip()
-            if body_file:
-                body_path = ROOT / body_file
-                if body_path.exists():
-                    body_html = body_path.read_text(encoding="utf-8")
-                else:
-                    print(f"[warn] 本文が見つかりません: {body_path}")
-                    body_html = "<p>(本文が見つかりません)</p>"
+            body_path = NEWS_BODY_DIR / f"{slug}.html"
+            if body_path.exists():
+                body_html = body_path.read_text(encoding="utf-8")
             else:
-                print(f"[warn] body_file が空です: slug={slug}")
+                print(f"[warn] 本文が見つかりません: {body_path}")
                 body_html = "<p>(本文が見つかりません)</p>"
 
-            # -------- HTML生成（画像＋日付移動を含む）--------
-            html_text = news_detail_html(n, body_html)
+            html_text = inject_footer(news_detail_html(n, body_html))
+            out_dir = OUT_NEWS / slug
+            out_dir.mkdir(parents=True, exist_ok=True)
+            (out_dir / "index.html").write_text(html_text, encoding="utf-8")
 
-            # -------- 出力 --------
-            (OUT_NEWS / f"{slug}.html").write_text(html_text, encoding="utf-8")
-
-    # ---- トップ（新着12件＋最新ニュース数件）----
+    # ---- トップ（新着12件＋最新ニュース3件）----
     items = read_items()
     newest = items[:12]
     new_cards = "\n".join([card_html(it) for it in newest])
 
     if news_items:
-        top_news_list = render_news_list_items(news_items, limit=3)
+        top_news_cards = "\n".join([top_news_card_html(n) for n in news_items[:3]])
     else:
-        top_news_list = ""  # ニュースがない場合は空のまま
+        top_news_cards = ""
 
     (SITE_ROOT / "index.html").write_text(
-        top_index_html(new_cards, top_news_list),
+        inject_footer(top_index_html(new_cards, top_news_cards)),
         encoding="utf-8"
     )
-
 
 if __name__ == "__main__":
     build()

@@ -64,6 +64,7 @@ with csvp.open(newline="", encoding="utf-8") as f:
             "date": S("date"),
             "tags": tags,
             "image_order": S("image_order"),
+            "process_image_order": S("process_image_order"),  # ← 追加
             "video_url": S("video_url"),
         })
         index[slug] = it

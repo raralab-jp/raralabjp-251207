@@ -1,54 +1,546 @@
-.site-hero {
-  max-width: 960px;
+/* ---- 00_reset.css ---- */
+* { box-sizing: border-box; }
+img { max-width: 100%; height: auto; display: block; }
+body { margin: 0; }
+
+/* ---- 01_base.css ---- */
+body {
+  font-family: system-ui, -apple-system, "Helvetica Neue", Arial, sans-serif;
+  line-height: 1.6;
+}
+
+a { color: inherit; }
+
+/* ---------- base color tokens ---------- */
+:root {
+  --panel-bg: #f3f3f3;
+}
+
+/* ---- 10_layout.css ---- */
+/* page width + basic spacing */
+main {
+  max-width: 980px;
   margin: 0 auto;
-  padding: 32px 16px 24px;
-  text-align: center;
+  padding: 24px 16px;
 }
 
-.site-hero-logo img {
-  max-width: 150px;
-  height: auto;
-  display: inline-block;
+.top-section {
+  max-width: 980px;
+  margin: 0 auto;
+  padding: 24px 16px;
 }
 
-.site-hero-logo {
-  margin-bottom: 24px;
+/* ---- 20_components.css ---- */
+/* =================================================
+   Components (shared)
+   - Gallery / News / Home で流用する部品群
+   - HTMLの実クラスに合わせる（rl-gallery / rl-item / rl-link）
+   ================================================= */
+
+/* ---------- grid (gallery/news/home) ---------- */
+.rl-gallery {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+  gap: 18px;
 }
 
-.site-hero-image {
-  margin: 0 0 24px;
+/* ---------- card base ---------- */
+.rl-item {
+  margin: 0;              /* figureのデフォルト余白を消す */
 }
 
-.site-hero-image img {
+.rl-link {
+  display: block;
+  text-decoration: none;
+  color: inherit;
+}
+
+/* ---------- thumbnail: always square ---------- */
+/* anchor直下の img を想定（あなたのHTMLに一致） */
+.rl-link > img {
   width: 100%;
+  aspect-ratio: 1 / 1;
+  height: auto;           /* 念のため */
+  object-fit: cover;
+  display: block;
+  background: #f3f3f3;    /* 画像読み込み前の保険 */
+}
+
+/* ---------- caption ---------- */
+.rl-caption {
+  margin-top: 6px;
+  font-size: 0.9rem;
+  line-height: 1.4;
+}
+
+.rl-title {
+  font-size: 0.95rem;
+}
+
+/* ---- 21_lightbox.css ---- */
+/* ---- 21_lightbox.css ---- */
+/* Lightbox: make it truly viewport-fixed and centered */
+
+.lb-root[hidden] { display: none; }
+
+.lb-root {
+  position: fixed;
+  inset: 0;
+  z-index: 9999;
+
+  display: grid;
+  place-items: center;
+  padding: 24px 16px; /* 端末端でボタンが欠けないように */
+}
+
+.lb-backdrop {
+  position: absolute;
+  inset: 0;
+  background: rgba(0,0,0,0.7);
+}
+
+.lb-frame {
+  position: relative;
+  z-index: 1;
+
+  max-width: min(1100px, 94vw);
+  max-height: 90vh;
+
+  display: grid;
+  place-items: center;
+}
+
+.lb-img {
+  max-width: 100%;
+  max-height: 90vh;
+  width: auto;
   height: auto;
   display: block;
-  border-radius: 8px;
+  object-fit: contain;
 }
 
-.site-hero-intro {
+/* ボタン類：位置だけ（見た目は後で） */
+.lb-close {
+  position: absolute;
+  top: -6px;
+  right: -6px;
+}
+
+.lb-prev, .lb-next {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+}
+
+.lb-prev { left: -10px; }
+.lb-next { right: -10px; }
+
+/* 小さい画面で外に飛びやすいので内側に寄せる */
+@media (max-width: 480px) {
+  .lb-prev { left: 6px; }
+  .lb-next { right: 6px; }
+  .lb-close { top: 6px; right: 6px; }
+}
+
+/* ---- 31_pages_gallery.css ---- */
+/* =================================================
+   Gallery page
+   ================================================= */
+
+.gallery-list {
+  margin-top: 24px;
+}
+
+/* gallery uses shared grid */
+.gallery-list .rl-grid {
+  margin-top: 12px;
+}
+
+/* Gallery: mobile 2 columns */
+@media (max-width: 600px) {
+  .rl-gallery {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+/* ---- 32_pages_news.css ---- */
+/* =========================================
+   News page (derived from Gallery)
+   ========================================= */
+
+/* 一覧ページの余白 */
+.news-index .rl-gallery {
+  margin-top: 24px;
+}
+
+/* 日付 */
+.news-date {
+  display: block;
+  margin-top: 4px;
+  font-size: 0.8rem;
+  color: #777;
+}
+
+/* 要約 */
+.news-summary {
+  margin-top: 6px;
+  font-size: 0.85rem;
+  line-height: 1.4;
+  color: #333;
+}
+
+/* カード内の余白微調整（Newsのみ） */
+.news-index .rl-caption {
+  padding-bottom: 6px;
+}
+
+/* =========================================
+   News list: placeholder for no image
+   ========================================= */
+
+/* img が無いカード用の擬似サムネ */
+.news-index .rl-link::before {
+  content: "";
+  display: block;
+  width: 100%;
+  aspect-ratio: 1 / 1;
+  background: #f3f3f3;
+}
+
+/* img がある場合は擬似要素を消す */
+.news-index .rl-link > img + .rl-caption {
+  /* img がある構造では before が不要なので打ち消す */
+}
+
+.news-index .rl-link > img {
+  position: relative;
+}
+
+/* img があるときは before を無効化 */
+.news-index .rl-link > img {
+  margin-top: -100%;
+}
+
+/* ---- 33_pages_home.css ---- */
+/* =========================================
+   Home page (spacing only)
+   ========================================= */
+
+/* セクション全体の縦間隔 */
+.home .top-section {
+  margin: 48px 0;
+}
+
+/* 見出し下の余白 */
+.home .top-section h2 {
+  margin-bottom: 18px;
+}
+
+/* News セクション内の間隔 */
+.home .top-news .news-cards {
+  margin-top: 18px;
+}
+
+/* 「一覧を見る」リンクの余白 */
+.home .top-news .news-more {
+  margin-top: 16px;
+}
+
+/* スマホ時は少し詰める */
+@media (max-width: 600px) {
+  .home .top-section {
+    margin: 36px 0;
+  }
+}
+
+/* =========================================
+   Home: News cards (top page only)
+   - HTML: .top-news .news-cards / .news-card-*
+   ========================================= */
+
+.home .top-news .news-cards {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+  gap: 18px;
+  margin-top: 18px;
+}
+
+.home .top-news .news-card {
+  margin: 0;
+}
+
+.home .top-news .news-card-link {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 10px;
+  text-decoration: none;
+  color: inherit;
+}
+
+/* thumb area: always square (image or empty) */
+.home .top-news .news-card-thumb {
+  width: 100%;
+  aspect-ratio: 1 / 1;
+  overflow: hidden;
+  background: #f3f3f3;
+}
+
+.home .top-news .news-card-thumb img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+/* title/date/summary */
+.home .top-news .news-card-title {
+  margin: 0;
   font-size: 0.95rem;
-  line-height: 1.8;
-  color: #444;
-  max-width: 640px;
+  line-height: 1.35;
+}
+
+.home .top-news .news-card-date {
+  margin: 4px 0 0;
+  font-size: 0.8rem;
+  color: #777;
+}
+
+.home .top-news .news-card-summary {
+  margin: 6px 0 0;
+  font-size: 0.85rem;
+  line-height: 1.4;
+  color: #333;
+}
+
+/* ---- 34_pages_detail.css ---- */
+/* ---- 34_pages_detail.css ---- */
+/* Gallery detail: Step 1 skeleton + thumbs grid option */
+
+/* Gallery detail: align everything to the same centered column */
+
+main.detail {
+  --detail-max: 980px;
+  --detail-pad-x: 16px;
+  --detail-pad-y-top: 12px;
+  --detail-pad-y-bottom: 48px;
+  --detail-gap: 20px;
+
+  /* ここが重要：main自体を中央カラムにする */
+  max-width: var(--detail-max);
   margin: 0 auto;
+
+  /* 10_layout.css の padding を detail 用に上書き */
+  padding: var(--detail-pad-y-top) var(--detail-pad-x) var(--detail-pad-y-bottom);
 }
 
-.site-hero-intro p + p {
-  margin-top: 0.75em;
+/* titles */
+/* タイトルを表示する場合はこっちを有効化 */
+/* main.detail .title { margin: 0 0 6px; }
+main.detail .subtitle { margin: 0 0 var(--detail-gap); }*/
+
+/* hide title/subtitle on detail page */
+main.detail .title,
+main.detail .subtitle {
+  display: none;
 }
 
-.site-main {
-  max-width: 960px;
-  margin: 0 auto;
-  padding: 0 16px 40px;
+/* detail: vertical rhythm for direct sections */
+main.detail > section{
+  margin: 0 0 var(--detail-gap);
+}
+main.detail > section:last-of-type{
+  margin-bottom: 0;
 }
 
-.site-notice {
-  margin-top: 32px;
-  padding: 16px 14px;
-  border-radius: 8px;
-  background: #f7f7f7;
-  font-size: 0.9rem;
-  color: #555;
+
+@media (min-width: 768px) {
+  main.detail {
+    --detail-pad-x: 24px;
+    --detail-pad-y-top: 32px;
+    --detail-pad-y-bottom: 64px;
+  }
 }
+
+@media (min-width: 1024px) {
+  main.detail { --detail-pad-x: 28px; }
+}
+
+
+/* ================================
+   Detail thumbs: horizontal scroll (Photos + Process)
+   No-crop thumbnails
+   ================================ */
+
+main.detail .thumbs-label {
+  margin: 0 0 10px;
+}
+
+/* bar */
+main.detail .thumbs {
+  width: 100%;
+  display: flex;
+  flex-wrap: nowrap;
+  gap: 12px;
+
+  overflow-x: auto;
+  overflow-y: hidden;
+  -webkit-overflow-scrolling: touch;
+
+  justify-content: flex-start;
+  padding-bottom: 6px;
+}
+
+/* each thumb cell */
+main.detail .thumbs a.thumb {
+  flex: 0 0 auto;          /* これがないと縮んで崩れます */
+  display: grid;
+  place-items: center;
+  min-width: 44px;
+  min-height: 44px;
+  padding: 2px;
+  text-decoration: none;
+}
+
+/* image: NO CROP */
+main.detail .thumbs a.thumb img {
+  width: 72px;
+  aspect-ratio: 1 / 1;
+  height: auto;
+
+  object-fit: contain;     /* ← cover をやめる */
+  background: var(--panel-bg);     /* 余白が出るので下地を敷く */
+  display: block;
+}
+
+@media (min-width: 481px){
+  main.detail .thumbs a.thumb img{
+    width: 80px;
+  }
+}
+
+@media (min-width: 1024px){
+  main.detail .thumbs a.thumb img{
+    width: 88px;
+  }
+}
+
+/* ================================
+   Detail hero: 1:1 frame (no crop)
+   ================================ */
+
+main.detail section.hero .hero-link{
+  display:block;
+  width:100%;
+  aspect-ratio: 1 / 1;   /* ←枠を正方形に固定 */
+  background:var(--panel-bg);
+  overflow:hidden;
+}
+
+main.detail section.hero img.hero{
+  width:100%;
+  height:100%;           /* ←枠に合わせる */
+  object-fit: contain;   /* ←トリミングなし */
+  display:block;
+  max-height: none;      /* 1:1枠運用では不要 */
+}
+
+/* ================================
+   Detail video: keep aspect ratio
+   stable (no transform)
+   ================================ */
+
+/* 動画枠：比率固定＋はみ出し隠し */
+main.detail .hero-video-inner{
+  width: 100%;
+  aspect-ratio: 16 / 9;
+  position: relative;
+  overflow: hidden;
+  background: var(--panel-bg);
+}
+
+/* iframe：transform は使わず、1〜2pxだけ大きくして切る */
+main.detail .hero-video-inner iframe{
+  position: absolute;
+  inset: -1px;                 /* 1pxの線対策 */
+  width: calc(100% + 2px);
+  height: calc(100% + 2px);
+  border: 0;
+  display: block;
+  background: var(--panel-bg);
+}
+
+/* iPad系だけ“ほんの少し”だけ強めに（iPhoneを巻き込まない） */
+@media (min-width: 744px) and (max-width: 1024px){
+  main.detail .hero-video-inner iframe{
+    inset: -2px;
+    width: calc(100% + 4px);
+    height: calc(100% + 4px);
+  }
+}
+
+/* ---- 35_pages_news_detail.css ---- */
+/* ---- 35_pages_news_detail.css ---- */
+/* News detail: derived from detail layout philosophy */
+
+main.news-detail {
+  --news-max: 980px;
+  --news-pad-x: 16px;
+  --news-pad-y-top: 24px;
+  --news-pad-y-bottom: 48px;
+  --news-gap: 20px;
+
+  /* 10_layout.css の main を上書き */
+  max-width: none;
+  margin: 0;
+  padding: var(--news-pad-y-top) var(--news-pad-x) var(--news-pad-y-bottom);
+}
+
+main.news-detail article {
+  max-width: var(--news-max);
+  margin-left: auto;
+  margin-right: auto;
+}
+
+/* hero画像 */
+main.news-detail .news-hero {
+  margin: 0 0 var(--news-gap);
+}
+
+main.news-detail .news-hero .news-image {
+  margin: 0; /* p のデフォルト余白潰し */
+}
+
+main.news-detail .news-hero img {
+  width: 100%;
+  height: auto;
+  max-height: 70vh;
+  object-fit: contain;
+}
+
+/* 本文の最低限の読みやすさ（趣味は後） */
+main.news-detail .news-body p {
+  margin: 0 0 1em;
+}
+
+main.news-detail .news-date {
+  margin: 0 0 12px;
+}
+
+main.news-detail .news-back {
+  margin: 20px 0 0;
+}
+
+@media (min-width: 768px) {
+  main.news-detail {
+    --news-pad-x: 24px;
+    --news-pad-y-top: 32px;
+    --news-pad-y-bottom: 64px;
+  }
+}
+
+@media (min-width: 1024px) {
+  main.news-detail {
+    --news-pad-x: 28px;
+  }
+}
+

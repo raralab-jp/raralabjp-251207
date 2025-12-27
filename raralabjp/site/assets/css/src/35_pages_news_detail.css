@@ -1,0 +1,64 @@
+/* ---- 35_pages_news_detail.css ---- */
+/* News detail: derived from detail layout philosophy */
+
+main.news-detail {
+  --news-max: 980px;
+  --news-pad-x: 16px;
+  --news-pad-y-top: 24px;
+  --news-pad-y-bottom: 48px;
+  --news-gap: 20px;
+
+  /* 10_layout.css の main を上書き */
+  max-width: none;
+  margin: 0;
+  padding: var(--news-pad-y-top) var(--news-pad-x) var(--news-pad-y-bottom);
+}
+
+main.news-detail article {
+  max-width: var(--news-max);
+  margin-left: auto;
+  margin-right: auto;
+}
+
+/* hero画像 */
+main.news-detail .news-hero {
+  margin: 0 0 var(--news-gap);
+}
+
+main.news-detail .news-hero .news-image {
+  margin: 0; /* p のデフォルト余白潰し */
+}
+
+main.news-detail .news-hero img {
+  width: 100%;
+  height: auto;
+  max-height: 70vh;
+  object-fit: contain;
+}
+
+/* 本文の最低限の読みやすさ（趣味は後） */
+main.news-detail .news-body p {
+  margin: 0 0 1em;
+}
+
+main.news-detail .news-date {
+  margin: 0 0 12px;
+}
+
+main.news-detail .news-back {
+  margin: 20px 0 0;
+}
+
+@media (min-width: 768px) {
+  main.news-detail {
+    --news-pad-x: 24px;
+    --news-pad-y-top: 32px;
+    --news-pad-y-bottom: 64px;
+  }
+}
+
+@media (min-width: 1024px) {
+  main.news-detail {
+    --news-pad-x: 28px;
+  }
+}

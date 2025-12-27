@@ -1,0 +1,89 @@
+/* =========================================
+   Home page (spacing only)
+   ========================================= */
+
+/* セクション全体の縦間隔 */
+.home .top-section {
+  margin: 48px 0;
+}
+
+/* 見出し下の余白 */
+.home .top-section h2 {
+  margin-bottom: 18px;
+}
+
+/* News セクション内の間隔 */
+.home .top-news .news-cards {
+  margin-top: 18px;
+}
+
+/* 「一覧を見る」リンクの余白 */
+.home .top-news .news-more {
+  margin-top: 16px;
+}
+
+/* スマホ時は少し詰める */
+@media (max-width: 600px) {
+  .home .top-section {
+    margin: 36px 0;
+  }
+}
+
+/* =========================================
+   Home: News cards (top page only)
+   - HTML: .top-news .news-cards / .news-card-*
+   ========================================= */
+
+.home .top-news .news-cards {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+  gap: 18px;
+  margin-top: 18px;
+}
+
+.home .top-news .news-card {
+  margin: 0;
+}
+
+.home .top-news .news-card-link {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 10px;
+  text-decoration: none;
+  color: inherit;
+}
+
+/* thumb area: always square (image or empty) */
+.home .top-news .news-card-thumb {
+  width: 100%;
+  aspect-ratio: 1 / 1;
+  overflow: hidden;
+  background: #f3f3f3;
+}
+
+.home .top-news .news-card-thumb img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+/* title/date/summary */
+.home .top-news .news-card-title {
+  margin: 0;
+  font-size: 0.95rem;
+  line-height: 1.35;
+}
+
+.home .top-news .news-card-date {
+  margin: 4px 0 0;
+  font-size: 0.8rem;
+  color: #777;
+}
+
+.home .top-news .news-card-summary {
+  margin: 6px 0 0;
+  font-size: 0.85rem;
+  line-height: 1.4;
+  color: #333;
+}
