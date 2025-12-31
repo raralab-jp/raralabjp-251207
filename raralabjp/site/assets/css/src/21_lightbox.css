@@ -42,8 +42,8 @@
 /* ボタン類：位置だけ（見た目は後で） */
 .lb-close {
   position: absolute;
-  top: -6px;
-  right: -6px;
+  top: 12px;
+  right: 12px;
 }
 
 .lb-prev, .lb-next {
@@ -52,12 +52,60 @@
   transform: translateY(-50%);
 }
 
-.lb-prev { left: -10px; }
-.lb-next { right: -10px; }
+.lb-prev { left: 12px; }
+.lb-next { right: 12px; }
 
 /* 小さい画面で外に飛びやすいので内側に寄せる */
 @media (max-width: 480px) {
   .lb-prev { left: 6px; }
   .lb-next { right: 6px; }
   .lb-close { top: 6px; right: 6px; }
+}
+
+/* ================================
+   Button appearance: round (quiet)
+   ================================ */
+
+.lb-close,
+.lb-prev,
+.lb-next{
+  width: 40px;
+  height: 40px;
+  border-radius: 999px;
+
+  display: grid;
+  place-items: center;
+
+  border: 1px solid rgba(255,255,255,0.28);
+  background: rgba(0,0,0,0.18);
+  color: rgba(255,255,255,0.92);
+
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+  appearance: none;
+  -webkit-appearance: none;
+  padding: 0;
+
+  /* 影ゼロで“UI感”を弱める */
+  box-shadow: none;
+}
+
+/* サイズ感（記号だけ少し小さめ） */
+.lb-close{ font-size: 20px; line-height: 1; }
+.lb-prev,
+.lb-next{ font-size: 22px; line-height: 1; }
+
+/* hover しても控えめ */
+.lb-close:hover,
+.lb-prev:hover,
+.lb-next:hover{
+  background: rgba(0,0,0,0.26);
+  border-color: rgba(255,255,255,0.40);
+}
+
+.lb-close:focus-visible,
+.lb-prev:focus-visible,
+.lb-next:focus-visible{
+  outline: 2px solid rgba(255,255,255,0.65);
+  outline-offset: 2px;
 }

@@ -103,6 +103,64 @@ def ensure_webp_thumbs():
         except Exception as e:
             print(f"[webp] failed to convert {p.name}: {e}")
 
+def ensure_webp_large():
+    """
+    assets/images/4k/ 以下の JPG/PNG から、site/assets/images/large/ に表示用 WebP を生成する。
+    - 差分ビルド（mtimeで新しいものだけ）
+    - 長辺 max_long_edge に収める
+    """
+    if Image is None:
+        return
+
+    src_dir = ROOT / "assets" / "images" / "4k"
+    dst_dir = ROOT / "assets" / "images" / "large"
+    if not src_dir.exists():
+        return
+
+    dst_dir.mkdir(parents=True, exist_ok=True)
+
+    max_long_edge = 1600
+    quality = 82
+
+    # EXIF回転対策（縦横事故を防ぐ）
+    try:
+        from PIL import ImageOps
+    except Exception:
+        ImageOps = None
+
+    valid_exts = {".jpg", ".jpeg", ".png"}
+
+    for p in src_dir.iterdir():
+        if not p.is_file():
+            continue
+        if p.suffix.lower() not in valid_exts:
+            continue
+
+        out = dst_dir / (p.stem + ".webp")
+
+        # 差分ビルド
+        if out.exists() and out.stat().st_mtime >= p.stat().st_mtime:
+            continue
+
+        try:
+            img = Image.open(p)
+            if ImageOps is not None:
+                img = ImageOps.exif_transpose(img)
+            if img.mode != "RGB":
+                img = img.convert("RGB")
+
+            w, h = img.size
+            long_edge = max(w, h)
+            if long_edge > max_long_edge:
+                scale = max_long_edge / long_edge
+                new_size = (round(w * scale), round(h * scale))
+                img = img.resize(new_size, resample=Image.Resampling.LANCZOS)
+
+            img.save(out, format="WEBP", quality=quality, method=6, optimize=True)
+            print(f"[large] generated: {out.name}")
+        except Exception as e:
+            print(f"[large] failed: {p.name}: {e}")
+
 def ensure_webp_news_images():
     """
     assets/news/images/ 以下の JPG/PNG から、同名の .webp を自動生成する。
@@ -579,6 +637,15 @@ def thumb_to_4k(thumb_path: str) -> str:
     # 4K 側に対応ファイルがない場合の保険
     return thumb_path.replace("/thumb/", "/4k/")
 
+def path_to_large(src_path: str) -> str:
+    """
+    /assets/images/4k/xxx.jpg or /assets/images/thumb/xxx.webp などから
+    /assets/images/large/xxx.webp を返す（表示用）。
+    """
+    name = Path(src_path).name
+    stem = Path(name).stem
+    return f"/assets/images/large/{stem}.webp"
+
 def all_images(slug: str, image_order: str = ""):
     """
     サムネ用フォルダから slug で始まるファイルを列挙する。
@@ -911,14 +978,26 @@ def detail_html(it):
     # Photos は Process 分を除外（cover は残る）
     thumbs = [p for p in thumbs_all if _thumb_id(p) not in process_set]
 
-    hero_img  = hero_4k or hero_thumb or ""
-    hero_href = hero_4k or hero_thumb or ""
+    hero_display = ""
+    hero_full = ""
+
+    if hero_4k:
+        hero_display = path_to_large(hero_4k)   # 表示は large（軽い）
+        hero_full    = hero_4k                 # 拡大は 4k のまま
+    elif hero_thumb:
+        hero_display = path_to_large(hero_thumb)
+        hero_full    = thumb_to_4k(hero_thumb)
 
     hero_html = ""
-    if hero_img:
+    if hero_display:
         hero_html = f'''
-        <a href="#" class="hero-link" data-full="{hero_href}">
-          <img class="hero" src="{hero_img}" alt="{html.escape(title)}">
+        <a href="#" class="hero-link" data-full="{hero_full}">
+          <img class="hero"
+               src="{hero_display}"
+               alt="{html.escape(title)}"
+               loading="eager"
+               fetchpriority="high"
+               decoding="async">
         </a>'''.strip()
 
     # ---- 動画ブロック ----
@@ -968,7 +1047,7 @@ def detail_html(it):
     if process_thumbs:
         blocks.append(render_thumbs_block(
             process_thumbs,
-            f"Process ({len(process_thumbs)})",
+            f"Making ({len(process_thumbs)})",
             kind="process"
         ))
 
@@ -1093,6 +1172,7 @@ def build():
 
     # サムネ & ニュース画像の WebP を事前に揃えておく
     ensure_webp_thumbs()
+    ensure_webp_large()
     ensure_webp_news_images()
 
     # 公開用 assets を site/assets にコピー

@@ -1,0 +1,141 @@
+/* =======================================
+   90_overrides.css
+   Header / Nav stabilization
+   ======================================= */
+
+/* サイト共通の“器”は main に合わせる */
+:root{
+  --site-max: 980px;
+  --site-pad-x: 16px;
+
+  /* ヘッダー上下余白（ここは好みで微調整OK） */
+  --header-pad-y: 18px;
+
+  /* ナビ */
+  --nav-gap: 18px;
+  --nav-pad-y: 10px;
+}
+
+/* detail のブレークポイントと揃える */
+@media (min-width: 768px){
+  :root{ --site-pad-x: 24px; }
+}
+@media (min-width: 1024px){
+  :root{ --site-pad-x: 28px; }
+}
+
+/* ---- Header ---- */
+.site-header{
+  margin: 0;
+  padding: 0;
+}
+
+.site-header-inner{
+  max-width: var(--site-max);
+  margin: 0 auto;
+  padding: var(--header-pad-y) var(--site-pad-x);
+
+  display: flex;
+  align-items: center;
+}
+
+/* ロゴ画像の“下の隙間”を潰して高さブレ防止 */
+.site-logo a{
+  display: inline-flex;
+  align-items: center;
+  line-height: 0;
+}
+.site-logo img{
+  display: block;
+  height: auto;
+}
+
+/* ---- Nav ---- */
+/* nav を header と同じ器に揃える */
+.site-nav{
+  max-width: var(--site-max);
+  margin: 0 auto;
+  padding: 0 var(--site-pad-x);
+
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--nav-gap);
+}
+
+/* リンクの縦リズムを固定 */
+.site-nav a{
+  display: inline-block;
+  padding: var(--nav-pad-y) 0;
+  line-height: 1.2;
+}
+
+/* .hero-cta が nav にも付いているので、もし別CSSで暴れてたらここで中和する */
+.site-nav.hero-cta{
+  /* ここは“問題が出たら”追加で潰す。
+     例: background / border / padding が勝手に付くならここで上書き */
+}
+
+/* ---- Header + Nav : centered, future-proof ---- */
+
+/* ロゴ：中央・静か */
+.site-header-inner{
+  justify-content: center;
+  padding-bottom: 10px; /* ロゴとナビの間隔はここで制御 */
+}
+
+/* ナビ：中央 */
+.site-nav{
+  justify-content: center;
+  gap: 20px;
+  padding-top: 0;       /* 念のため。余白を持たせない */
+}
+
+/* ナビ文字は少し軽く、作品の邪魔をしない */
+.site-nav a{
+  font-size: 0.92rem;
+  letter-spacing: 0.04em;
+  opacity: 0.85;
+}
+
+/* ホバーは“主張しない変化”だけ */
+.site-nav a:hover{
+  opacity: 1;
+}
+
+/* ---- Nav: remove underline completely ---- */
+.site-nav a{
+  text-decoration: none !important;
+  border-bottom: 0 !important;
+  background-image: none !important; /* 念のため */
+}
+
+.site-nav a:hover,
+.site-nav a:focus-visible{
+  text-decoration: none !important;
+  border-bottom: 0 !important;
+}
+
+/* ---- Logo size: responsive ---- */
+.site-logo img{
+  width: clamp(165px, 42vw, 205px);
+  max-width: 100%;
+  height: auto;
+}
+
+.site-nav{
+  gap: 18px;
+}
+
+.site-nav a{
+  letter-spacing: 0.04em;
+  opacity: 0.85;
+}
+
+.site-nav a:hover{
+  opacity: 1;
+}
+
+/* ---- Space between nav and hero (detail only) ---- */
+main.detail{
+  padding-top: calc(var(--detail-pad-y-top) + 16px);
+}

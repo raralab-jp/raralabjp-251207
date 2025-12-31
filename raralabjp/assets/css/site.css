@@ -122,8 +122,8 @@ main {
 /* ボタン類：位置だけ（見た目は後で） */
 .lb-close {
   position: absolute;
-  top: -6px;
-  right: -6px;
+  top: 12px;
+  right: 12px;
 }
 
 .lb-prev, .lb-next {
@@ -132,14 +132,62 @@ main {
   transform: translateY(-50%);
 }
 
-.lb-prev { left: -10px; }
-.lb-next { right: -10px; }
+.lb-prev { left: 12px; }
+.lb-next { right: 12px; }
 
 /* 小さい画面で外に飛びやすいので内側に寄せる */
 @media (max-width: 480px) {
   .lb-prev { left: 6px; }
   .lb-next { right: 6px; }
   .lb-close { top: 6px; right: 6px; }
+}
+
+/* ================================
+   Button appearance: round (quiet)
+   ================================ */
+
+.lb-close,
+.lb-prev,
+.lb-next{
+  width: 40px;
+  height: 40px;
+  border-radius: 999px;
+
+  display: grid;
+  place-items: center;
+
+  border: 1px solid rgba(255,255,255,0.28);
+  background: rgba(0,0,0,0.18);
+  color: rgba(255,255,255,0.92);
+
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+  appearance: none;
+  -webkit-appearance: none;
+  padding: 0;
+
+  /* 影ゼロで“UI感”を弱める */
+  box-shadow: none;
+}
+
+/* サイズ感（記号だけ少し小さめ） */
+.lb-close{ font-size: 20px; line-height: 1; }
+.lb-prev,
+.lb-next{ font-size: 22px; line-height: 1; }
+
+/* hover しても控えめ */
+.lb-close:hover,
+.lb-prev:hover,
+.lb-next:hover{
+  background: rgba(0,0,0,0.26);
+  border-color: rgba(255,255,255,0.40);
+}
+
+.lb-close:focus-visible,
+.lb-prev:focus-visible,
+.lb-next:focus-visible{
+  outline: 2px solid rgba(255,255,255,0.65);
+  outline-offset: 2px;
 }
 
 /* ---- 31_pages_gallery.css ---- */
@@ -334,9 +382,6 @@ main.detail {
 }
 
 /* titles */
-/* タイトルを表示する場合はこっちを有効化 */
-/* main.detail .title { margin: 0 0 6px; }
-main.detail .subtitle { margin: 0 0 var(--detail-gap); }*/
 
 /* hide title/subtitle on detail page */
 main.detail .title,
@@ -365,6 +410,59 @@ main.detail > section:last-of-type{
   main.detail { --detail-pad-x: 28px; }
 }
 
+/* ================================
+   Detail hero: 1:1 frame (no crop)
+   ================================ */
+
+main.detail section.hero .hero-link{
+  display:block;
+  width:100%;
+  aspect-ratio: 1 / 1;   /* ←枠を正方形に固定 */
+  background:var(--panel-bg);
+  overflow:hidden;
+}
+
+main.detail section.hero img.hero{
+  width:100%;
+  height:100%;           /* ←枠に合わせる */
+  object-fit: contain;   /* ←トリミングなし */
+  display:block;
+  max-height: none;      /* 1:1枠運用では不要 */
+}
+
+/* ================================
+   Detail video: keep aspect ratio
+   stable (no transform)
+   ================================ */
+
+/* 動画枠：比率固定＋はみ出し隠し */
+main.detail .hero-video-inner{
+  width: 100%;
+  aspect-ratio: 16 / 9;
+  position: relative;
+  overflow: hidden;
+  background: var(--panel-bg);
+}
+
+/* iframe：transform は使わず、1〜2pxだけ大きくして切る */
+main.detail .hero-video-inner iframe{
+  position: absolute;
+  inset: -1px;                 /* 1pxの線対策 */
+  width: calc(100% + 2px);
+  height: calc(100% + 2px);
+  border: 0;
+  display: block;
+  background: var(--panel-bg);
+}
+
+/* iPad系だけ“ほんの少し”だけ強めに（iPhoneを巻き込まない） */
+@media (min-width: 744px) and (max-width: 1024px){
+  main.detail .hero-video-inner iframe{
+    inset: -2px;
+    width: calc(100% + 4px);
+    height: calc(100% + 4px);
+  }
+}
 
 /* ================================
    Detail thumbs: horizontal scroll (Photos + Process)
@@ -425,57 +523,93 @@ main.detail .thumbs a.thumb img {
 }
 
 /* ================================
-   Detail hero: 1:1 frame (no crop)
+   Thumbs section label
    ================================ */
 
-main.detail section.hero .hero-link{
-  display:block;
-  width:100%;
-  aspect-ratio: 1 / 1;   /* ←枠を正方形に固定 */
-  background:var(--panel-bg);
-  overflow:hidden;
+main.detail .thumbs-label{
+  font-size: 0.8rem;
+  letter-spacing: 0.04em;
+  opacity: 0.7;
+
+  margin: 0 0 6px;
 }
 
-main.detail section.hero img.hero{
-  width:100%;
-  height:100%;           /* ←枠に合わせる */
-  object-fit: contain;   /* ←トリミングなし */
-  display:block;
-  max-height: none;      /* 1:1枠運用では不要 */
+/* ラベル直下のサムネ群を、少しだけ引き寄せる */
+main.detail .thumbs-label + .thumbs{
+  margin-top: 2px;
+}
+
+/* 1つ目のサムネ列の下に余白 */
+main.detail .thumbs{
+  margin-bottom: 12px;
 }
 
 /* ================================
-   Detail video: keep aspect ratio
-   stable (no transform)
+   Detail plate: museum label style
+   (no background)
    ================================ */
 
-/* 動画枠：比率固定＋はみ出し隠し */
-main.detail .hero-video-inner{
-  width: 100%;
-  aspect-ratio: 16 / 9;
-  position: relative;
-  overflow: hidden;
-  background: var(--panel-bg);
+main.detail section.plate{
+  padding: 0;               /* 箱感を消す */
+  font-size: 0.92rem;
+  line-height: 1.55;
 }
 
-/* iframe：transform は使わず、1〜2pxだけ大きくして切る */
-main.detail .hero-video-inner iframe{
-  position: absolute;
-  inset: -1px;                 /* 1pxの線対策 */
-  width: calc(100% + 2px);
-  height: calc(100% + 2px);
-  border: 0;
-  display: block;
-  background: var(--panel-bg);
+/* 行間：コンパクトに */
+main.detail section.plate p{
+  margin: 0 0 0.45em;
 }
 
-/* iPad系だけ“ほんの少し”だけ強めに（iPhoneを巻き込まない） */
-@media (min-width: 744px) and (max-width: 1024px){
-  main.detail .hero-video-inner iframe{
-    inset: -2px;
-    width: calc(100% + 4px);
-    height: calc(100% + 4px);
-  }
+/* 最後の行だけ余白なし */
+main.detail section.plate p:last-child{
+  margin-bottom: 0;
+}
+
+/* 日本語タイトル：少しだけ存在感 */
+main.detail section.plate p.jp{
+  font-size: 0.98rem;
+  line-height: 1.45;
+}
+
+/* 英語：一段トーンダウン */
+main.detail section.plate p.en{
+  font-size: 0.92rem;
+}
+
+/* メタ情報：かなり静かに */
+main.detail section.plate p.meta{
+  font-size: 0.9rem;
+  opacity: 0.78;
+}
+
+/* 英語が連続する場合の詰まり防止 */
+main.detail section.plate p.en + p.en{
+  margin-top: 0.1em;
+}
+
+/* ================================
+   CTA: breathing room + separation
+   ================================ */
+
+main.detail section.cta-block{
+  margin-top: calc(var(--detail-gap) * 1.3); /* 一呼吸 */
+}
+
+main.detail a.cta-link{
+  display: inline-block;
+  font-size: 0.95rem;
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+
+main.detail section.cta-block{
+  margin-top: calc(var(--detail-gap) * 1.3);
+  padding-top: 0.6em;
+}
+
+/* サムネ → プレートの間に、もう半呼吸 */
+main.detail .thumbs-wrap{
+  margin-bottom: calc(var(--detail-gap) * 1.2);
 }
 
 /* ---- 35_pages_news_detail.css ---- */
@@ -542,5 +676,148 @@ main.news-detail .news-back {
   main.news-detail {
     --news-pad-x: 28px;
   }
+}
+
+/* ---- 90_overrides.css ---- */
+/* =======================================
+   90_overrides.css
+   Header / Nav stabilization
+   ======================================= */
+
+/* サイト共通の“器”は main に合わせる */
+:root{
+  --site-max: 980px;
+  --site-pad-x: 16px;
+
+  /* ヘッダー上下余白（ここは好みで微調整OK） */
+  --header-pad-y: 18px;
+
+  /* ナビ */
+  --nav-gap: 18px;
+  --nav-pad-y: 10px;
+}
+
+/* detail のブレークポイントと揃える */
+@media (min-width: 768px){
+  :root{ --site-pad-x: 24px; }
+}
+@media (min-width: 1024px){
+  :root{ --site-pad-x: 28px; }
+}
+
+/* ---- Header ---- */
+.site-header{
+  margin: 0;
+  padding: 0;
+}
+
+.site-header-inner{
+  max-width: var(--site-max);
+  margin: 0 auto;
+  padding: var(--header-pad-y) var(--site-pad-x);
+
+  display: flex;
+  align-items: center;
+}
+
+/* ロゴ画像の“下の隙間”を潰して高さブレ防止 */
+.site-logo a{
+  display: inline-flex;
+  align-items: center;
+  line-height: 0;
+}
+.site-logo img{
+  display: block;
+  height: auto;
+}
+
+/* ---- Nav ---- */
+/* nav を header と同じ器に揃える */
+.site-nav{
+  max-width: var(--site-max);
+  margin: 0 auto;
+  padding: 0 var(--site-pad-x);
+
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--nav-gap);
+}
+
+/* リンクの縦リズムを固定 */
+.site-nav a{
+  display: inline-block;
+  padding: var(--nav-pad-y) 0;
+  line-height: 1.2;
+}
+
+/* .hero-cta が nav にも付いているので、もし別CSSで暴れてたらここで中和する */
+.site-nav.hero-cta{
+  /* ここは“問題が出たら”追加で潰す。
+     例: background / border / padding が勝手に付くならここで上書き */
+}
+
+/* ---- Header + Nav : centered, future-proof ---- */
+
+/* ロゴ：中央・静か */
+.site-header-inner{
+  justify-content: center;
+  padding-bottom: 10px; /* ロゴとナビの間隔はここで制御 */
+}
+
+/* ナビ：中央 */
+.site-nav{
+  justify-content: center;
+  gap: 20px;
+  padding-top: 0;       /* 念のため。余白を持たせない */
+}
+
+/* ナビ文字は少し軽く、作品の邪魔をしない */
+.site-nav a{
+  font-size: 0.92rem;
+  letter-spacing: 0.04em;
+  opacity: 0.85;
+}
+
+/* ホバーは“主張しない変化”だけ */
+.site-nav a:hover{
+  opacity: 1;
+}
+
+/* ---- Nav: remove underline completely ---- */
+.site-nav a{
+  text-decoration: none !important;
+  border-bottom: 0 !important;
+  background-image: none !important; /* 念のため */
+}
+
+.site-nav a:hover,
+.site-nav a:focus-visible{
+  text-decoration: none !important;
+  border-bottom: 0 !important;
+}
+
+/* ---- Logo size: responsive ---- */
+.site-logo img{
+  width: clamp(165px, 42vw, 205px);
+  max-width: 100%;
+  height: auto;
+}
+
+.site-nav{
+  gap: 18px;
+}
+
+.site-nav a{
+  letter-spacing: 0.04em;
+  opacity: 0.85;
+}
+
+.site-nav a:hover{
+  opacity: 1;
+}
+
+/* ---- Space between nav and hero (detail only) ---- */
+main.detail{
+  padding-top: calc(var(--detail-pad-y-top) + 16px);
 }
 

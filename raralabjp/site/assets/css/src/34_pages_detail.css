@@ -47,6 +47,59 @@ main.detail > section:last-of-type{
   main.detail { --detail-pad-x: 28px; }
 }
 
+/* ================================
+   Detail hero: 1:1 frame (no crop)
+   ================================ */
+
+main.detail section.hero .hero-link{
+  display:block;
+  width:100%;
+  aspect-ratio: 1 / 1;   /* ←枠を正方形に固定 */
+  background:var(--panel-bg);
+  overflow:hidden;
+}
+
+main.detail section.hero img.hero{
+  width:100%;
+  height:100%;           /* ←枠に合わせる */
+  object-fit: contain;   /* ←トリミングなし */
+  display:block;
+  max-height: none;      /* 1:1枠運用では不要 */
+}
+
+/* ================================
+   Detail video: keep aspect ratio
+   stable (no transform)
+   ================================ */
+
+/* 動画枠：比率固定＋はみ出し隠し */
+main.detail .hero-video-inner{
+  width: 100%;
+  aspect-ratio: 16 / 9;
+  position: relative;
+  overflow: hidden;
+  background: var(--panel-bg);
+}
+
+/* iframe：transform は使わず、1〜2pxだけ大きくして切る */
+main.detail .hero-video-inner iframe{
+  position: absolute;
+  inset: -1px;                 /* 1pxの線対策 */
+  width: calc(100% + 2px);
+  height: calc(100% + 2px);
+  border: 0;
+  display: block;
+  background: var(--panel-bg);
+}
+
+/* iPad系だけ“ほんの少し”だけ強めに（iPhoneを巻き込まない） */
+@media (min-width: 744px) and (max-width: 1024px){
+  main.detail .hero-video-inner iframe{
+    inset: -2px;
+    width: calc(100% + 4px);
+    height: calc(100% + 4px);
+  }
+}
 
 /* ================================
    Detail thumbs: horizontal scroll (Photos + Process)
@@ -107,55 +160,91 @@ main.detail .thumbs a.thumb img {
 }
 
 /* ================================
-   Detail hero: 1:1 frame (no crop)
+   Thumbs section label
    ================================ */
 
-main.detail section.hero .hero-link{
-  display:block;
-  width:100%;
-  aspect-ratio: 1 / 1;   /* ←枠を正方形に固定 */
-  background:var(--panel-bg);
-  overflow:hidden;
+main.detail .thumbs-label{
+  font-size: 0.8rem;
+  letter-spacing: 0.04em;
+  opacity: 0.7;
+
+  margin: 0 0 6px;
 }
 
-main.detail section.hero img.hero{
-  width:100%;
-  height:100%;           /* ←枠に合わせる */
-  object-fit: contain;   /* ←トリミングなし */
-  display:block;
-  max-height: none;      /* 1:1枠運用では不要 */
+/* ラベル直下のサムネ群を、少しだけ引き寄せる */
+main.detail .thumbs-label + .thumbs{
+  margin-top: 2px;
+}
+
+/* 1つ目のサムネ列の下に余白 */
+main.detail .thumbs{
+  margin-bottom: 12px;
 }
 
 /* ================================
-   Detail video: keep aspect ratio
-   stable (no transform)
+   Detail plate: museum label style
+   (no background)
    ================================ */
 
-/* 動画枠：比率固定＋はみ出し隠し */
-main.detail .hero-video-inner{
-  width: 100%;
-  aspect-ratio: 16 / 9;
-  position: relative;
-  overflow: hidden;
-  background: var(--panel-bg);
+main.detail section.plate{
+  padding: 0;               /* 箱感を消す */
+  font-size: 0.92rem;
+  line-height: 1.55;
 }
 
-/* iframe：transform は使わず、1〜2pxだけ大きくして切る */
-main.detail .hero-video-inner iframe{
-  position: absolute;
-  inset: -1px;                 /* 1pxの線対策 */
-  width: calc(100% + 2px);
-  height: calc(100% + 2px);
-  border: 0;
-  display: block;
-  background: var(--panel-bg);
+/* 行間：コンパクトに */
+main.detail section.plate p{
+  margin: 0 0 0.45em;
 }
 
-/* iPad系だけ“ほんの少し”だけ強めに（iPhoneを巻き込まない） */
-@media (min-width: 744px) and (max-width: 1024px){
-  main.detail .hero-video-inner iframe{
-    inset: -2px;
-    width: calc(100% + 4px);
-    height: calc(100% + 4px);
-  }
+/* 最後の行だけ余白なし */
+main.detail section.plate p:last-child{
+  margin-bottom: 0;
+}
+
+/* 日本語タイトル：少しだけ存在感 */
+main.detail section.plate p.jp{
+  font-size: 0.98rem;
+  line-height: 1.45;
+}
+
+/* 英語：一段トーンダウン */
+main.detail section.plate p.en{
+  font-size: 0.92rem;
+}
+
+/* メタ情報：かなり静かに */
+main.detail section.plate p.meta{
+  font-size: 0.9rem;
+  opacity: 0.78;
+}
+
+/* 英語が連続する場合の詰まり防止 */
+main.detail section.plate p.en + p.en{
+  margin-top: 0.1em;
+}
+
+/* ================================
+   CTA: breathing room + separation
+   ================================ */
+
+main.detail section.cta-block{
+  margin-top: calc(var(--detail-gap) * 1.3); /* 一呼吸 */
+}
+
+main.detail a.cta-link{
+  display: inline-block;
+  font-size: 0.95rem;
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+
+main.detail section.cta-block{
+  margin-top: calc(var(--detail-gap) * 1.3);
+  padding-top: 0.6em;
+}
+
+/* サムネ → プレートの間に、もう半呼吸 */
+main.detail .thumbs-wrap{
+  margin-bottom: calc(var(--detail-gap) * 1.2);
 }
