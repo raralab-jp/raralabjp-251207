@@ -1,12 +1,31 @@
 /* page width + basic spacing */
+:root{
+  --site-max: 980px;
+  --site-pad-x: 16px;
+  --nav-to-main-gap: 16px;
+}
+
+@media (min-width: 768px){
+  :root{ --site-pad-x: 24px; }
+}
+@media (min-width: 1024px){
+  :root{ --site-pad-x: 28px; }
+}
+
 main {
-  max-width: 980px;
+  max-width: var(--site-max);
   margin: 0 auto;
-  padding: 24px 16px;
+  padding: 24px var(--site-pad-x);
 }
 
 .top-section {
-  max-width: 980px;
+  max-width: var(--site-max);
   margin: 0 auto;
-  padding: 24px 16px;
+  padding: 24px var(--site-pad-x);
+}
+
+/* nav の直後に来る main は、全部同じ呼吸にする（detailにも勝つ） */
+.site-nav + main,
+.site-nav + main.detail{
+  padding-top: calc(24px + var(--nav-to-main-gap)) !important;
 }

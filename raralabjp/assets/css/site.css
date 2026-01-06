@@ -18,16 +18,175 @@ a { color: inherit; }
 
 /* ---- 10_layout.css ---- */
 /* page width + basic spacing */
+:root{
+  --site-max: 980px;
+  --site-pad-x: 16px;
+  --nav-to-main-gap: 16px;
+}
+
+@media (min-width: 768px){
+  :root{ --site-pad-x: 24px; }
+}
+@media (min-width: 1024px){
+  :root{ --site-pad-x: 28px; }
+}
+
 main {
-  max-width: 980px;
+  max-width: var(--site-max);
   margin: 0 auto;
-  padding: 24px 16px;
+  padding: 24px var(--site-pad-x);
 }
 
 .top-section {
-  max-width: 980px;
+  max-width: var(--site-max);
   margin: 0 auto;
-  padding: 24px 16px;
+  padding: 24px var(--site-pad-x);
+}
+
+/* nav の直後に来る main は、全部同じ呼吸にする（detailにも勝つ） */
+.site-nav + main,
+.site-nav + main.detail{
+  padding-top: calc(24px + var(--nav-to-main-gap)) !important;
+}
+
+/* ---- 11_layout_header.css ---- */
+/* =======================================
+   Header / Nav
+   ======================================= */
+
+:root{
+  --header-pad-y: 18px;  /* ヘッダー上下余白 */
+  --header-gap: 10px;    /* ロゴとナビの間 */
+
+  --nav-gap: 18px;
+  --nav-pad-y: 10px;
+}
+
+/* ---- Header ---- */
+.site-header{
+  margin: 0;
+  padding: 0;
+}
+
+.site-header-inner{
+  max-width: var(--site-max);
+  margin: 0 auto;
+  padding: var(--header-pad-y) var(--site-pad-x) var(--header-gap);
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* ロゴ画像の“下の隙間”を潰して高さブレ防止 */
+.site-logo a{
+  display: inline-flex;
+  align-items: center;
+  line-height: 0;
+}
+
+.site-logo img{
+  display: block;
+  width: clamp(165px, 42vw, 205px);
+  max-width: 100%;
+  height: auto;
+}
+
+/* ---- Nav ---- */
+.site-nav{
+  max-width: var(--site-max);
+  margin: 0 auto;
+  padding: 0 var(--site-pad-x);
+
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: var(--nav-gap);
+}
+
+/* リンク（下線なし＋縦リズム固定＋静かな見た目） */
+.site-nav a{
+  display: inline-block;
+  padding: var(--nav-pad-y) 0;
+  line-height: 1.2;
+
+  font-size: 0.92rem;
+  letter-spacing: 0.04em;
+  opacity: 0.85;
+
+  text-decoration: none !important;
+  border-bottom: 0 !important;
+  background-image: none !important;
+}
+
+.site-nav a:hover,
+.site-nav a:focus-visible{
+  opacity: 1;
+  text-decoration: none !important;
+  border-bottom: 0 !important;
+}
+
+/* .hero-cta が nav にも付いているので、問題が出たらここで中和 */
+.site-nav.hero-cta{
+  /* background / border / padding 等が勝手に付くならここで上書き */
+}
+
+/* ---- 12_layout_footer.css ---- */
+/* ---- Sticky footer base (prevents floating footer) ---- */
+html, body{ height: 100%; }
+
+body{
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+main{
+  flex: 1 0 auto;
+}
+
+/* ======================================
+   Footer: minimal trust floor (final)
+   ====================================== */
+
+.site-footer{
+  flex: 0 0 auto;
+
+  margin-top: 40px;
+  padding: 18px var(--site-pad-x, 16px) 24px;
+  border-top: 0;
+}
+
+.site-footer .footer-inner{
+  max-width: var(--site-max, 980px);
+  margin: 0 auto;
+  padding: 18px 0 0;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 14px;
+  flex-wrap: wrap;
+
+  border-top: 1px solid rgba(0,0,0,0.08);
+}
+
+.site-footer .footer-copy{
+  margin: 0;
+  font-size: 0.9rem;
+  opacity: 0.7;
+}
+
+.site-footer .footer-social{
+  text-decoration: none;
+  font-size: 0.9rem;
+  letter-spacing: 0.02em;
+  opacity: 0.7;
+}
+
+.site-footer .footer-social:hover,
+.site-footer .footer-social:focus-visible{
+  opacity: 1;
 }
 
 /* ---- 20_components.css ---- */
@@ -199,11 +358,6 @@ main {
   margin-top: 24px;
 }
 
-/* gallery uses shared grid */
-.gallery-list .rl-grid {
-  margin-top: 12px;
-}
-
 /* Gallery: mobile 2 columns */
 @media (max-width: 600px) {
   .rl-gallery {
@@ -211,156 +365,235 @@ main {
   }
 }
 
-/* ---- 32_pages_news.css ---- */
-/* =========================================
-   News page (derived from Gallery)
-   ========================================= */
+/* =======================================
+   Gallery list: heading + note (final)
+   ======================================= */
 
-/* 一覧ページの余白 */
-.news-index .rl-gallery {
-  margin-top: 24px;
+.gallery-head h1{
+  text-align: left;
+  margin-bottom: 10px;
 }
 
-/* 日付 */
-.news-date {
-  display: block;
-  margin-top: 4px;
-  font-size: 0.8rem;
-  color: #777;
+.gallery-head .gallery-note{
+  font-size: 0.95em;
+  line-height: 1.55;
+  opacity: 0.78;
+  max-width: 60ch;
 }
 
-/* 要約 */
-.news-summary {
-  margin-top: 6px;
-  font-size: 0.85rem;
-  line-height: 1.4;
-  color: #333;
+.gallery-head .gallery-note p + p{
+  margin-top: 0.9em;
 }
 
-/* カード内の余白微調整（Newsのみ） */
-.news-index .rl-caption {
-  padding-bottom: 6px;
+/* 説明→グリッドの切り替え（基本） */
+.gallery-head{
+  margin-bottom: clamp(20px, 3.5vw, 44px);
 }
 
-/* =========================================
-   News list: placeholder for no image
-   ========================================= */
+/* Mobile tuning */
+@media (max-width: 600px){
+  .gallery-head .gallery-note{
+    font-size: 0.92em;
+    line-height: 1.5;
+    max-width: none;
+  }
 
-/* img が無いカード用の擬似サムネ */
-.news-index .rl-link::before {
-  content: "";
-  display: block;
-  width: 100%;
-  aspect-ratio: 1 / 1;
-  background: #f3f3f3;
-}
-
-/* img がある場合は擬似要素を消す */
-.news-index .rl-link > img + .rl-caption {
-  /* img がある構造では before が不要なので打ち消す */
-}
-
-.news-index .rl-link > img {
-  position: relative;
-}
-
-/* img があるときは before を無効化 */
-.news-index .rl-link > img {
-  margin-top: -100%;
-}
-
-/* ---- 33_pages_home.css ---- */
-/* =========================================
-   Home page (spacing only)
-   ========================================= */
-
-/* セクション全体の縦間隔 */
-.home .top-section {
-  margin: 48px 0;
-}
-
-/* 見出し下の余白 */
-.home .top-section h2 {
-  margin-bottom: 18px;
-}
-
-/* News セクション内の間隔 */
-.home .top-news .news-cards {
-  margin-top: 18px;
-}
-
-/* 「一覧を見る」リンクの余白 */
-.home .top-news .news-more {
-  margin-top: 16px;
-}
-
-/* スマホ時は少し詰める */
-@media (max-width: 600px) {
-  .home .top-section {
-    margin: 36px 0;
+  /* iPhone: 説明文 → グリッドの切り替え余白を少しだけ増やす */
+  .gallery-head{
+    margin-bottom: clamp(28px, 6vw, 56px);
   }
 }
 
-/* =========================================
-   Home: News cards (top page only)
-   - HTML: .top-news .news-cards / .news-card-*
-   ========================================= */
+/* =======================================
+   Gallery list: pager (text link style)
+   ======================================= */
 
-.home .top-news .news-cards {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+.gallery-pager{
+  margin-top: clamp(32px, 5vw, 56px);
+  margin-bottom: 10px;
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
   gap: 18px;
-  margin-top: 18px;
+
+  text-align: center;
 }
 
-.home .top-news .news-card {
-  margin: 0;
-}
+.gallery-pager a{
+  display: inline-block;
 
-.home .top-news .news-card-link {
-  display: grid;
-  grid-template-columns: 1fr;
-  gap: 10px;
-  text-decoration: none;
-  color: inherit;
-}
-
-/* thumb area: always square (image or empty) */
-.home .top-news .news-card-thumb {
-  width: 100%;
-  aspect-ratio: 1 / 1;
-  overflow: hidden;
-  background: #f3f3f3;
-}
-
-.home .top-news .news-card-thumb img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  display: block;
-}
-
-/* title/date/summary */
-.home .top-news .news-card-title {
-  margin: 0;
-  font-size: 0.95rem;
-  line-height: 1.35;
-}
-
-.home .top-news .news-card-date {
-  margin: 4px 0 0;
-  font-size: 0.8rem;
-  color: #777;
-}
-
-.home .top-news .news-card-summary {
-  margin: 6px 0 0;
-  font-size: 0.85rem;
   line-height: 1.4;
-  color: #333;
+  white-space: nowrap;
+
+  text-decoration: underline;
+  text-underline-offset: 4px;
+  text-decoration-thickness: 1px;
+
+  border: 0;
+  background: transparent;
+
+  opacity: 0.7;
+  transition: opacity 120ms linear;
 }
 
-/* ---- 34_pages_detail.css ---- */
+@media (hover: hover){
+  .gallery-pager a:hover{
+    opacity: 0.9;
+  }
+}
+
+/* ---- 32_pages_news.css ---- */
+/* =================================================
+   News list: diff from Gallery (minimal / non-aggressive)
+   前提：HTMLは <section class="rl-gallery news-gallery"> ... を想定
+   ================================================= */
+
+/* ---------------------------------------
+   1) Card layout: image top + text block
+   --------------------------------------- */
+
+/* Link内を縦積み（画像→テキスト）にする */
+.rl-gallery.news-gallery .rl-link{
+  display: flex;
+  flex-direction: column;
+  /* 余白は「強くしない」方向：必要最小限で */
+}
+
+/* 画像を常に「上配置」のスクエア枠に収める */
+.rl-gallery.news-gallery .rl-link > img{
+  display: block;
+  width: 100%;
+
+  /* スクエアを維持 */
+  aspect-ratio: 1 / 1;
+
+  /* トリミングしない：全体表示 */
+  object-fit: contain;
+
+  /* 画像が強い時は「枠の背景」で中和 */
+  background: #f2f2f2;
+
+  /* 角丸や影は足さない（Gallery側の表現に従う） */
+}
+
+/* img が入らないケース（テンプレで img を省略する運用の保険）
+   - 可能なら生成側で NO_IMAGE でも img を出すのが一番事故りません
+   - :has() が使える環境なら「画像が無い時だけ」placeholderを出せます
+*/
+@supports(selector(:has(*))){
+  .rl-gallery.news-gallery .rl-item:not(:has(img)) .rl-link::before{
+    content: "";
+    display: block;
+    width: 100%;
+    aspect-ratio: 1 / 1;
+    background: #f2f2f2;
+  }
+}
+
+/* テキスト側（figcaption）を“情報ブロック”として整える */
+.rl-gallery.news-gallery .rl-caption{
+  /* 画像とテキストの距離は「主張を弱める」ため最小限 */
+  padding-top: 10px;
+}
+
+/* ---------------------------------------
+   2) Information priority: title > date > summary > image
+   --------------------------------------- */
+
+.rl-gallery.news-gallery .rl-title{
+  /* 「太くする」より「読みやすく」が主目的 */
+  line-height: 1.35;
+
+  /* 行数制限でカード高の暴れを抑制 */
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+  overflow: hidden;
+}
+
+.rl-gallery.news-gallery .news-date{
+  /* 補足情報：小さく薄く */
+  display: block;
+  margin-top: 6px;
+  font-size: 0.85em;
+  opacity: 0.6;
+  line-height: 1.3;
+}
+
+/* 抜粋は任意：入れるなら短く。入れない運用でも崩れない */
+.rl-gallery.news-gallery .news-summary{
+  margin-top: 8px;
+
+  font-size: 0.95em;
+  line-height: 1.5;
+  opacity: 0.78;
+
+  /* 行数制限（暴れ防止） */
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 3;
+  overflow: hidden;
+}
+
+/* Summary を空で出すテンプレの場合の“無駄な余白”を消す */
+.rl-gallery.news-gallery .news-summary:empty{
+  display: none;
+}
+
+/* ---------------------------------------
+   3) Keep structure stable when image exists / not exists
+   --------------------------------------- */
+
+/* 画像があっても無くても「最上段にスクエア枠」が来る設計。
+   生成側で NO_IMAGE の場合も img を出して neutral 画像にするのがベスト。
+   （CSSだけで完全に吸収するより、事故率が下がります）
+*/
+
+/* ---------------------------------------
+   4) Pager: text link only, doesn’t collapse when one side missing
+   --------------------------------------- */
+
+/* Gallery の pager クラスを流用するなら追加は不要。
+   News 側で別クラスにする場合だけ差分を当てる。 */
+.news-pager{
+  /* Galleryと同じ思想：中央寄せのテキストリンク */
+  margin-top: clamp(32px, 5vw, 56px);
+  margin-bottom: 10px;
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 18px;
+
+  text-align: center;
+}
+
+/* 片側リンクが無いページでも崩れないよう “場所” を確保したい場合：
+   - 生成側で空要素（span等）を出せるならそれが一番確実
+   - HTMLを触れない前提なら、ここは「崩れない」だけ優先でOK
+*/
+.news-pager a{
+  display: inline-block;
+  line-height: 1.4;
+  white-space: nowrap;
+
+  text-decoration: underline;
+  text-underline-offset: 4px;
+  text-decoration-thickness: 1px;
+
+  border: 0;
+  background: transparent;
+
+  opacity: 0.7;
+  transition: opacity 120ms linear;
+}
+
+@media (hover: hover){
+  .news-pager a:hover{ opacity: 0.9; }
+}
+
+/* ---- 34_pages_gallery_detail.css ---- */
 /* ---- 34_pages_detail.css ---- */
 /* Gallery detail: Step 1 skeleton + thumbs grid option */
 
@@ -613,211 +846,446 @@ main.detail .thumbs-wrap{
 }
 
 /* ---- 35_pages_news_detail.css ---- */
-/* ---- 35_pages_news_detail.css ---- */
-/* News detail: derived from detail layout philosophy */
+/* ---- 35_pages_detail_news.css ---- */
+/* News detail: align to Gallery detail "container + rhythm"
+   Keep HTML unchanged (main.news-detail) */
 
-main.news-detail {
-  --news-max: 980px;
-  --news-pad-x: 16px;
-  --news-pad-y-top: 24px;
-  --news-pad-y-bottom: 48px;
-  --news-gap: 20px;
+/* ================================
+   1) Container: same as main.detail
+   ================================ */
 
-  /* 10_layout.css の main を上書き */
-  max-width: none;
-  margin: 0;
-  padding: var(--news-pad-y-top) var(--news-pad-x) var(--news-pad-y-bottom);
+main.news-detail{
+  --detail-max: 980px;
+  --detail-pad-x: 16px;
+  --detail-pad-y-top: 12px;
+  --detail-pad-y-bottom: 48px;
+  --detail-gap: 20px;
+
+  max-width: var(--detail-max);
+  margin: 0 auto;
+  padding: var(--detail-pad-y-top) var(--detail-pad-x) var(--detail-pad-y-bottom);
 }
 
-main.news-detail article {
-  max-width: var(--news-max);
-  margin-left: auto;
-  margin-right: auto;
+@media (min-width: 768px){
+  main.news-detail{
+    --detail-pad-x: 24px;
+    --detail-pad-y-top: 32px;
+    --detail-pad-y-bottom: 64px;
+  }
 }
 
-/* hero画像 */
-main.news-detail .news-hero {
-  margin: 0 0 var(--news-gap);
+@media (min-width: 1024px){
+  main.news-detail{ --detail-pad-x: 28px; }
 }
 
-main.news-detail .news-hero .news-image {
-  margin: 0; /* p のデフォルト余白潰し */
+/* ================================
+   2) Vertical rhythm: same idea as main.detail > section
+   News HTML: main.news-detail > article > section
+   ================================ */
+
+main.news-detail > article > section{
+  margin: 0 0 var(--detail-gap);
 }
 
-main.news-detail .news-hero img {
+main.news-detail > article > section:last-of-type{
+  margin-bottom: 0;
+}
+
+/* ================================
+   3) Hero image (optional)
+   - If no hero section exists, nothing to do.
+   - If exists, make it feel like the gallery's hero (quiet, no crop)
+   ================================ */
+
+main.news-detail section.news-hero .news-image{
+  margin: 0; /* <p> default margins kill rhythm */
+}
+
+/* “枠”を正方形に寄せたい場合：
+   ニュースのアイキャッチもギャラリーっぽく見せる */
+main.news-detail section.news-hero img{
   width: 100%;
   height: auto;
-  max-height: 70vh;
+  display: block;
+}
+
+/* もしニュースのアイキャッチも「正方形枠 + contain」に寄せたいなら有効化
+   （現状は img 直置きなので、枠を作るには親に aspect-ratio を持たせる）
+*/
+main.news-detail section.news-hero .news-image{
+  aspect-ratio: 1 / 1;
+  background: var(--panel-bg);
+  overflow: hidden;
+  display: block;
+}
+
+main.news-detail section.news-hero .news-image img{
+  width: 100%;
+  height: 100%;
   object-fit: contain;
 }
 
-/* 本文の最低限の読みやすさ（趣味は後） */
-main.news-detail .news-body p {
+/* ================================
+   4) Article typography (news-specific)
+   ================================ */
+
+main.news-detail section.news-body{
+  font-size: 1rem;
+  line-height: 1.85;
+}
+
+/* Title: keep visible (gallery hides .title but news uses plain h1) */
+main.news-detail section.news-body h1{
+  margin: 0 0 10px;
+  line-height: 1.25;
+}
+
+/* Date: quiet */
+main.news-detail .news-date{
+  margin: 0 0 18px;
+  font-size: 0.92rem;
+  line-height: 1.5;
+  opacity: 0.75;
+}
+
+/* Paragraph spacing */
+main.news-detail section.news-body p{
   margin: 0 0 1em;
 }
 
-main.news-detail .news-date {
-  margin: 0 0 12px;
+/* Back link block */
+main.news-detail .news-back{
+  margin-top: calc(var(--detail-gap) * 1.2);
 }
 
-main.news-detail .news-back {
-  margin: 20px 0 0;
+main.news-detail .news-back a{
+  text-decoration: underline;
+  text-underline-offset: 3px;
 }
 
-@media (min-width: 768px) {
-  main.news-detail {
-    --news-pad-x: 24px;
-    --news-pad-y-top: 32px;
-    --news-pad-y-bottom: 64px;
-  }
+/* News detail overrides (requires: <main class="detail news-detail">) */
+
+main.detail.news-detail > article > section{
+  margin: 0 0 var(--detail-gap);
+}
+main.detail.news-detail > article > section:last-of-type{
+  margin-bottom: 0;
 }
 
-@media (min-width: 1024px) {
-  main.news-detail {
-    --news-pad-x: 28px;
-  }
-}
-
-/* ---- 90_overrides.css ---- */
-/* =======================================
-   90_overrides.css
-   Header / Nav stabilization
-   ======================================= */
-
-/* サイト共通の“器”は main に合わせる */
-:root{
-  --site-max: 980px;
-  --site-pad-x: 16px;
-
-  /* ヘッダー上下余白（ここは好みで微調整OK） */
-  --header-pad-y: 18px;
-
-  /* ナビ */
-  --nav-gap: 18px;
-  --nav-pad-y: 10px;
-}
-
-/* detail のブレークポイントと揃える */
-@media (min-width: 768px){
-  :root{ --site-pad-x: 24px; }
-}
-@media (min-width: 1024px){
-  :root{ --site-pad-x: 28px; }
-}
-
-/* ---- Header ---- */
-.site-header{
+main.detail.news-detail section.news-hero .news-image{
   margin: 0;
-  padding: 0;
+  aspect-ratio: 1 / 1;
+  background: var(--panel-bg);
+  overflow: hidden;
+  display: block;
+}
+main.detail.news-detail section.news-hero .news-image img{
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  display: block;
 }
 
-.site-header-inner{
-  max-width: var(--site-max);
-  margin: 0 auto;
-  padding: var(--header-pad-y) var(--site-pad-x);
-
-  display: flex;
-  align-items: center;
+main.detail.news-detail section.news-body{
+  font-size: 1rem;
+  line-height: 1.85;
+}
+main.detail.news-detail section.news-body h1{
+  margin: 0 0 10px;
+  line-height: 1.25;
+}
+main.detail.news-detail .news-date{
+  margin: 0 0 18px;
+  font-size: 0.92rem;
+  line-height: 1.5;
+  opacity: 0.75;
+}
+main.detail.news-detail section.news-body p{
+  margin: 0 0 1em;
+}
+main.detail.news-detail .news-back{
+  margin-top: calc(var(--detail-gap) * 1.2);
+}
+main.detail.news-detail .news-back a{
+  text-decoration: underline;
+  text-underline-offset: 3px;
 }
 
-/* ロゴ画像の“下の隙間”を潰して高さブレ防止 */
-.site-logo a{
-  display: inline-flex;
-  align-items: center;
-  line-height: 0;
+/* hero → タイトルの間だけ、ほんの少し呼吸を足す */
+main.detail.news-detail > article > section.news-hero{
+  margin-bottom: calc(var(--detail-gap) * 1.25);
 }
-.site-logo img{
+
+main.detail.news-detail .news-back{
+  margin-top: calc(var(--detail-gap) * 1.25);
+}
+
+/* ---- 50_pages_home.css ---- */
+/* =================================================
+   50_home.css (Top page only)
+   Scope: body.home
+   ================================================= */
+
+
+/* =========================================
+   Debug visibility switches
+   ========================================= */
+
+body.home.debug-news-only .top-gallery,
+body.home.debug-news-only .top-intro,
+body.home.debug-news-only .top-more,
+body.home.debug-news-only .links,
+body.home.debug-news-only .site-footer{
+  display: none;
+}
+
+body.home.debug-gallery-only .top-news,
+body.home.debug-gallery-only .top-intro,
+body.home.debug-gallery-only .top-more,
+body.home.debug-gallery-only .links,
+body.home.debug-gallery-only .site-footer{
+  display: none;
+}
+
+
+/* =========================================
+   Home tokens + layout foundation
+   ========================================= */
+
+body.home{
+  --top-max: var(--site-max, 980px);
+  --top-pad-x: var(--site-pad-x, 16px);
+
+  /* Hero full-bleed safety */
+  overflow-x: hidden;
+
+  /* Root cause fix (body is flex in global CSS) */
+  align-items: stretch;
+}
+
+/* 空の top-sections が余白を作るなら消す */
+body.home .top-sections:empty{ display: none; }
+
+/* Top内の主要ブロックを同一コンテナに揃える */
+body.home .site-header-inner,
+body.home .hero-cta.site-nav,
+body.home .top-intro,
+body.home .top-section,
+body.home .top-more,
+body.home .site-footer{
+  width: 100%;
+  box-sizing: border-box;
+
+  max-width: var(--top-max);
+  margin-left: auto;
+  margin-right: auto;
+  padding-left: var(--top-pad-x);
+  padding-right: var(--top-pad-x);
+}
+
+
+/* =========================================
+   Vertical rhythm (edit here only)
+   ========================================= */
+
+/* Hero: full-bleedのまま余白だけ管理 */
+body.home .hero{
+  margin-top: 0;
+  padding-top: 10px;
+  padding-bottom: 6px;
+  margin-bottom: clamp(14px, 2.2vw, 22px); /* ←調整ポイント */
+}
+
+body.home .hero-cta.site-nav{
+  margin-top: 10px;
+  margin-bottom: 18px; /* ←調整ポイント */
+}
+
+body.home .top-intro{
+  margin-top: 18px;    /* ←調整ポイント */
+}
+
+body.home .top-section{
+  margin-top: clamp(28px, 4vw, 44px); /* ←調整ポイント（各セクション間） */
+}
+
+body.home .top-section > .section-doubleline{
+  margin-bottom: 14px; /* ←調整ポイント（見出し→カード間） */
+}
+
+
+/* =========================================
+   Hero: image only full-bleed
+   ========================================= */
+
+body.home .hero img{
+  width: 100vw;
+  max-width: none;
+  margin-left: calc(50% - 50vw);
+  margin-right: calc(50% - 50vw);
   display: block;
   height: auto;
 }
 
-/* ---- Nav ---- */
-/* nav を header と同じ器に揃える */
-.site-nav{
-  max-width: var(--site-max);
-  margin: 0 auto;
-  padding: 0 var(--site-pad-x);
 
+/* =========================================
+   Intro (align + readability)
+   ========================================= */
+
+body.home .top-intro{
+  text-align: left;
+}
+
+body.home .brand-intro{
+  line-height: 1.65;
+  max-width: 60ch;
+  margin-left: 0;
+  margin-right: auto;
+}
+
+body.home .brand-intro,
+body.home .brand-intro p{
+  text-align: left;
+}
+
+
+/* =========================================
+   Shared grid behavior (Top: News/Gallery)
+   - Do NOT change appearance
+   ========================================= */
+
+body.home .top-news .news-cards,
+body.home .top-gallery .rl-gallery{
+  display: grid;
+  gap: 16px;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  width: 100%;
+}
+
+@media (min-width: 900px){
+  body.home .top-news .news-cards,
+  body.home .top-gallery .rl-gallery{
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+}
+
+/* figure のデフォルトmarginだけは安全に殺す（トップのギャラリーだけ） */
+body.home .top-gallery .rl-item{ margin: 0; }
+
+
+/* =========================================
+   Top: News cards (top-only)
+   ========================================= */
+
+body.home .top-news .news-card-link{
   display: flex;
-  flex-wrap: wrap;
-  gap: var(--nav-gap);
+  flex-direction: column;
+  text-decoration: none;
+  color: inherit;
 }
 
-/* リンクの縦リズムを固定 */
-.site-nav a{
-  display: inline-block;
-  padding: var(--nav-pad-y) 0;
-  line-height: 1.2;
+body.home .top-news .news-card-thumb{
+  aspect-ratio: 1 / 1;
+  width: 100%;
+  background: #f2f2f2;
+  overflow: hidden;
 }
 
-/* .hero-cta が nav にも付いているので、もし別CSSで暴れてたらここで中和する */
-.site-nav.hero-cta{
-  /* ここは“問題が出たら”追加で潰す。
-     例: background / border / padding が勝手に付くならここで上書き */
+body.home .top-news .news-card-thumb img{
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  background: #f2f2f2;
 }
 
-/* ---- Header + Nav : centered, future-proof ---- */
+body.home .top-news .news-card-body{ padding-top: 10px; }
 
-/* ロゴ：中央・静か */
-.site-header-inner{
-  justify-content: center;
-  padding-bottom: 10px; /* ロゴとナビの間隔はここで制御 */
+body.home .top-news .news-card-title{
+  margin: 0;
+  line-height: 1.35;
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+  overflow: hidden;
 }
 
-/* ナビ：中央 */
-.site-nav{
-  justify-content: center;
-  gap: 20px;
-  padding-top: 0;       /* 念のため。余白を持たせない */
+body.home .top-news .news-card-date{
+  margin: 6px 0 0;
+  font-size: 0.85em;
+  opacity: 0.6;
+  line-height: 1.3;
 }
 
-/* ナビ文字は少し軽く、作品の邪魔をしない */
-.site-nav a{
-  font-size: 0.92rem;
-  letter-spacing: 0.04em;
-  opacity: 0.85;
+body.home .top-news .news-card-summary{
+  margin: 8px 0 0;
+  font-size: 0.95em;
+  line-height: 1.5;
+  opacity: 0.78;
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 3;
+  overflow: hidden;
 }
 
-/* ホバーは“主張しない変化”だけ */
-.site-nav a:hover{
-  opacity: 1;
+body.home .top-news .news-card-summary:empty{ display: none; }
+
+body.home .top-news .news-more{
+  margin-top: 26px;
+  margin-bottom: 24px;
 }
 
-/* ---- Nav: remove underline completely ---- */
-.site-nav a{
-  text-decoration: none !important;
-  border-bottom: 0 !important;
-  background-image: none !important; /* 念のため */
+body.home .top-news .news-more a{
+  text-decoration: underline;
+  text-underline-offset: 4px;
+  text-decoration-thickness: 1px;
+  opacity: 0.7;
+  transition: opacity 120ms linear;
 }
 
-.site-nav a:hover,
-.site-nav a:focus-visible{
-  text-decoration: none !important;
-  border-bottom: 0 !important;
+@media (hover: hover){
+  body.home .top-news .news-more a:hover{ opacity: 0.9; }
 }
 
-/* ---- Logo size: responsive ---- */
-.site-logo img{
-  width: clamp(165px, 42vw, 205px);
-  max-width: 100%;
-  height: auto;
+
+/* =========================================
+   Top: More links (keep simple)
+   ========================================= */
+
+body.home .top-more{
+  text-align: left;
 }
 
-.site-nav{
-  gap: 18px;
+/* ここは “grid” に戻します（あなたのHTMLは2項目なのでgridが素直） */
+body.home .top-more .top-more-inner{
+  display: grid;
+  gap: 16px;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  width: 100%;
+  margin: 0;
 }
 
-.site-nav a{
-  letter-spacing: 0.04em;
-  opacity: 0.85;
+@media (min-width: 900px){
+  body.home .top-more .top-more-inner{
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
 }
 
-.site-nav a:hover{
-  opacity: 1;
+body.home .top-more-item{
+  display: block;
+  text-decoration: none;
+  color: inherit;
+  padding: 12px 0;
 }
 
-/* ---- Space between nav and hero (detail only) ---- */
-main.detail{
-  padding-top: calc(var(--detail-pad-y-top) + 16px);
+body.home .top-more-title{ margin: 0; line-height: 1.4; }
+
+body.home .top-more-desc{
+  margin-top: 4px;
+  font-size: 0.9em;
+  opacity: 0.7;
 }
+
+/* ---- 90_overrides.css ---- */
+
 

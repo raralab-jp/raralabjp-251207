@@ -1,56 +1,148 @@
-/* =========================================
-   News page (derived from Gallery)
-   ========================================= */
+/* =================================================
+   News list: diff from Gallery (minimal / non-aggressive)
+   前提：HTMLは <section class="rl-gallery news-gallery"> ... を想定
+   ================================================= */
 
-/* 一覧ページの余白 */
-.news-index .rl-gallery {
-  margin-top: 24px;
+/* ---------------------------------------
+   1) Card layout: image top + text block
+   --------------------------------------- */
+
+/* Link内を縦積み（画像→テキスト）にする */
+.rl-gallery.news-gallery .rl-link{
+  display: flex;
+  flex-direction: column;
+  /* 余白は「強くしない」方向：必要最小限で */
 }
 
-/* 日付 */
-.news-date {
-  display: block;
-  margin-top: 4px;
-  font-size: 0.8rem;
-  color: #777;
-}
-
-/* 要約 */
-.news-summary {
-  margin-top: 6px;
-  font-size: 0.85rem;
-  line-height: 1.4;
-  color: #333;
-}
-
-/* カード内の余白微調整（Newsのみ） */
-.news-index .rl-caption {
-  padding-bottom: 6px;
-}
-
-/* =========================================
-   News list: placeholder for no image
-   ========================================= */
-
-/* img が無いカード用の擬似サムネ */
-.news-index .rl-link::before {
-  content: "";
+/* 画像を常に「上配置」のスクエア枠に収める */
+.rl-gallery.news-gallery .rl-link > img{
   display: block;
   width: 100%;
+
+  /* スクエアを維持 */
   aspect-ratio: 1 / 1;
-  background: #f3f3f3;
+
+  /* トリミングしない：全体表示 */
+  object-fit: contain;
+
+  /* 画像が強い時は「枠の背景」で中和 */
+  background: #f2f2f2;
+
+  /* 角丸や影は足さない（Gallery側の表現に従う） */
 }
 
-/* img がある場合は擬似要素を消す */
-.news-index .rl-link > img + .rl-caption {
-  /* img がある構造では before が不要なので打ち消す */
+/* img が入らないケース（テンプレで img を省略する運用の保険）
+   - 可能なら生成側で NO_IMAGE でも img を出すのが一番事故りません
+   - :has() が使える環境なら「画像が無い時だけ」placeholderを出せます
+*/
+@supports(selector(:has(*))){
+  .rl-gallery.news-gallery .rl-item:not(:has(img)) .rl-link::before{
+    content: "";
+    display: block;
+    width: 100%;
+    aspect-ratio: 1 / 1;
+    background: #f2f2f2;
+  }
 }
 
-.news-index .rl-link > img {
-  position: relative;
+/* テキスト側（figcaption）を“情報ブロック”として整える */
+.rl-gallery.news-gallery .rl-caption{
+  /* 画像とテキストの距離は「主張を弱める」ため最小限 */
+  padding-top: 10px;
 }
 
-/* img があるときは before を無効化 */
-.news-index .rl-link > img {
-  margin-top: -100%;
+/* ---------------------------------------
+   2) Information priority: title > date > summary > image
+   --------------------------------------- */
+
+.rl-gallery.news-gallery .rl-title{
+  /* 「太くする」より「読みやすく」が主目的 */
+  line-height: 1.35;
+
+  /* 行数制限でカード高の暴れを抑制 */
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+  overflow: hidden;
+}
+
+.rl-gallery.news-gallery .news-date{
+  /* 補足情報：小さく薄く */
+  display: block;
+  margin-top: 6px;
+  font-size: 0.85em;
+  opacity: 0.6;
+  line-height: 1.3;
+}
+
+/* 抜粋は任意：入れるなら短く。入れない運用でも崩れない */
+.rl-gallery.news-gallery .news-summary{
+  margin-top: 8px;
+
+  font-size: 0.95em;
+  line-height: 1.5;
+  opacity: 0.78;
+
+  /* 行数制限（暴れ防止） */
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 3;
+  overflow: hidden;
+}
+
+/* Summary を空で出すテンプレの場合の“無駄な余白”を消す */
+.rl-gallery.news-gallery .news-summary:empty{
+  display: none;
+}
+
+/* ---------------------------------------
+   3) Keep structure stable when image exists / not exists
+   --------------------------------------- */
+
+/* 画像があっても無くても「最上段にスクエア枠」が来る設計。
+   生成側で NO_IMAGE の場合も img を出して neutral 画像にするのがベスト。
+   （CSSだけで完全に吸収するより、事故率が下がります）
+*/
+
+/* ---------------------------------------
+   4) Pager: text link only, doesn’t collapse when one side missing
+   --------------------------------------- */
+
+/* Gallery の pager クラスを流用するなら追加は不要。
+   News 側で別クラスにする場合だけ差分を当てる。 */
+.news-pager{
+  /* Galleryと同じ思想：中央寄せのテキストリンク */
+  margin-top: clamp(32px, 5vw, 56px);
+  margin-bottom: 10px;
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 18px;
+
+  text-align: center;
+}
+
+/* 片側リンクが無いページでも崩れないよう “場所” を確保したい場合：
+   - 生成側で空要素（span等）を出せるならそれが一番確実
+   - HTMLを触れない前提なら、ここは「崩れない」だけ優先でOK
+*/
+.news-pager a{
+  display: inline-block;
+  line-height: 1.4;
+  white-space: nowrap;
+
+  text-decoration: underline;
+  text-underline-offset: 4px;
+  text-decoration-thickness: 1px;
+
+  border: 0;
+  background: transparent;
+
+  opacity: 0.7;
+  transition: opacity 120ms linear;
+}
+
+@media (hover: hover){
+  .news-pager a:hover{ opacity: 0.9; }
 }

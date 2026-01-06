@@ -1,0 +1,264 @@
+/* =================================================
+   50_home.css (Top page only)
+   Scope: body.home
+   ================================================= */
+
+
+/* =========================================
+   Debug visibility switches
+   ========================================= */
+
+body.home.debug-news-only .top-gallery,
+body.home.debug-news-only .top-intro,
+body.home.debug-news-only .top-more,
+body.home.debug-news-only .links,
+body.home.debug-news-only .site-footer{
+  display: none;
+}
+
+body.home.debug-gallery-only .top-news,
+body.home.debug-gallery-only .top-intro,
+body.home.debug-gallery-only .top-more,
+body.home.debug-gallery-only .links,
+body.home.debug-gallery-only .site-footer{
+  display: none;
+}
+
+
+/* =========================================
+   Home tokens + layout foundation
+   ========================================= */
+
+body.home{
+  --top-max: var(--site-max, 980px);
+  --top-pad-x: var(--site-pad-x, 16px);
+
+  /* Hero full-bleed safety */
+  overflow-x: hidden;
+
+  /* Root cause fix (body is flex in global CSS) */
+  align-items: stretch;
+}
+
+/* 空の top-sections が余白を作るなら消す */
+body.home .top-sections:empty{ display: none; }
+
+/* Top内の主要ブロックを同一コンテナに揃える */
+body.home .site-header-inner,
+body.home .hero-cta.site-nav,
+body.home .top-intro,
+body.home .top-section,
+body.home .top-more,
+body.home .site-footer{
+  width: 100%;
+  box-sizing: border-box;
+
+  max-width: var(--top-max);
+  margin-left: auto;
+  margin-right: auto;
+  padding-left: var(--top-pad-x);
+  padding-right: var(--top-pad-x);
+}
+
+
+/* =========================================
+   Vertical rhythm (edit here only)
+   ========================================= */
+
+/* Hero: full-bleedのまま余白だけ管理 */
+body.home .hero{
+  margin-top: 0;
+  padding-top: 10px;
+  padding-bottom: 6px;
+  margin-bottom: clamp(14px, 2.2vw, 22px); /* ←調整ポイント */
+}
+
+body.home .hero-cta.site-nav{
+  margin-top: 10px;
+  margin-bottom: 18px; /* ←調整ポイント */
+}
+
+body.home .top-intro{
+  margin-top: 18px;    /* ←調整ポイント */
+}
+
+body.home .top-section{
+  margin-top: clamp(28px, 4vw, 44px); /* ←調整ポイント（各セクション間） */
+}
+
+body.home .top-section > .section-doubleline{
+  margin-bottom: 14px; /* ←調整ポイント（見出し→カード間） */
+}
+
+
+/* =========================================
+   Hero: image only full-bleed
+   ========================================= */
+
+body.home .hero img{
+  width: 100vw;
+  max-width: none;
+  margin-left: calc(50% - 50vw);
+  margin-right: calc(50% - 50vw);
+  display: block;
+  height: auto;
+}
+
+
+/* =========================================
+   Intro (align + readability)
+   ========================================= */
+
+body.home .top-intro{
+  text-align: left;
+}
+
+body.home .brand-intro{
+  line-height: 1.65;
+  max-width: 60ch;
+  margin-left: 0;
+  margin-right: auto;
+}
+
+body.home .brand-intro,
+body.home .brand-intro p{
+  text-align: left;
+}
+
+
+/* =========================================
+   Shared grid behavior (Top: News/Gallery)
+   - Do NOT change appearance
+   ========================================= */
+
+body.home .top-news .news-cards,
+body.home .top-gallery .rl-gallery{
+  display: grid;
+  gap: 16px;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  width: 100%;
+}
+
+@media (min-width: 900px){
+  body.home .top-news .news-cards,
+  body.home .top-gallery .rl-gallery{
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+}
+
+/* figure のデフォルトmarginだけは安全に殺す（トップのギャラリーだけ） */
+body.home .top-gallery .rl-item{ margin: 0; }
+
+
+/* =========================================
+   Top: News cards (top-only)
+   ========================================= */
+
+body.home .top-news .news-card-link{
+  display: flex;
+  flex-direction: column;
+  text-decoration: none;
+  color: inherit;
+}
+
+body.home .top-news .news-card-thumb{
+  aspect-ratio: 1 / 1;
+  width: 100%;
+  background: #f2f2f2;
+  overflow: hidden;
+}
+
+body.home .top-news .news-card-thumb img{
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  background: #f2f2f2;
+}
+
+body.home .top-news .news-card-body{ padding-top: 10px; }
+
+body.home .top-news .news-card-title{
+  margin: 0;
+  line-height: 1.35;
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+  overflow: hidden;
+}
+
+body.home .top-news .news-card-date{
+  margin: 6px 0 0;
+  font-size: 0.85em;
+  opacity: 0.6;
+  line-height: 1.3;
+}
+
+body.home .top-news .news-card-summary{
+  margin: 8px 0 0;
+  font-size: 0.95em;
+  line-height: 1.5;
+  opacity: 0.78;
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 3;
+  overflow: hidden;
+}
+
+body.home .top-news .news-card-summary:empty{ display: none; }
+
+body.home .top-news .news-more{
+  margin-top: 26px;
+  margin-bottom: 24px;
+}
+
+body.home .top-news .news-more a{
+  text-decoration: underline;
+  text-underline-offset: 4px;
+  text-decoration-thickness: 1px;
+  opacity: 0.7;
+  transition: opacity 120ms linear;
+}
+
+@media (hover: hover){
+  body.home .top-news .news-more a:hover{ opacity: 0.9; }
+}
+
+
+/* =========================================
+   Top: More links (keep simple)
+   ========================================= */
+
+body.home .top-more{
+  text-align: left;
+}
+
+/* ここは “grid” に戻します（あなたのHTMLは2項目なのでgridが素直） */
+body.home .top-more .top-more-inner{
+  display: grid;
+  gap: 16px;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  width: 100%;
+  margin: 0;
+}
+
+@media (min-width: 900px){
+  body.home .top-more .top-more-inner{
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+}
+
+body.home .top-more-item{
+  display: block;
+  text-decoration: none;
+  color: inherit;
+  padding: 12px 0;
+}
+
+body.home .top-more-title{ margin: 0; line-height: 1.4; }
+
+body.home .top-more-desc{
+  margin-top: 4px;
+  font-size: 0.9em;
+  opacity: 0.7;
+}

@@ -1,0 +1,80 @@
+/* =======================================
+   Header / Nav
+   ======================================= */
+
+:root{
+  --header-pad-y: 18px;  /* ヘッダー上下余白 */
+  --header-gap: 10px;    /* ロゴとナビの間 */
+
+  --nav-gap: 18px;
+  --nav-pad-y: 10px;
+}
+
+/* ---- Header ---- */
+.site-header{
+  margin: 0;
+  padding: 0;
+}
+
+.site-header-inner{
+  max-width: var(--site-max);
+  margin: 0 auto;
+  padding: var(--header-pad-y) var(--site-pad-x) var(--header-gap);
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* ロゴ画像の“下の隙間”を潰して高さブレ防止 */
+.site-logo a{
+  display: inline-flex;
+  align-items: center;
+  line-height: 0;
+}
+
+.site-logo img{
+  display: block;
+  width: clamp(165px, 42vw, 205px);
+  max-width: 100%;
+  height: auto;
+}
+
+/* ---- Nav ---- */
+.site-nav{
+  max-width: var(--site-max);
+  margin: 0 auto;
+  padding: 0 var(--site-pad-x);
+
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: var(--nav-gap);
+}
+
+/* リンク（下線なし＋縦リズム固定＋静かな見た目） */
+.site-nav a{
+  display: inline-block;
+  padding: var(--nav-pad-y) 0;
+  line-height: 1.2;
+
+  font-size: 0.92rem;
+  letter-spacing: 0.04em;
+  opacity: 0.85;
+
+  text-decoration: none !important;
+  border-bottom: 0 !important;
+  background-image: none !important;
+}
+
+.site-nav a:hover,
+.site-nav a:focus-visible{
+  opacity: 1;
+  text-decoration: none !important;
+  border-bottom: 0 !important;
+}
+
+/* .hero-cta が nav にも付いているので、問題が出たらここで中和 */
+.site-nav.hero-cta{
+  /* background / border / padding 等が勝手に付くならここで上書き */
+}

@@ -516,7 +516,7 @@ def news_detail_html(news: dict, body_html: str) -> str:
 <body>
 {logo_html}
 {nav_html}
-  <main class="news-detail">
+  <main class="detail news-detail">
     <article>
 {hero_block}{body_block}
     </article>
@@ -871,7 +871,8 @@ def gallery_index_html(cards: str, prev_link: str = None, next_link: str = None)
 </body>
 '''
 
-def top_index_html(new_cards: str, news_cards_html: str) -> str:
+def top_index_html(new_cards: str, top_news_cards_html: str) -> str:
+
     """
     トップページ（/index.html）のHTML。
     News は「画像の下にテキスト」カードを3件表示する（追加のテキスト一覧は出さない）。
@@ -898,7 +899,7 @@ def top_index_html(new_cards: str, news_cards_html: str) -> str:
 <section class="top-section top-news">
   <h2 class="section-doubleline">News</h2>
   <div class="news-cards">
-{news_cards_html}
+{top_news_cards_html}
   </div>
   <div class="news-more">
     <a href="/news/">News 一覧を見る</a>
@@ -1312,12 +1313,12 @@ def build():
     new_cards = "\n".join([card_html(it) for it in newest])
 
     if news_items:
-        top_news_cards = "\n".join([top_news_card_html(n) for n in news_items[:3]])
+        top_news_cards_html = "\n".join([top_news_card_html(n) for n in news_items[:3]])
     else:
         top_news_cards = ""
 
     (SITE_ROOT / "index.html").write_text(
-        inject_footer(top_index_html(new_cards, top_news_cards)),
+        inject_footer(top_index_html(new_cards, top_news_cards_html)),
         encoding="utf-8"
     )
 

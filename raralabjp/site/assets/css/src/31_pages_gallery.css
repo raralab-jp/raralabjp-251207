@@ -6,14 +6,87 @@
   margin-top: 24px;
 }
 
-/* gallery uses shared grid */
-.gallery-list .rl-grid {
-  margin-top: 12px;
-}
-
 /* Gallery: mobile 2 columns */
 @media (max-width: 600px) {
   .rl-gallery {
     grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+/* =======================================
+   Gallery list: heading + note (final)
+   ======================================= */
+
+.gallery-head h1{
+  text-align: left;
+  margin-bottom: 10px;
+}
+
+.gallery-head .gallery-note{
+  font-size: 0.95em;
+  line-height: 1.55;
+  opacity: 0.78;
+  max-width: 60ch;
+}
+
+.gallery-head .gallery-note p + p{
+  margin-top: 0.9em;
+}
+
+/* 説明→グリッドの切り替え（基本） */
+.gallery-head{
+  margin-bottom: clamp(20px, 3.5vw, 44px);
+}
+
+/* Mobile tuning */
+@media (max-width: 600px){
+  .gallery-head .gallery-note{
+    font-size: 0.92em;
+    line-height: 1.5;
+    max-width: none;
+  }
+
+  /* iPhone: 説明文 → グリッドの切り替え余白を少しだけ増やす */
+  .gallery-head{
+    margin-bottom: clamp(28px, 6vw, 56px);
+  }
+}
+
+/* =======================================
+   Gallery list: pager (text link style)
+   ======================================= */
+
+.gallery-pager{
+  margin-top: clamp(32px, 5vw, 56px);
+  margin-bottom: 10px;
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 18px;
+
+  text-align: center;
+}
+
+.gallery-pager a{
+  display: inline-block;
+
+  line-height: 1.4;
+  white-space: nowrap;
+
+  text-decoration: underline;
+  text-underline-offset: 4px;
+  text-decoration-thickness: 1px;
+
+  border: 0;
+  background: transparent;
+
+  opacity: 0.7;
+  transition: opacity 120ms linear;
+}
+
+@media (hover: hover){
+  .gallery-pager a:hover{
+    opacity: 0.9;
   }
 }

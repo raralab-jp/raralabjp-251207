@@ -1,64 +1,173 @@
-/* ---- 35_pages_news_detail.css ---- */
-/* News detail: derived from detail layout philosophy */
+/* ---- 35_pages_detail_news.css ---- */
+/* News detail: align to Gallery detail "container + rhythm"
+   Keep HTML unchanged (main.news-detail) */
 
-main.news-detail {
-  --news-max: 980px;
-  --news-pad-x: 16px;
-  --news-pad-y-top: 24px;
-  --news-pad-y-bottom: 48px;
-  --news-gap: 20px;
+/* ================================
+   1) Container: same as main.detail
+   ================================ */
 
-  /* 10_layout.css の main を上書き */
-  max-width: none;
-  margin: 0;
-  padding: var(--news-pad-y-top) var(--news-pad-x) var(--news-pad-y-bottom);
+main.news-detail{
+  --detail-max: 980px;
+  --detail-pad-x: 16px;
+  --detail-pad-y-top: 12px;
+  --detail-pad-y-bottom: 48px;
+  --detail-gap: 20px;
+
+  max-width: var(--detail-max);
+  margin: 0 auto;
+  padding: var(--detail-pad-y-top) var(--detail-pad-x) var(--detail-pad-y-bottom);
 }
 
-main.news-detail article {
-  max-width: var(--news-max);
-  margin-left: auto;
-  margin-right: auto;
+@media (min-width: 768px){
+  main.news-detail{
+    --detail-pad-x: 24px;
+    --detail-pad-y-top: 32px;
+    --detail-pad-y-bottom: 64px;
+  }
 }
 
-/* hero画像 */
-main.news-detail .news-hero {
-  margin: 0 0 var(--news-gap);
+@media (min-width: 1024px){
+  main.news-detail{ --detail-pad-x: 28px; }
 }
 
-main.news-detail .news-hero .news-image {
-  margin: 0; /* p のデフォルト余白潰し */
+/* ================================
+   2) Vertical rhythm: same idea as main.detail > section
+   News HTML: main.news-detail > article > section
+   ================================ */
+
+main.news-detail > article > section{
+  margin: 0 0 var(--detail-gap);
 }
 
-main.news-detail .news-hero img {
+main.news-detail > article > section:last-of-type{
+  margin-bottom: 0;
+}
+
+/* ================================
+   3) Hero image (optional)
+   - If no hero section exists, nothing to do.
+   - If exists, make it feel like the gallery's hero (quiet, no crop)
+   ================================ */
+
+main.news-detail section.news-hero .news-image{
+  margin: 0; /* <p> default margins kill rhythm */
+}
+
+/* “枠”を正方形に寄せたい場合：
+   ニュースのアイキャッチもギャラリーっぽく見せる */
+main.news-detail section.news-hero img{
   width: 100%;
   height: auto;
-  max-height: 70vh;
+  display: block;
+}
+
+/* もしニュースのアイキャッチも「正方形枠 + contain」に寄せたいなら有効化
+   （現状は img 直置きなので、枠を作るには親に aspect-ratio を持たせる）
+*/
+main.news-detail section.news-hero .news-image{
+  aspect-ratio: 1 / 1;
+  background: var(--panel-bg);
+  overflow: hidden;
+  display: block;
+}
+
+main.news-detail section.news-hero .news-image img{
+  width: 100%;
+  height: 100%;
   object-fit: contain;
 }
 
-/* 本文の最低限の読みやすさ（趣味は後） */
-main.news-detail .news-body p {
+/* ================================
+   4) Article typography (news-specific)
+   ================================ */
+
+main.news-detail section.news-body{
+  font-size: 1rem;
+  line-height: 1.85;
+}
+
+/* Title: keep visible (gallery hides .title but news uses plain h1) */
+main.news-detail section.news-body h1{
+  margin: 0 0 10px;
+  line-height: 1.25;
+}
+
+/* Date: quiet */
+main.news-detail .news-date{
+  margin: 0 0 18px;
+  font-size: 0.92rem;
+  line-height: 1.5;
+  opacity: 0.75;
+}
+
+/* Paragraph spacing */
+main.news-detail section.news-body p{
   margin: 0 0 1em;
 }
 
-main.news-detail .news-date {
-  margin: 0 0 12px;
+/* Back link block */
+main.news-detail .news-back{
+  margin-top: calc(var(--detail-gap) * 1.2);
 }
 
-main.news-detail .news-back {
-  margin: 20px 0 0;
+main.news-detail .news-back a{
+  text-decoration: underline;
+  text-underline-offset: 3px;
 }
 
-@media (min-width: 768px) {
-  main.news-detail {
-    --news-pad-x: 24px;
-    --news-pad-y-top: 32px;
-    --news-pad-y-bottom: 64px;
-  }
+/* News detail overrides (requires: <main class="detail news-detail">) */
+
+main.detail.news-detail > article > section{
+  margin: 0 0 var(--detail-gap);
+}
+main.detail.news-detail > article > section:last-of-type{
+  margin-bottom: 0;
 }
 
-@media (min-width: 1024px) {
-  main.news-detail {
-    --news-pad-x: 28px;
-  }
+main.detail.news-detail section.news-hero .news-image{
+  margin: 0;
+  aspect-ratio: 1 / 1;
+  background: var(--panel-bg);
+  overflow: hidden;
+  display: block;
+}
+main.detail.news-detail section.news-hero .news-image img{
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  display: block;
+}
+
+main.detail.news-detail section.news-body{
+  font-size: 1rem;
+  line-height: 1.85;
+}
+main.detail.news-detail section.news-body h1{
+  margin: 0 0 10px;
+  line-height: 1.25;
+}
+main.detail.news-detail .news-date{
+  margin: 0 0 18px;
+  font-size: 0.92rem;
+  line-height: 1.5;
+  opacity: 0.75;
+}
+main.detail.news-detail section.news-body p{
+  margin: 0 0 1em;
+}
+main.detail.news-detail .news-back{
+  margin-top: calc(var(--detail-gap) * 1.2);
+}
+main.detail.news-detail .news-back a{
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+
+/* hero → タイトルの間だけ、ほんの少し呼吸を足す */
+main.detail.news-detail > article > section.news-hero{
+  margin-bottom: calc(var(--detail-gap) * 1.25);
+}
+
+main.detail.news-detail .news-back{
+  margin-top: calc(var(--detail-gap) * 1.25);
 }
