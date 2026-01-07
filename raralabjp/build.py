@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 import json, html, re, csv
 from pathlib import Path
-import shutil  # ← ここを追加
+import shutil
 
 # ---- WebP 変換用ライブラリ (Pillow) の読み込み ----
 try:
@@ -23,17 +23,17 @@ OUT_GALLERY = SITE_ROOT / "gallery"
 OUT_GALLERY.mkdir(parents=True, exist_ok=True)
 PAGE_SIZE = 24
 
-NEWS_CSV       = ROOT / "assets" / "news" / "news.csv"
-NEWS_BODY_DIR  = ROOT / "assets" / "news" / "body"
+NEWS_CSV        = ROOT / "assets" / "news" / "news.csv"
+NEWS_BODY_DIR   = ROOT / "assets" / "news" / "body"
 NEWS_IMAGES_DIR = ROOT / "assets" / "news" / "images"
 
-OUT_NEWS       = SITE_ROOT / "news"
+OUT_NEWS = SITE_ROOT / "news"
 OUT_NEWS.mkdir(parents=True, exist_ok=True)
 
 TOP_HERO     = ROOT / "assets" / "partials" / "top_hero.html"
 TOP_SECTIONS = ROOT / "assets" / "partials" / "top_sections.html"
-
 PARTIALS_DIR = ROOT / "assets" / "partials"
+
 
 def render_partial(name: str) -> str:
     """
@@ -42,6 +42,7 @@ def render_partial(name: str) -> str:
     """
     p = PARTIALS_DIR / name.strip()
     return p.read_text(encoding="utf-8") if p.exists() else ""
+
 
 def inject_footer(html_text: str) -> str:
     footer_html = render_partial("footer.html")
@@ -60,14 +61,18 @@ def inject_footer(html_text: str) -> str:
     # 3) それも無いなら何もしない
     return html_text
 
+
 def read_file(p: Path) -> str:
     return p.read_text(encoding="utf-8") if p.exists() else ""
+
 
 def read_top_hero() -> str:
     return read_file(TOP_HERO)
 
+
 def read_top_sections() -> str:
     return read_file(TOP_SECTIONS)
+
 
 def ensure_webp_thumbs():
     """
@@ -76,7 +81,6 @@ def ensure_webp_thumbs():
     ・Pillow が無い場合も何もしない
     """
     if Image is None:
-        # Pillow 未インストールの場合はスキップ
         return
 
     thumb_dir = ROOT / "assets" / "images" / "thumb"
@@ -93,19 +97,19 @@ def ensure_webp_thumbs():
 
         webp_path = p.with_suffix(".webp")
         if webp_path.exists():
-            continue  # もう作ってある
+            continue
 
         try:
             img = Image.open(p)
-            # 必要なら quality は好みで調整（80〜90くらいが無難）
             img.save(webp_path, format="WEBP", quality=85)
             print(f"[webp] generated: {webp_path.name}")
         except Exception as e:
             print(f"[webp] failed to convert {p.name}: {e}")
 
+
 def ensure_webp_large():
     """
-    assets/images/4k/ 以下の JPG/PNG から、site/assets/images/large/ に表示用 WebP を生成する。
+    assets/images/4k/ 以下の JPG/PNG から、assets/images/large/ に表示用 WebP を生成する。
     - 差分ビルド（mtimeで新しいものだけ）
     - 長辺 max_long_edge に収める
     """
@@ -161,6 +165,7 @@ def ensure_webp_large():
         except Exception as e:
             print(f"[large] failed: {p.name}: {e}")
 
+
 def ensure_webp_news_images():
     """
     assets/news/images/ 以下の JPG/PNG から、同名の .webp を自動生成する。
@@ -196,17 +201,20 @@ def ensure_webp_news_images():
 
 # 表示ポリシー
 SHOW_BREADCRUMB = False
-SHOW_SPECS      = True   # Stone / Carat / Design の3点のみ表示
+SHOW_SPECS      = True   # Stone / Carat / Design の3点のみ表示（＋追加行は許容）
 
 # ---- Partials ----
 INTRO = ROOT / "assets" / "partials" / "top_intro.html"
 CTA   = ROOT / "assets" / "partials" / "top_cta.html"
 
+
 def read_intro():
     return INTRO.read_text(encoding="utf-8") if INTRO.exists() else ""
 
+
 def read_cta():
     return CTA.read_text(encoding="utf-8") if CTA.exists() else ""
+
 
 # ---- Data ----
 def read_items():
@@ -215,9 +223,10 @@ def read_items():
     items.sort(key=lambda x: x.get("date", ""), reverse=True)
     return items
 
+
 def read_news_items():
     """
-    data/news.csv を読み込んで、日付降順に並べた dict のリストを返す。
+    assets/news/news.csv を読み込んで、日付降順に並べた dict のリストを返す。
     カラム: slug,date,title,summary,body_file,image_file
     """
     items = []
@@ -227,7 +236,6 @@ def read_news_items():
     with NEWS_CSV.open(encoding="utf-8") as f:
         reader = csv.DictReader(f)
         for row in reader:
-            # 軽くトリム
             row["slug"]       = (row.get("slug") or "").strip()
             row["date"]       = (row.get("date") or "").strip()
             row["title"]      = (row.get("title") or "").strip()
@@ -238,9 +246,9 @@ def read_news_items():
             if row["slug"]:
                 items.append(row)
 
-    # 日付降順（新しい順）
     items.sort(key=lambda x: x.get("date", ""), reverse=True)
     return items
+
 
 def resolve_news_image_src(image_file: str) -> str:
     """
@@ -261,16 +269,13 @@ def resolve_news_image_src(image_file: str) -> str:
     if image_file.upper() in {"NO_IMAGE", "NONE", "N/A", "-"}:
         return ""
 
-    # "news/images/xxx.jpg" / "/news/images/xxx.jpg" / "xxx.jpg" どれでも受ける
     if "/" in image_file:
         rel = image_file.lstrip("/")  # "news/images/DSC_1777.jpg"
     else:
         rel = f"news/images/{image_file}"
 
-    # 実ファイルは site/ の下にある前提
     p = SITE_ROOT / rel
 
-    # もともと .webp 指定ならそのまま
     if p.suffix.lower() == ".webp":
         return "/" + rel
 
@@ -279,7 +284,6 @@ def resolve_news_image_src(image_file: str) -> str:
 
     webp_path = folder / (stem + ".webp")
     if webp_path.exists():
-        # URL は /news/images/... 形式で返す
         rel_webp = f"news/images/{webp_path.name}"
         return "/" + rel_webp
 
@@ -287,10 +291,10 @@ def resolve_news_image_src(image_file: str) -> str:
         rel_orig = f"news/images/{p.name}"
         return "/" + rel_orig
 
-    # まだ実ファイルが無くても URL だけは返しておく
     return "/" + rel
 
-def news_card_html(n: dict) -> str:
+
+def render_news_index_card(n: dict) -> str:
     """
     ニュース一覧用：ギャラリー寄せのカード構造（.rl-item）
     画像サムネ＋タイトル＋日付＋要約を表示する。
@@ -301,16 +305,13 @@ def news_card_html(n: dict) -> str:
     summary = (n.get("summary") or "").strip()
     image   = (n.get("image_file") or "").strip()
 
-    # 詳細ページURL
     url = f"/news/{slug}/" if slug else "#"
 
-    # 表示テキスト
     title_text   = title or slug
     title_html   = html.escape(title_text)
     date_html    = html.escape(date)
     summary_html = html.escape(summary)
 
-    # 画像パス（WebP優先・ファイル名だけでもOK）
     img_src = resolve_news_image_src(image) if image else ""
 
     img_tag = ""
@@ -320,7 +321,6 @@ def news_card_html(n: dict) -> str:
             f'loading="lazy" decoding="async">'
         )
 
-    # 要約は空なら出さない
     summary_block = f'\n      <p class="news-summary">{summary_html}</p>' if summary else ""
 
     return f'''<figure class="rl-item">
@@ -332,6 +332,7 @@ def news_card_html(n: dict) -> str:
     </figcaption>
   </a>
 </figure>'''
+
 
 def render_news_list_items(news_items, limit=None) -> str:
     """
@@ -359,6 +360,7 @@ f'''          <li class="news-item">
         )
     return "\n".join(lis)
 
+
 def top_news_card_html(n: dict) -> str:
     """
     トップページ用ニュースカード（.news-card 依存）。
@@ -373,17 +375,17 @@ def top_news_card_html(n: dict) -> str:
 
     url = f"/news/{slug}/" if slug else "#"
 
-    title_html = html.escape(title or slug)
-    date_html  = html.escape(date)
+    title_html   = html.escape(title or slug)
+    date_html    = html.escape(date)
     summary_html = html.escape(summary)
 
     img_src = resolve_news_image_src(image) if image else ""
 
     if img_src:
-        thumb_html = f'<img src="{img_src}" alt="{title_html}" loading="lazy" decoding="async">'
+        thumb_html  = f'<img src="{img_src}" alt="{title_html}" loading="lazy" decoding="async">'
         thumb_class = "news-card-thumb"
     else:
-        thumb_html = ""
+        thumb_html  = ""
         thumb_class = "news-card-thumb news-card-thumb--empty"
 
     summary_block = f'<p class="news-card-summary">{summary_html}</p>' if summary else ""
@@ -401,22 +403,19 @@ def top_news_card_html(n: dict) -> str:
   </a>
 </article>'''
 
+
 def news_index_html(cards: str, prev_link: str = None, next_link: str = None) -> str:
     """
     ニュース一覧ページ全体のHTML。
     ヘッダーは「ロゴ → メニュー」を共通で表示する。
     """
-
-    # ページャーHTML（ギャラリーと同じクラス名）
     pager_parts = []
     if prev_link or next_link:
         pager_parts.append('<nav class="gallery-pager">')
-        # 前のページ
         if prev_link:
             pager_parts.append(f'<a class="pager-prev" href="{prev_link}">前のページ</a>')
         else:
             pager_parts.append('<span class="pager-prev"></span>')
-        # 次のページ
         if next_link:
             pager_parts.append(f'<a class="pager-next" href="{next_link}">次のページ</a>')
         else:
@@ -425,7 +424,6 @@ def news_index_html(cards: str, prev_link: str = None, next_link: str = None) ->
 
     pager_html = "\n".join(pager_parts)
 
-    # 共通ヘッダー
     logo_html = render_partial("top_logo.html")
     nav_html  = render_partial("nav_main.html")
 
@@ -461,17 +459,15 @@ def news_index_html(cards: str, prev_link: str = None, next_link: str = None) ->
 </body>
 '''
 
+
 def news_detail_html(news: dict, body_html: str) -> str:
     """
     個別NewsページのフルHTMLを返す。
-    body_html は data/news_body/... に書いた本文スニペット。
-    ※ ギャラリー個別ページの構造に寄せて、
-       「画像ブロック（news-hero）」と「本文ブロック（news-body）」に分割する。
+    body_html は assets/news/body/<slug>.html に書いた本文スニペット。
     """
     date  = html.escape(news.get("date") or "")
     title = html.escape(news.get("title") or "")
 
-    # 画像ブロック（image_file から WebP 優先でパスを決定）
     hero_block = ""
     image_file = (news.get("image_file") or "").strip()
     if image_file:
@@ -485,7 +481,6 @@ def news_detail_html(news: dict, body_html: str) -> str:
         </p>
       </section>'''
 
-    # body_html 内の </h1> の直後に日付を差し込む
     if "</h1>" in body_html:
         body_with_date = re.sub(
             r"</h1>",
@@ -494,17 +489,14 @@ def news_detail_html(news: dict, body_html: str) -> str:
             count=1,
         )
     else:
-        # 念のため <h1> が無い場合は本文の先頭に日付を置く
         body_with_date = f'<p class="news-date">{date}</p>\n{body_html}'
 
-    # 本文ブロック（タイトル〜本文〜戻るリンクをまとめる）
     body_block = f'''
       <section class="news-body">
         {body_with_date}
         <p class="news-back"><a href="/news/">News 一覧へ戻る</a></p>
       </section>'''
 
-    # 共通ヘッダー
     logo_html = render_partial("top_logo.html")
     nav_html  = render_partial("nav_main.html")
 
@@ -523,61 +515,8 @@ def news_detail_html(news: dict, body_html: str) -> str:
   </main>
 </body>'''
 
+
 # ---- Image helpers ----
-def image_suffixes(slug: str, kind: str):
-    """
-    対応パターン:
-      slug-cover.jpg / .webp
-      slug-DSC_4975.jpg, slug-DSC4975.jpg, slug-IMG_1234.JPG など
-      旧: slug.jpg / slug.webp
-    """
-    folder = ROOT / "assets" / "images" / kind
-    if not folder.exists():
-        return []
-
-    # プレフィックス許容（Nikon等のアンダースコアに対応）
-    prefixes = [slug, slug.replace("-", "_")]
-
-    # 受け入れる拡張子
-    exts = (".webp", ".jpg", ".jpeg", ".png", ".WEBP", ".JPG", ".JPEG", ".PNG")
-
-    found = []
-    for p in folder.iterdir():
-        if not p.is_file():
-            continue
-        name = p.name
-        low  = name.lower()
-        if not low.endswith(tuple(e.lower() for e in exts)):
-            continue
-        # prefix マッチ
-        if any(low.startswith(pref.lower()+"-") or low == (pref.lower()+low[ len(pref): ]) for pref in prefixes):
-            # suffix を抽出（slug-XXXX.ext → XXXX）
-            # ハイフン区切り：slug-xxxx.ext
-            for pref in prefixes:
-                if name.startswith(pref + "-"):
-                    suf = name[len(pref)+1:name.rfind(".")]
-                    found.append(suf)
-                    break
-            else:
-                # 旧: suffix なし（slug.jpg）
-                if name.lower().startswith(slug.lower()+".") or name.lower().startswith(slug.replace("-", "_").lower()+"."):
-                    found.append("")  # suffix なし
-    if not found:
-        return []
-    # cover を先頭、それ以外は辞書順
-    found = sorted(found, key=lambda s: (s.lower() != "cover", s.lower()))
-    # 重複除去（順序保持）
-    seen, uniq = set(), []
-    for s in found:
-        if s not in seen:
-            seen.add(s); uniq.append(s)
-    return uniq
-
-def img_path(slug: str, folder: str, suf: str) -> str:
-    # folder: "thumb" or "4k"
-    base = f"/assets/images/{folder}"
-    return f"{base}/{slug}{suf}"
-
 def primary_images(slug: str):
     """一覧カード用thumbと、詳細での最初の4Kを返す（拡張子付き絶対パス）"""
     exts = (".webp", ".jpg", ".jpeg", ".png", ".WEBP", ".JPG", ".JPEG", ".PNG")
@@ -593,7 +532,6 @@ def primary_images(slug: str):
     thumb = None
     fourk = None
 
-    # thumb 探索
     for base in base_names:
         for ext in exts:
             p = thumb_dir / f"{base}{ext}"
@@ -603,7 +541,6 @@ def primary_images(slug: str):
         if thumb:
             break
 
-    # 4K 探索
     for base in base_names:
         for ext in exts:
             p = fourk_dir / f"{base}{ext}"
@@ -615,7 +552,6 @@ def primary_images(slug: str):
 
     return thumb, fourk
 
-from pathlib import Path
 
 def thumb_to_4k(thumb_path: str) -> str:
     """
@@ -623,8 +559,8 @@ def thumb_to_4k(thumb_path: str) -> str:
     実際に存在する 4K 画像 (/assets/images/4k/xxx.*) を探して返す。
     なければ拡張子そのままで /4k/ に置き換えたものを返す（後方互換用）。
     """
-    name = Path(thumb_path).name       # seafoam-....-DSC_9991.webp
-    stem = Path(name).stem             # seafoam-....-DSC_9991
+    name = Path(thumb_path).name
+    stem = Path(name).stem
 
     fourk_dir = ROOT / "assets" / "images" / "4k"
     exts = (".webp", ".jpg", ".jpeg", ".png", ".WEBP", ".JPG", ".JPEG", ".PNG")
@@ -634,8 +570,8 @@ def thumb_to_4k(thumb_path: str) -> str:
         if candidate.exists():
             return f"/assets/images/4k/{candidate.name}"
 
-    # 4K 側に対応ファイルがない場合の保険
     return thumb_path.replace("/thumb/", "/4k/")
+
 
 def path_to_large(src_path: str) -> str:
     """
@@ -646,6 +582,7 @@ def path_to_large(src_path: str) -> str:
     stem = Path(name).stem
     return f"/assets/images/large/{stem}.webp"
 
+
 def all_images(slug: str, image_order: str = ""):
     """
     サムネ用フォルダから slug で始まるファイルを列挙する。
@@ -655,11 +592,9 @@ def all_images(slug: str, image_order: str = ""):
     if not thumb_dir.exists():
         return []
 
-    # slug と slug のアンダースコア版の両方に対応
     want_prefixes = [slug, slug.replace("-", "_")]
     exts = (".webp", ".jpg", ".jpeg", ".png", ".WEBP", ".JPG", ".JPEG", ".PNG")
 
-    # 1. 候補ファイルをすべて収集
     candidates = []
     for p in thumb_dir.iterdir():
         if not p.is_file():
@@ -679,37 +614,28 @@ def all_images(slug: str, image_order: str = ""):
     if not candidates:
         return []
 
-    # 2. 重複除外処理 (WebP優先)
-    # ファイル名（拡張子なし）をキーにしてグループ化する
+    # 重複除外（WebP優先）
     grouped = {}
     for name, path, is_cover in candidates:
-        stem = Path(name).stem  # 拡張子を除いた名前 (例: stone-01)
-        if stem not in grouped:
-            grouped[stem] = []
-        grouped[stem].append((name, path, is_cover))
+        stem = Path(name).stem
+        grouped.setdefault(stem, []).append((name, path, is_cover))
 
     unique_candidates = []
     for stem, group in grouped.items():
-        # グループ内に .webp があればそれを探す
         selected = None
         for item in group:
             if item[0].lower().endswith(".webp"):
                 selected = item
                 break
-        
-        # WebPがなければ最初のもの(JPG等)を採用
         if not selected:
             selected = group[0]
-        
         unique_candidates.append(selected)
 
-    # 3. ソート処理（cover優先 ＋ image_order 対応）
     covers  = [path for (name, path, is_cover) in unique_candidates if is_cover]
     normals = [(name, path) for (name, path, is_cover) in unique_candidates if not is_cover]
 
     def extract_id(name: str) -> str:
-        base = Path(name).stem # 拡張子を除く
-        # prefix除去
+        base = Path(name).stem
         for pref in [slug, slug.replace("-", "_")]:
             if base.startswith(pref):
                 suf = base[len(pref):]
@@ -720,8 +646,7 @@ def all_images(slug: str, image_order: str = ""):
 
     order_ids = []
     if image_order:
-        import re as _re
-        for token in _re.split(r"[,\s]+", image_order):
+        for token in re.split(r"[,\s]+", image_order):
             t = token.strip()
             if t:
                 order_ids.append(t)
@@ -729,14 +654,12 @@ def all_images(slug: str, image_order: str = ""):
     ordered_normals = []
     used = set()
 
-    # 指定順序に追加
     for oid in order_ids:
         for nid, path in normals_with_id:
             if nid == oid and path not in used:
                 ordered_normals.append(path)
                 used.add(path)
 
-    # 残りをファイル名順に追加
     remaining = [path for (nid, path) in normals_with_id if path not in used]
     remaining.sort()
     ordered_normals.extend(remaining)
@@ -744,7 +667,6 @@ def all_images(slug: str, image_order: str = ""):
     covers_sorted = sorted(covers)
     paths = covers_sorted + ordered_normals
 
-    # primary_thumb（-cover）を最優先にする
     primary_thumb, _ = primary_images(slug)
     if primary_thumb and primary_thumb in paths:
         paths.remove(primary_thumb)
@@ -752,43 +674,21 @@ def all_images(slug: str, image_order: str = ""):
 
     return paths
 
-    want_prefixes = [slug.lower(), slug.lower().replace("-", "_")]
-    exts = (".webp", ".jpg", ".jpeg", ".png", ".WEBP", ".JPG", ".JPEG", ".PNG")
 
-    found = []
-    for p in thumb_dir.iterdir():
-        if not p.is_file():
-            continue
-        name = p.name
-        low = name.lower()
-        if low.endswith(exts) and any(low.startswith(pref) for pref in want_prefixes):
-            # 生成物からの参照は常にルート起点
-            found.append(f"/assets/images/thumb/{name}")
-
-    # primary を先頭に（重複は除く）
-    primary_thumb, _ = primary_images(slug)
-    if primary_thumb and primary_thumb in found:
-        found.remove(primary_thumb)
-        found.insert(0, primary_thumb)
-
-    return found
-
-def card_html(it):
+def render_gallery_card(it):
     """ギャラリー／トップ用の一覧カード（画像＋日本語タイトル1本）"""
     slug = it["slug"]
 
-    # 日本語タイトル（なければ従来の stone/carat/design から組み立て）
-    title_jp = it.get("title_jp", "").strip()
+    title_jp = (it.get("title_jp") or "").strip()
     if not title_jp:
-        stone  = it.get("stone", "").strip()
-        carat  = it.get("carat", "").strip()
-        design = it.get("design_name", "").strip()
+        stone  = (it.get("stone") or "").strip()
+        carat  = (it.get("carat") or "").strip()
+        design = (it.get("design_name") or "").strip()
 
         primary = f"{stone} – {carat}ct" if stone and carat else (stone or slug)
         secondary = f" “{design}”" if design else ""
         title_jp = (primary + secondary).strip()
 
-    # サムネイル（primary_images は slug-cover を最優先で探す）
     thumb, _ = primary_images(slug)
 
     img_tag = ""
@@ -814,28 +714,34 @@ def card_html(it):
   </a>
 </figure>'''
 
+
+# ---- Compatibility wrappers (avoid "missing function" confusion) ----
+def card_html(it: dict) -> str:
+    return render_gallery_card(it)
+
+
+def news_card_html(n: dict) -> str:
+    return render_news_index_card(n)
+
+
 def gallery_index_html(cards: str, prev_link: str = None, next_link: str = None) -> str:
     """
     ギャラリー一覧ページ全体のHTML。
     ヘッダーは「ロゴ → メニュー」を共通で表示する。
     """
-    # ページャーHTML
     pager_parts = []
     if prev_link or next_link:
         pager_parts.append('<nav class="gallery-pager">')
-        # 前のページ
         if prev_link:
             pager_parts.append(f'<a class="pager-prev" href="{prev_link}">前のページ</a>')
         else:
             pager_parts.append('<span></span>')
-        # 次のページ
         if next_link:
             pager_parts.append(f'<a class="pager-next" href="{next_link}">次のページ</a>')
         pager_parts.append('</nav>')
 
     pager_html = "\n".join(pager_parts)
 
-    # 共通ヘッダー
     logo_html = render_partial("top_logo.html")
     nav_html  = render_partial("nav_main.html")
 
@@ -871,13 +777,12 @@ def gallery_index_html(cards: str, prev_link: str = None, next_link: str = None)
 </body>
 '''
 
-def top_index_html(new_cards: str, top_news_cards_html: str) -> str:
 
+def top_index_html(new_cards: str, top_news_cards_html: str) -> str:
     """
     トップページ（/index.html）のHTML。
     News は「画像の下にテキスト」カードを3件表示する（追加のテキスト一覧は出さない）。
     """
-
     logo_html      = render_partial("top_logo.html")
     hero_html      = read_top_hero()
     nav_html       = render_partial("nav_main.html")
@@ -924,6 +829,7 @@ def top_index_html(new_cards: str, top_news_cards_html: str) -> str:
 {cta_html}
 </body>'''
 
+
 def detail_html(it):
     """ギャラリー／詳細ページ（1石）のフルHTMLを返す。"""
     slug   = it["slug"]
@@ -936,23 +842,16 @@ def detail_html(it):
 
     breadcrumb = '' if not SHOW_BREADCRUMB else '<nav class="breadcrumb"><a href="/gallery/">← Back to Gallery</a></nav>'
 
-    # ---- 画像 ----
     hero_thumb, hero_4k = primary_images(slug)
 
     image_order = it.get("image_order", "")
     thumbs_all = all_images(slug, image_order=image_order)
 
-    process_order = it.get("process_image_order", "").strip()
-
-    from pathlib import Path as _Path
-    import re as _re
+    process_order = (it.get("process_image_order", "") or "").strip()
+    process_ids = [t for t in re.split(r"[,\s]+", process_order) if t.strip()]
 
     def _thumb_id(path: str) -> str:
-        """
-        /assets/images/thumb/<slug>-DSC_9991.webp から 'DSC_9991' を取り出す
-        cover は 'cover' になる（Photos側に残す想定）
-        """
-        stem = _Path(path).stem  # 拡張子なし
+        stem = Path(path).stem
         for pref in (slug, slug.replace("-", "_")):
             if stem.startswith(pref + "-"):
                 return stem[len(pref) + 1 :]
@@ -962,29 +861,20 @@ def detail_html(it):
                 return ""
         return stem
 
-    process_ids = []
-    if process_order:
-        for token in _re.split(r"[,\s]+", process_order):
-            t = token.strip()
-            if t:
-                process_ids.append(t)
-
     process_set = set(process_ids)
     order_index = {pid: i for i, pid in enumerate(process_ids)}
 
-    # Process は「指定IDだけ」に絞り込み（順序もCSV指定に合わせる）
     process_thumbs = [p for p in thumbs_all if _thumb_id(p) in process_set]
     process_thumbs.sort(key=lambda p: order_index.get(_thumb_id(p), 10**9))
 
-    # Photos は Process 分を除外（cover は残る）
     thumbs = [p for p in thumbs_all if _thumb_id(p) not in process_set]
 
     hero_display = ""
     hero_full = ""
 
     if hero_4k:
-        hero_display = path_to_large(hero_4k)   # 表示は large（軽い）
-        hero_full    = hero_4k                 # 拡大は 4k のまま
+        hero_display = path_to_large(hero_4k)
+        hero_full    = hero_4k
     elif hero_thumb:
         hero_display = path_to_large(hero_thumb)
         hero_full    = thumb_to_4k(hero_thumb)
@@ -1001,7 +891,6 @@ def detail_html(it):
                decoding="async">
         </a>'''.strip()
 
-    # ---- 動画ブロック ----
     video_html = ""
     video_url = it.get("video_url")
     if video_url:
@@ -1016,8 +905,6 @@ def detail_html(it):
     </div>
   </section>
 '''
-
-    # ---- サムネ一覧 ----
 
     def render_thumbs_block(th_list, label_text=None, kind="photos"):
         if not th_list:
@@ -1037,80 +924,55 @@ def detail_html(it):
         return label_html + f'<div class="thumbs thumbs--{kind}">\n' + "\n".join(items) + "\n</div>"
 
     blocks = []
-
     if thumbs:
-        blocks.append(render_thumbs_block(
-            thumbs,
-            f"Photos ({len(thumbs)})",
-            kind="photos"
-        ))
-
+        blocks.append(render_thumbs_block(thumbs, f"Photos ({len(thumbs)})", kind="photos"))
     if process_thumbs:
-        blocks.append(render_thumbs_block(
-            process_thumbs,
-            f"Making ({len(process_thumbs)})",
-            kind="process"
-        ))
+        blocks.append(render_thumbs_block(process_thumbs, f"Making ({len(process_thumbs)})", kind="process"))
 
     thumbs_html = ""
     if blocks:
         thumbs_html = '<section class="thumbs-wrap">\n' + "\n".join(blocks) + "\n</section>"
 
-    # ---- プレート＋CTA ----
     plate_html = ""
     cta_html   = ""
 
     if SHOW_SPECS:
-        title_jp  = it.get("title_jp", "").strip()
-        stone_en  = it.get("stone", "").strip()
+        title_jp  = (it.get("title_jp") or "").strip()
+        stone_en  = (it.get("stone") or "").strip()
         carat     = it.get("carat", "")
-        design_en = it.get("design_name", "").strip()
-        faceter   = it.get("faceted_by", "").strip()
-        origin_en = it.get("origin_en", "").strip()
+        design_en = (it.get("design_name") or "").strip()
+        faceter   = (it.get("faceted_by") or "").strip()
+        origin_en = (it.get("origin_en") or "").strip()
         product_url = (it.get("product_url") or "").strip() or "#"
 
-        # プレート
-        plate_lines = []
+        final_lines = []
         if title_jp:
-            plate_lines.append(f'  <p class="jp">{html.escape(title_jp)}</p>')
+            final_lines.append(f'  <p class="jp">{html.escape(title_jp)}</p>')
 
-        block_b = []
         if stone_en and carat:
-            block_b.append(f'  <p class="en">{html.escape(stone_en)} {html.escape(str(carat))}ct</p>')
+            final_lines.append(f'  <p class="en">{html.escape(stone_en)} {html.escape(str(carat))}ct</p>')
         elif stone_en:
-            block_b.append(f'  <p class="en">{html.escape(stone_en)}</p>')
+            final_lines.append(f'  <p class="en">{html.escape(stone_en)}</p>')
 
         if design_en:
-            block_b.append(f'  <p class="en">Design: “{html.escape(design_en)}”</p>')
+            final_lines.append(f'  <p class="en">Design: “{html.escape(design_en)}”</p>')
 
-        block_c = []
         if faceter:
-            block_c.append(f'  <p class="meta">Faceted by {html.escape(faceter)}</p>')
+            final_lines.append(f'  <p class="meta">Faceted by {html.escape(faceter)}</p>')
         if origin_en:
-            block_c.append(f'  <p class="meta">Origin: {html.escape(origin_en)}</p>')
-
-        final_lines = []
-        if plate_lines:
-            final_lines.extend(plate_lines)
-        if block_b:
-            final_lines.extend(block_b)
-        if block_c:
-            final_lines.extend(block_c)
+            final_lines.append(f'  <p class="meta">Origin: {html.escape(origin_en)}</p>')
 
         if final_lines:
             plate_html = '<section class="plate">\n' + "\n".join(final_lines) + "\n</section>"
 
-        # CTA
         if product_url:
             cta_html = f'''<section class="cta-block">
   <a href="{html.escape(product_url)}" class="cta-link">ご購入はこちら →</a>
 </section>'''
 
-    # 共通ヘッダー
     logo_html = render_partial("top_logo.html")
     nav_html  = render_partial("nav_main.html")
 
-    # ---- 出力 ----
     return f'''<!doctype html>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
@@ -1146,6 +1008,7 @@ def detail_html(it):
 </body>
 '''
 
+
 def build_site_css():
     """
     assets/css/src/*.css を名前順に結合して assets/css/site.css を生成する。
@@ -1165,6 +1028,7 @@ def build_site_css():
 
     out_css.write_text("".join(parts), encoding="utf-8")
     print(f"[css] generated: {out_css.relative_to(ROOT)}")
+
 
 # ---- Build ----
 def build():
@@ -1187,7 +1051,6 @@ def build():
             except Exception:
                 pass
 
-    # まず消せるだけ消す（失敗しても致命傷にしない）
     if dst_assets.exists():
         shutil.rmtree(dst_assets, ignore_errors=True)
 
@@ -1206,33 +1069,24 @@ def build():
     items = read_items()  # date 降順（新しい順）でソート済み
 
     # ---- ギャラリー一覧（ページ分割）----
-    pages = []
-    for i in range(0, len(items), PAGE_SIZE):
-        pages.append(items[i:i + PAGE_SIZE])
-
+    pages = [items[i:i + PAGE_SIZE] for i in range(0, len(items), PAGE_SIZE)]
     page_count = len(pages)
 
     for idx, page_items in enumerate(pages):
         page_num = idx + 1
 
-        # カードHTML
-        cards = "\n".join([card_html(it) for it in page_items])
+        cards = "\n".join(render_gallery_card(it) for it in page_items)
 
-        # 出力パス
         if page_num == 1:
             out_path = OUT_GALLERY / "index.html"
         else:
             out_path = OUT_GALLERY / f"page-{page_num}.html"
 
-        # 前後ページリンク
         prev_link = None
         next_link = None
 
         if page_num > 1:
-            if page_num == 2:
-                prev_link = "/gallery/"
-            else:
-                prev_link = f"/gallery/page-{page_num-1}.html"
+            prev_link = "/gallery/" if page_num == 2 else f"/gallery/page-{page_num-1}.html"
 
         if page_num < page_count:
             next_link = f"/gallery/page-{page_num+1}.html"
@@ -1251,35 +1105,26 @@ def build():
     # ---- News ----
     news_items = read_news_items()
 
-    # ニュース一覧 /news/index.html ＋ /news/page-2.html ... （ギャラリーと同じノリで分割）
+    # ---- News一覧（ページ分割）----
     if news_items:
-        pages = []
-        for i in range(0, len(news_items), PAGE_SIZE):
-            pages.append(news_items[i:i + PAGE_SIZE])
-
+        pages = [news_items[i:i + PAGE_SIZE] for i in range(0, len(news_items), PAGE_SIZE)]
         page_count = len(pages)
 
         for idx, page_items in enumerate(pages):
             page_num = idx + 1
 
-            # カードHTML（ギャラリーと同じ .rl-item 構造）
-            cards = "\n".join([news_card_html(n) for n in page_items])
+            cards = "\n".join(render_news_index_card(n) for n in page_items)
 
-            # 出力パス
             if page_num == 1:
                 out_path = OUT_NEWS / "index.html"
             else:
                 out_path = OUT_NEWS / f"page-{page_num}.html"
 
-            # 前後ページリンク
             prev_link = None
             next_link = None
 
             if page_num > 1:
-                if page_num == 2:
-                    prev_link = "/news/"
-                else:
-                    prev_link = f"/news/page-{page_num-1}.html"
+                prev_link = "/news/" if page_num == 2 else f"/news/page-{page_num-1}.html"
 
             if page_num < page_count:
                 next_link = f"/news/page-{page_num+1}.html"
@@ -1288,40 +1133,48 @@ def build():
                 inject_footer(news_index_html(cards, prev_link=prev_link, next_link=next_link)),
                 encoding="utf-8"
             )
-
-        # 個別ページ /news/<slug>/index.html（本文は assets/news/body/<slug>.html 固定）
-        for n in news_items:
-            slug = (n.get("slug") or "").strip()
-            if not slug:
-                continue
-
-            body_path = NEWS_BODY_DIR / f"{slug}.html"
-            if body_path.exists():
-                body_html = body_path.read_text(encoding="utf-8")
-            else:
-                print(f"[warn] 本文が見つかりません: {body_path}")
-                body_html = "<p>(本文が見つかりません)</p>"
-
-            html_text = inject_footer(news_detail_html(n, body_html))
-            out_dir = OUT_NEWS / slug
-            out_dir.mkdir(parents=True, exist_ok=True)
-            (out_dir / "index.html").write_text(html_text, encoding="utf-8")
-
-    # ---- トップ（新着12件＋最新ニュース3件）----
-    items = read_items()
-    newest = items[:12]
-    new_cards = "\n".join([card_html(it) for it in newest])
-
-    if news_items:
-        top_news_cards_html = "\n".join([top_news_card_html(n) for n in news_items[:3]])
     else:
-        top_news_cards = ""
+        (OUT_NEWS / "index.html").write_text(
+            inject_footer(news_index_html("")),
+            encoding="utf-8"
+        )
+
+    # ---- Top (Gallery new + News latest) ----
+    TOP_GALLERY_COUNT = 6
+    TOP_NEWS_COUNT = 3
+
+    new_cards = "\n".join(render_gallery_card(it) for it in items[:TOP_GALLERY_COUNT])
+
+    top_news_cards_html = ""
+    if news_items:
+        top_news_cards_html = "\n".join(
+            top_news_card_html(n) for n in news_items[:TOP_NEWS_COUNT]
+        )
 
     (SITE_ROOT / "index.html").write_text(
         inject_footer(top_index_html(new_cards, top_news_cards_html)),
         encoding="utf-8"
     )
 
+    # ---- News detail pages (/news/<slug>/index.html) ----
+    for n in news_items:
+        slug = (n.get("slug") or "").strip()
+        if not slug:
+            continue
+
+        body_path = NEWS_BODY_DIR / f"{slug}.html"
+        if body_path.exists():
+            body_html = body_path.read_text(encoding="utf-8")
+        else:
+            print(f"[warn] 本文が見つかりません: {body_path}")
+            body_html = "<p>(本文が見つかりません)</p>"
+
+        html_text = inject_footer(news_detail_html(n, body_html))
+        out_dir = OUT_NEWS / slug
+        out_dir.mkdir(parents=True, exist_ok=True)
+        (out_dir / "index.html").write_text(html_text, encoding="utf-8")
+
+
 if __name__ == "__main__":
     build()
-    print("✅ build complete: gallery, details, and top index generated.")
+    print("✅ build complete: gallery, news, details, and top index generated.")
