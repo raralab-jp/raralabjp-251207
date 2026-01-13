@@ -2,7 +2,6 @@
 import json, html, re, csv
 from pathlib import Path
 import shutil
-import sys
 
 # ---- WebP 変換用ライブラリ (Pillow) の読み込み ----
 try:
@@ -519,13 +518,14 @@ def news_detail_html(news: dict, body_html: str) -> str:
 
 # ---- Image helpers ----
 def primary_images(slug: str):
-    """一覧カード用thumbと、詳細での最初の4Kを返す（coverのみ）"""
+    """一覧カード用thumbと、詳細での最初の4Kを返す（拡張子付き絶対パス）"""
     exts = (".webp", ".jpg", ".jpeg", ".png", ".WEBP", ".JPG", ".JPEG", ".PNG")
     base_names = [
         f"{slug}-cover",
         f"{slug.replace('-', '_')}-cover",
+        slug,
+        slug.replace("-", "_"),
     ]
-
     thumb_dir = ROOT / "assets" / "images" / "thumb"
     fourk_dir = ROOT / "assets" / "images" / "4k"
 
@@ -551,6 +551,7 @@ def primary_images(slug: str):
             break
 
     return thumb, fourk
+
 
 def thumb_to_4k(thumb_path: str) -> str:
     """
@@ -842,8 +843,6 @@ def detail_html(it):
     breadcrumb = '' if not SHOW_BREADCRUMB else '<nav class="breadcrumb"><a href="/gallery/">← Back to Gallery</a></nav>'
 
     hero_thumb, hero_4k = primary_images(slug)
-    if not hero_thumb:
-        print(f"WARN: hero cover image missing for slug={slug}", file=sys.stderr)
 
     image_order = it.get("image_order", "")
     thumbs_all = all_images(slug, image_order=image_order)
@@ -944,7 +943,7 @@ def detail_html(it):
         design_en = (it.get("design_name") or "").strip()
         faceter   = (it.get("faceted_by") or "").strip()
         origin_en = (it.get("origin_en") or "").strip()
-        product_url = (it.get("shop_url") or "").strip()
+        product_url = (it.get("product_url") or "").strip() or "#"
 
         final_lines = []
         if title_jp:
@@ -968,7 +967,7 @@ def detail_html(it):
 
         if product_url:
             cta_html = f'''<section class="cta-block">
-  <a href="{html.escape(product_url)}" class="cta-link" target="_blank" rel="noopener">ご購入はこちら →</a>
+  <a href="{html.escape(product_url)}" class="cta-link">ご購入はこちら →</a>
 </section>'''
 
     logo_html = render_partial("top_logo.html")

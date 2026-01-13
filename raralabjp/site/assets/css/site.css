@@ -605,6 +605,8 @@ main.detail {
   --detail-pad-y-top: 12px;
   --detail-pad-y-bottom: 48px;
   --detail-gap: 20px;
+  width: 100%;
+  min-width: 0;
 
   /* ここが重要：main自体を中央カラムにする */
   max-width: var(--detail-max);
