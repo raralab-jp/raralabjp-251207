@@ -1,0 +1,13 @@
+URLs: shop=https://www.raralab.shop/product/umba-sapphire-0517ct-cushion-in-a-square/121; video=
+Title JP: ウンバ・サファイア 0.517ct “Cushion in a Square”
+Stone: Umba Sapphire
+Facet Design: “Cushion in a Square”
+Designed by Rara Lab
+Faceted by Rara Lab
+Carat: 0.517ct
+Size: 4.10 × 4.00 × 3.12 mm
+Origin: Umba (Tanzania)
+Treatment: Heated
+Clarity: Inclusion visible to the naked eye
+image_order:
+process_image_order: DSC_1984 DSC_1986 DSC_2821

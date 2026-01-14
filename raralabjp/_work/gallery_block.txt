@@ -1,13 +1,10 @@
-URLs: shop=https://www.raralab.shop/product/dragon-garnet-0579ct-garnet-cushion/DBASMHF66OQ2V2PJSSK7ANGI?cp=true&sa=false&sbp=false&q=false&category_id=37; video=https://customer-jnhhy169io6el95i.cloudflarestream.com/a5b2c66b66024843863568aff72e0f0f/iframe
-Title JP: ドラゴン・ガーネット 0.579ct “GARNET CUSHION”
-Stone: Dragon Garnet
-Facet Design: “GARNET CUSHION”
-Designed by Jim Perkins
+URLs: shop=https://www.raralab.shop/product/oregon-sunstone-corky-st-clair-0640ct/75; video=
+Title JP: オレゴン・サンストーン 0.640ct “Corky St Clair”
+Stone: Oregon Sunstone
+Facet Design: “Corky St Clair”
+Designed by Michael Holmes
 Faceted by Rara Lab
-Carat: 0.579ct
-Size: 5.05 × 5.03 × 3.13 mm
-Origin: Lindi (Tanzania)
-Treatment: None
-Clarity: Inclusion visible under 10x
-image_order: 
-process_image_order: DSC_2380 DSC_2384 DSC_2386 DSC_3716 DSC_3720 DSC_3798 DSC_3802
+Carat: 0.640ct
+Size: 5.53 × 5.54 × 4.11 mm
+Origin: Oregon (USA)
+Clarity: Visible aventurescence depending on angle

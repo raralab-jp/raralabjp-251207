@@ -1,0 +1,13 @@
+URLs: shop=https://www.raralab.shop/product/zircon-1019ct-tessellation-20/MWFO6A2MLYPOR7AHBQUFU5MC?cp=true&sa=false&sbp=false&q=false&category_id=37; video=
+Title JP: ジルコン 1.019ct “Tessellation 20”
+Stone: Zircon
+Facet Design: “Tessellation 20”
+Designed by Arya Akhavan
+Faceted by Rara Lab
+Carat: 1.019ct
+Size: 5.43 × 5.41 × 3.86mm
+Origin: Unknown
+Treatment: Heated by Rara Lab
+Clarity: No inclusion visible under 10x
+image_order:
+process_image_order: DSC_2361 DSC_2363 DSC_2365 DSC_2367 DSC_3909 DSC_3913 DSC_4042

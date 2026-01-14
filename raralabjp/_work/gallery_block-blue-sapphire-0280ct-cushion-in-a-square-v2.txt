@@ -1,0 +1,13 @@
+URLs: shop=https://www.raralab.shop/product/blue-sapphire-0280ct-cushion-in-a-square-v2/5R7GYJCA6HOUFV67LTCXGD6S; video=
+Title JP: 非加熱ブルー・サファイア 0.2800ct “Cushion in a Square V2”
+Stone: Blue Sapphire
+Facet Design: “Cushion in a Square V2”
+Designed by Rara Lab
+Faceted by Rara Lab
+Carat: 0.280ct
+Size: 3.49 × 3.47 × 2.31 mm
+Origin: Unknown
+Treatment: Unheated (confirmed by testing)
+Clarity: Eye clean; minor inclusion visible under 10x (crown)
+image_order:
+process_image_order:

@@ -1,0 +1,11 @@
+URLs: shop=https://www.raralab.shop/product/montana-sapphire-0509ct-standard-round-brilliant-cut/122; video=
+Title JP: モンタナ・サファイア 0.509ct “Standard Round Brilliant Cut”
+Stone: Montana Sapphire
+Facet Design: “Standard Round Brilliant Cut”
+Designed by Sean O'Neil
+Faceted by Rara Lab
+Carat: 0.509ct  
+Size: 4.52 × 4.58 × 3.19 mm  
+Origin: Montana (US)  
+Treatment: Heated
+process_image_order: DSC_3106 DSC_3109 DSC_3135 DSC_3138 DSC_3196 DSC_3199

@@ -1,0 +1,13 @@
+URLs: shop=https://www.raralab.shop/product/oregon-sunstone-temple-ruins-0908ct/74; video=
+Title JP: オレゴン・サンストーン 0.908ct “Temple Ruin”
+Stone: Oregon Sunstone
+Facet Design: “Temple Ruin”
+Designed by Arya Akhavan
+Faceted by Rara Lab
+Carat: 0.908ct
+Size: 6.06 × 6.22 × 4.69 mm
+Origin: Sun Summit Mine, Oregon (US)
+Treatment: None
+Clarity: Inclusion visible under 10x (near girdle, crown side)
+image_order:
+process_image_order:
