@@ -47,6 +47,16 @@ with csvp.open(newline="", encoding="utf-8") as f:
             if t.strip()
         ]
 
+        # 新規追加フィールド（空なら None で落とす）
+        mod_note = S("modification_note") or None
+
+        # design_is_named:
+        # - CSV 側は "1"/"0" 想定
+        # - 空欄なら None（= 未指定）
+        # - "1"/"0" は文字列のまま保持（build.py 側 is_truthy() で判定）
+        din = S("design_is_named")
+        design_is_named = din if din else None
+
         # 既存データがあれば引き継ぎつつ上書き
         it = index.get(slug, {})
         it.update({
@@ -64,9 +74,13 @@ with csvp.open(newline="", encoding="utf-8") as f:
             "date": S("date"),
             "tags": tags,
             "image_order": S("image_order"),
-            "process_image_order": S("process_image_order"),  # ← 追加
+            "process_image_order": S("process_image_order"),
             "video_url": S("video_url"),
-            "shop_url": S("shop_url")
+            "shop_url": S("shop_url"),
+
+            # ★追加（今回の目的）
+            "modification_note": mod_note,
+            "design_is_named": design_is_named,
         })
         index[slug] = it
 

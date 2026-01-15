@@ -1,10 +1,14 @@
-URLs: shop=https://www.raralab.shop/product/oregon-sunstone-corky-st-clair-0640ct/75; video=
-Title JP: オレゴン・サンストーン 0.640ct “Corky St Clair”
-Stone: Oregon Sunstone
-Facet Design: “Corky St Clair”
-Designed by Michael Holmes
+URLs: shop=https://www.raralab.shop/product/zircon-0718ct-bright-rose-modified-for-zircon/CXFRB6VT6MQWDMHFIBR6FPYV; video=
+Title JP: ジルコン 0.718ct "Bright Rose"
+Stone: Zircon
+Facet Design: Bright Rose
+Modification: Modified for Zircon
+Designed by Allan Beck
+Design Is Named: 1
 Faceted by Rara Lab
-Carat: 0.640ct
-Size: 5.53 × 5.54 × 4.11 mm
-Origin: Oregon (USA)
-Clarity: Visible aventurescence depending on angle
+Carat: 0.718ct
+Size: 5.01 × 5.04 × 3.34 mm
+Origin: Africa
+Treatment: None
+Clarity: Loupe clean
+process_image_order: DSC_2341 DSC_2344 DSC_2347

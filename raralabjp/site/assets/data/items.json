@@ -1,5 +1,68 @@
 [
   {
+    "slug": "dragon-garnet-0626ct-maelstrom-authority",
+    "stone": "Dragon Garnet",
+    "design_name": "Maelstrom Authority",
+    "designer": "Arya Akhavan",
+    "faceted_by": "Rara Lab",
+    "carat": 0.626,
+    "size_mm": "4.90 × 5.01 × 3.92 mm",
+    "origin_en": "Africa",
+    "treatment": "No treatment",
+    "clarity_note_en": "Loupe clean",
+    "title_jp": "ドラゴン・ガーネット 0.626ct “Maelstrom Authority”",
+    "date": "2025-12-11",
+    "tags": [],
+    "image_order": "",
+    "process_image_order": "DSC_2373 DSC_2375 DSC_3808 DSC_3810 DSC_3845 DSC_3849",
+    "video_url": "",
+    "shop_url": "https://www.raralab.shop/product/dragon-garnet-0626ct-maelstrom_authority/AOAVBAB3SSHZRXJTNR37EOHZ",
+    "modification_note": null,
+    "design_is_named": null
+  },
+  {
+    "slug": "dragon-garnet-0579ct-garnet-cushion",
+    "stone": "Dragon Garnet",
+    "design_name": "GARNET CUSHION",
+    "designer": "Jim Perkins",
+    "faceted_by": "Rara Lab",
+    "carat": 0.579,
+    "size_mm": "5.05 × 5.03 × 3.13 mm",
+    "origin_en": "Lindi (Tanzania)",
+    "treatment": "None",
+    "clarity_note_en": "Inclusion visible under 10x",
+    "title_jp": "ドラゴン・ガーネット 0.579ct “GARNET CUSHION”",
+    "date": "2025-12-11",
+    "tags": [],
+    "image_order": "process_image_order: DSC_2380 DSC_2384 DSC_2386 DSC_3716 DSC_3720 DSC_3798 DSC_3802",
+    "process_image_order": "DSC_2380 DSC_2384 DSC_2386 DSC_3716 DSC_3720 DSC_3798 DSC_3802",
+    "video_url": "https://customer-jnhhy169io6el95i.cloudflarestream.com/a5b2c66b66024843863568aff72e0f0f/iframe",
+    "shop_url": "https://www.raralab.shop/product/dragon-garnet-0579ct-garnet-cushion/DBASMHF66OQ2V2PJSSK7ANGI?cp=true&sa=false&sbp=false&q=false&category_id=37",
+    "modification_note": null,
+    "design_is_named": null
+  },
+  {
+    "slug": "zircon-0718ct-bright-rose",
+    "stone": "Zircon",
+    "design_name": "Bright Rose",
+    "designer": "Allan Beck",
+    "faceted_by": "Rara Lab",
+    "carat": 0.718,
+    "size_mm": "5.01 × 5.04 × 3.34 mm",
+    "origin_en": "Africa",
+    "treatment": "None",
+    "clarity_note_en": "Loupe clean",
+    "title_jp": "ジルコン 0.718ct \"Bright Rose\"",
+    "date": "2025-12-02",
+    "tags": [],
+    "image_order": "",
+    "process_image_order": "DSC_2341 DSC_2344 DSC_2347",
+    "video_url": "",
+    "shop_url": "https://www.raralab.shop/product/zircon-0718ct-bright-rose-modified-for-zircon/CXFRB6VT6MQWDMHFIBR6FPYV",
+    "modification_note": "Modified for Zircon",
+    "design_is_named": "1"
+  },
+  {
     "slug": "umba-sapphire-0517ct-cushion-in-a-square",
     "stone": "Umba Sapphire",
     "design_name": "Cushion in a Square",
@@ -16,7 +79,9 @@
     "image_order": "process_image_order: DSC_1984 DSC_1986 DSC_2821",
     "process_image_order": "DSC_1984 DSC_1986 DSC_2821",
     "video_url": "",
-    "shop_url": "https://www.raralab.shop/product/umba-sapphire-0517ct-cushion-in-a-square/121"
+    "shop_url": "https://www.raralab.shop/product/umba-sapphire-0517ct-cushion-in-a-square/121",
+    "modification_note": null,
+    "design_is_named": null
   },
   {
     "slug": "blue-sapphire-0280ct-cushion-in-a-square-v2",
@@ -35,7 +100,9 @@
     "image_order": "process_image_order:",
     "process_image_order": "",
     "video_url": "",
-    "shop_url": "https://www.raralab.shop/product/blue-sapphire-0280ct-cushion-in-a-square-v2/5R7GYJCA6HOUFV67LTCXGD6S"
+    "shop_url": "https://www.raralab.shop/product/blue-sapphire-0280ct-cushion-in-a-square-v2/5R7GYJCA6HOUFV67LTCXGD6S",
+    "modification_note": null,
+    "design_is_named": null
   },
   {
     "slug": "zircon-1019ct-tessellation-20",
@@ -54,7 +121,9 @@
     "image_order": "process_image_order: DSC_2361 DSC_2363 DSC_2365 DSC_2367 DSC_3909 DSC_3913 DSC_4042",
     "process_image_order": "DSC_2361 DSC_2363 DSC_2365 DSC_2367 DSC_3909 DSC_3913 DSC_4042",
     "video_url": "",
-    "shop_url": "https://www.raralab.shop/product/zircon-1019ct-tessellation-20/MWFO6A2MLYPOR7AHBQUFU5MC?cp=true&sa=false&sbp=false&q=false&category_id=37"
+    "shop_url": "https://www.raralab.shop/product/zircon-1019ct-tessellation-20/MWFO6A2MLYPOR7AHBQUFU5MC?cp=true&sa=false&sbp=false&q=false&category_id=37",
+    "modification_note": null,
+    "design_is_named": null
   },
   {
     "slug": "color-change-sapphire-0411ct-french-cut",
@@ -73,7 +142,9 @@
     "image_order": "",
     "process_image_order": "",
     "video_url": "",
-    "shop_url": "https://www.raralab.shop/product/color-change-sapphire-0411ct-french-cut/119"
+    "shop_url": "https://www.raralab.shop/product/color-change-sapphire-0411ct-french-cut/119",
+    "modification_note": null,
+    "design_is_named": null
   },
   {
     "slug": "pink-sapphire-0318ct-square-step-barion-v3",
@@ -92,7 +163,9 @@
     "image_order": "",
     "process_image_order": "",
     "video_url": "",
-    "shop_url": "https://www.raralab.shop/product/pink-sapphire-0318ct-square-step-barion-v3/GUPXEXD2PQ34CU3P2ENOGRQI"
+    "shop_url": "https://www.raralab.shop/product/pink-sapphire-0318ct-square-step-barion-v3/GUPXEXD2PQ34CU3P2ENOGRQI",
+    "modification_note": null,
+    "design_is_named": null
   },
   {
     "slug": "montana-sapphire-0493ct-faceted-by-rara-lab",
@@ -111,26 +184,9 @@
     "image_order": "",
     "process_image_order": "",
     "video_url": "",
-    "shop_url": "https://www.raralab.shop/product/montana-sapphire-0493ct-tessellation-12-f/98?cp=true&sa=false&sbp=false&q=false&category_id=37"
-  },
-  {
-    "slug": "dragon-garnet-0626ct-maelstrom-authority",
-    "stone": "Dragon Garnet",
-    "design_name": "Maelstrom Authority",
-    "designer": "Arya Akhavan",
-    "faceted_by": "Rara Lab",
-    "carat": 0.626,
-    "size_mm": "4.90 × 5.01 × 3.92 mm",
-    "origin_en": "Africa",
-    "treatment": "No treatment",
-    "clarity_note_en": "Loupe clean",
-    "title_jp": "ドラゴン・ガーネット 0.626ct “Maelstrom Authority”",
-    "date": "2025-12-01",
-    "tags": [],
-    "image_order": "",
-    "process_image_order": "DSC_2373 DSC_2375 DSC_3808 DSC_3810 DSC_3845 DSC_3849",
-    "video_url": "",
-    "shop_url": "https://www.raralab.shop/product/dragon-garnet-0626ct-maelstrom_authority/AOAVBAB3SSHZRXJTNR37EOHZ"
+    "shop_url": "https://www.raralab.shop/product/montana-sapphire-0493ct-tessellation-12-f/98?cp=true&sa=false&sbp=false&q=false&category_id=37",
+    "modification_note": null,
+    "design_is_named": null
   },
   {
     "slug": "montana-sapphire-0509ct-standard-round-brilliant-cut",
@@ -149,7 +205,9 @@
     "image_order": "",
     "process_image_order": "DSC_3106 DSC_3109 DSC_3135 DSC_3138 DSC_3196 DSC_3199",
     "video_url": "",
-    "shop_url": "https://www.raralab.shop/product/montana-sapphire-0509ct-standard-round-brilliant-cut/122"
+    "shop_url": "https://www.raralab.shop/product/montana-sapphire-0509ct-standard-round-brilliant-cut/122",
+    "modification_note": null,
+    "design_is_named": null
   },
   {
     "slug": "montana-sapphire-03ct-srb-sapphire",
@@ -168,7 +226,9 @@
     "image_order": "",
     "process_image_order": "",
     "video_url": "",
-    "shop_url": "https://www.raralab.shop/product/montana-sapphire-03ct-srb-sapphire/123"
+    "shop_url": "https://www.raralab.shop/product/montana-sapphire-03ct-srb-sapphire/123",
+    "modification_note": null,
+    "design_is_named": null
   },
   {
     "slug": "montana-sapphire-02ct-srb-montana-sapphire",
@@ -187,7 +247,9 @@
     "image_order": "",
     "process_image_order": "",
     "video_url": "",
-    "shop_url": "https://www.raralab.shop/product/montana-sapphire-02ct-srb-montana-sapphire/124"
+    "shop_url": "https://www.raralab.shop/product/montana-sapphire-02ct-srb-montana-sapphire/124",
+    "modification_note": null,
+    "design_is_named": null
   },
   {
     "slug": "aquamarine-06ct-fiorello-80",
@@ -206,7 +268,9 @@
     "image_order": "",
     "process_image_order": "DSC_1719 DSC_1729 DSC_1734",
     "video_url": "",
-    "shop_url": "https://www.raralab.shop/product/aquamarine-06ct-fiorello-80/115"
+    "shop_url": "https://www.raralab.shop/product/aquamarine-06ct-fiorello-80/115",
+    "modification_note": null,
+    "design_is_named": null
   },
   {
     "slug": "oregon-sunstone-0640ct-corky-st-clair",
@@ -225,26 +289,9 @@
     "image_order": "",
     "process_image_order": "",
     "video_url": "",
-    "shop_url": "https://www.raralab.shop/product/oregon-sunstone-corky-st-clair-0640ct/75"
-  },
-  {
-    "slug": "dragon-garnet-0579ct-garnet-cushion",
-    "stone": "Dragon Garnet",
-    "design_name": "GARNET CUSHION",
-    "designer": "Jim Perkins",
-    "faceted_by": "Rara Lab",
-    "carat": 0.579,
-    "size_mm": "5.05 × 5.03 × 3.13 mm",
-    "origin_en": "Lindi (Tanzania)",
-    "treatment": "None",
-    "clarity_note_en": "Inclusion visible under 10x",
-    "title_jp": "ドラゴン・ガーネット 0.579ct “GARNET CUSHION”",
-    "date": "2025-11-11",
-    "tags": [],
-    "image_order": "process_image_order: DSC_2380 DSC_2384 DSC_2386 DSC_3716 DSC_3720 DSC_3798 DSC_3802",
-    "process_image_order": "DSC_2380 DSC_2384 DSC_2386 DSC_3716 DSC_3720 DSC_3798 DSC_3802",
-    "video_url": "https://customer-jnhhy169io6el95i.cloudflarestream.com/a5b2c66b66024843863568aff72e0f0f/iframe",
-    "shop_url": "https://www.raralab.shop/product/dragon-garnet-0579ct-garnet-cushion/DBASMHF66OQ2V2PJSSK7ANGI?cp=true&sa=false&sbp=false&q=false&category_id=37"
+    "shop_url": "https://www.raralab.shop/product/oregon-sunstone-corky-st-clair-0640ct/75",
+    "modification_note": null,
+    "design_is_named": null
   },
   {
     "slug": "montana-sapphire-0448ct-smallest-hex-apex",
@@ -263,7 +310,9 @@
     "image_order": "",
     "process_image_order": "",
     "video_url": "https://customer-jnhhy169io6el95i.cloudflarestream.com/7fcdc5e7b4183501fb10a4ec62c36332/iframe",
-    "shop_url": "https://www.raralab.shop/product/montana-sapphire-0448ct-smallest-hex-apex/103"
+    "shop_url": "https://www.raralab.shop/product/montana-sapphire-0448ct-smallest-hex-apex/103",
+    "modification_note": null,
+    "design_is_named": null
   },
   {
     "slug": "oregon-sunstone-0908ct-temple-ruin",
@@ -282,6 +331,8 @@
     "image_order": "process_image_order:",
     "process_image_order": "",
     "video_url": "",
-    "shop_url": "https://www.raralab.shop/product/oregon-sunstone-temple-ruins-0908ct/74"
+    "shop_url": "https://www.raralab.shop/product/oregon-sunstone-temple-ruins-0908ct/74",
+    "modification_note": null,
+    "design_is_named": null
   }
 ]

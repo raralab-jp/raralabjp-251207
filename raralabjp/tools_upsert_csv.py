@@ -65,6 +65,35 @@ def read_single_row_from_stdin():
 
     return rows[0], fieldnames
 
+def merge_fieldnames(existing_fields, new_fields):
+    """
+    Keep existing order; append any new fields at the end.
+    """
+    existing_fields = existing_fields or []
+    new_fields = new_fields or []
+    seen = set()
+    merged = []
+    for fn in existing_fields:
+        if fn and fn not in seen:
+            merged.append(fn)
+            seen.add(fn)
+    for fn in new_fields:
+        if fn and fn not in seen:
+            merged.append(fn)
+            seen.add(fn)
+    return merged if merged else None
+
+def normalize_row_to_fieldnames(row: dict, fieldnames):
+    """
+    Ensure row has all keys in fieldnames; drop unknown keys.
+    """
+    if row is None:
+        row = {}
+    out = {}
+    for fn in fieldnames:
+        out[fn] = row.get(fn, "")
+    return out
+
 def main():
     if len(sys.argv) != 2:
         die("usage: tools_upsert_csv.py <target_csv_path>")
@@ -78,9 +107,13 @@ def main():
 
     existing_rows, existing_fields = read_csv_rows(target)
 
-    fieldnames = existing_fields or new_fields
+    fieldnames = merge_fieldnames(existing_fields, new_fields)
     if not fieldnames:
         die("cannot determine fieldnames")
+
+    # normalize existing rows and incoming row to current fieldnames
+    existing_rows = [normalize_row_to_fieldnames(r, fieldnames) for r in existing_rows]
+    new_row = normalize_row_to_fieldnames(new_row, fieldnames)
 
     out_rows = []
     replaced = False

@@ -673,6 +673,15 @@ def all_images(slug: str, image_order: str = ""):
 
     return paths
 
+def is_truthy(v) -> bool:
+    s = (v or "").strip().lower()
+    return s in ("1", "true", "yes", "y", "on")
+
+def design_display(design: str, is_named: bool) -> str:
+    d = (design or "").strip()
+    if not d:
+        return ""
+    return f'“{d}”' if is_named else d
 
 def render_gallery_card(it):
     """ギャラリー／トップ用の一覧カード（画像＋日本語タイトル1本）"""
@@ -685,7 +694,10 @@ def render_gallery_card(it):
         design = (it.get("design_name") or "").strip()
 
         primary = f"{stone} – {carat}ct" if stone and carat else (stone or slug)
-        secondary = f" “{design}”" if design else ""
+
+        design_named = is_truthy(it.get("design_is_named"))
+        secondary = f" {design_display(design, design_named)}" if design else ""
+
         title_jp = (primary + secondary).strip()
 
     thumb, _ = primary_images(slug)
@@ -712,7 +724,6 @@ def render_gallery_card(it):
     {caption_html}
   </a>
 </figure>'''
-
 
 # ---- Compatibility wrappers (avoid "missing function" confusion) ----
 def card_html(it: dict) -> str:
@@ -828,7 +839,6 @@ def top_index_html(new_cards: str, top_news_cards_html: str) -> str:
 {cta_html}
 </body>'''
 
-
 def detail_html(it):
     """ギャラリー／詳細ページ（1石）のフルHTMLを返す。"""
     slug   = it["slug"]
@@ -837,7 +847,10 @@ def detail_html(it):
     design = it.get("design_name","")
 
     title    = f'{stone} – {carat}ct' if stone and carat else (stone or slug)
-    subtitle = f'“{design}”' if design else ''
+
+    # Quote control for design name
+    design_named = is_truthy(it.get("design_is_named"))
+    subtitle = design_display(design, design_named) if design else ''
 
     breadcrumb = '' if not SHOW_BREADCRUMB else '<nav class="breadcrumb"><a href="/gallery/">← Back to Gallery</a></nav>'
 
@@ -946,17 +959,21 @@ def detail_html(it):
         origin_en = (it.get("origin_en") or "").strip()
         product_url = (it.get("shop_url") or "").strip()
 
+        mod_note = (it.get("modification_note") or "").strip()
+
         final_lines = []
         if title_jp:
             final_lines.append(f'  <p class="jp">{html.escape(title_jp)}</p>')
 
-        if stone_en and carat:
-            final_lines.append(f'  <p class="en">{html.escape(stone_en)} {html.escape(str(carat))}ct</p>')
-        elif stone_en:
+        if stone_en:
             final_lines.append(f'  <p class="en">{html.escape(stone_en)}</p>')
 
         if design_en:
-            final_lines.append(f'  <p class="en">Design: “{html.escape(design_en)}”</p>')
+            d = design_display(html.escape(design_en), design_named)
+            final_lines.append(f'  <p class="en">Design: {d}</p>')
+
+        if mod_note:
+            final_lines.append(f'  <p class="en">Modification: {html.escape(mod_note)}</p>')
 
         if faceter:
             final_lines.append(f'  <p class="meta">Faceted by {html.escape(faceter)}</p>')
@@ -1008,7 +1025,6 @@ def detail_html(it):
 <script src="/assets/js/lightbox.js"></script>
 </body>
 '''
-
 
 def build_site_css():
     """

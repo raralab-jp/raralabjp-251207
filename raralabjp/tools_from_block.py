@@ -26,6 +26,18 @@ def pick(labels, text, default=""):
 def warn(msg):
     print(f"WARN: {msg}", file=sys.stderr)
 
+def to_bool01(s: str) -> str:
+    """
+    Convert user input to "1" / "0" / "" (unspecified).
+    Accepts: 1/0, true/false, yes/no, on/off, named.
+    """
+    s = (s or "").strip().lower()
+    if s in ("1", "true", "yes", "y", "on", "named"):
+        return "1"
+    if s in ("0", "false", "no", "n", "off"):
+        return "0"
+    return ""
+
 def slugify(s):
     s = (s or "").lower()
     s = re.sub(r"[’'“”\"]", "", s)
@@ -118,6 +130,12 @@ clarity = pick(["Clarity"], text, default="")
 # -----------------------------
 image_order = pick(["image_order"], text, default="").strip()
 process_image_order = pick(["process_image_order"], text, default="").strip()
+
+# -----------------------------
+# Optional: modification note + design quote flag
+# -----------------------------
+modification_note = pick(["Modification"], text, default="").strip()
+design_is_named = to_bool01(pick(["Design Is Named", "design_is_named"], text, default=""))
 
 # -----------------------------
 # URLs (new unified format)
@@ -258,6 +276,10 @@ slug_default = (
 # wrap_design: if design is explicit or first line is quoted
 wrap_design = bool(design_name_raw) or bool(re.match(r'^(.+?)\s*[“"](.*?)[”"]\s*$', first))
 
+# If user didn't specify, infer from wrap_design (named design => quoted)
+if design_is_named == "":
+    design_is_named = "1" if wrap_design else "0"
+
 # title default: prefer explicit input; else generate (may be English)
 if title_jp_input:
     title_default = title_jp_input
@@ -291,6 +313,8 @@ if args.debug:
     print("DBG slug_default =", repr(slug_default), file=sys.stderr)
     print("DBG video_url =", repr(video_url), file=sys.stderr)
     print("DBG shop_url  =", repr(shop_url), file=sys.stderr)
+    print("DBG modification_note =", repr(modification_note), file=sys.stderr)
+    print("DBG design_is_named =", repr(design_is_named), file=sys.stderr)
 
 # -----------------------------
 # WARN checks (do not stop CSV output)
@@ -319,6 +343,7 @@ header = [
     "slug","stone","design_name","designer","faceted_by","carat",
     "size_mm","origin_en","treatment","clarity_note_en",
     "title_jp","date","tags","image_order","process_image_order","video_url","shop_url",
+    "modification_note","design_is_named",
 ]
 
 row = {
@@ -339,6 +364,8 @@ row = {
     "process_image_order": process_image_order,
     "video_url": video_url,
     "shop_url": shop_url,
+    "modification_note": modification_note,
+    "design_is_named": design_is_named,
 }
 
 buf = io.StringIO()
