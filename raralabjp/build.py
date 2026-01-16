@@ -65,6 +65,17 @@ def build_gallery_description(it: dict) -> str:
 
     return " ".join(base)
 
+def build_news_canonical(slug: str) -> str:
+    return f"{SITE_ORIGIN}/news/{slug}/"
+
+def build_news_description(body_html: str, fallback_title: str = "") -> str:
+    # HTMLタグを落として、空白を潰して、短くする（だいたい120〜160文字）
+    txt = re.sub(r"<[^>]+>", " ", body_html)
+    txt = re.sub(r"\s+", " ", txt).strip()
+    if not txt:
+        txt = fallback_title or "Rara LabのNews記事です。"
+    return txt[:160]
+
 def render_head(*, title: str, description: str, canonical: str, og_image: str = "", twitter_site: str = "@raralab") -> str:
     # og_image は絶対URLを推奨
     og_type = "article"  # ギャラリー詳細はとりあえず article でOK（後でProductでも可）
@@ -464,11 +475,11 @@ def top_news_card_html(n: dict) -> str:
   </a>
 </article>'''
 
-
-def news_index_html(cards: str, prev_link: str = None, next_link: str = None) -> str:
+def news_index_html(cards: str, prev_link: str = None, next_link: str = None, canonical: str = "") -> str:
     """
     ニュース一覧ページ全体のHTML。
     ヘッダーは「ロゴ → メニュー」を共通で表示する。
+    canonical は呼び出し側で、そのページの絶対URLを渡す（推奨）。
     """
     pager_parts = []
     if prev_link or next_link:
@@ -488,11 +499,22 @@ def news_index_html(cards: str, prev_link: str = None, next_link: str = None) ->
     logo_html = render_partial("top_logo.html")
     nav_html  = render_partial("nav_main.html")
 
+    seo_title = "News | Rara Lab"
+    description = "Rara Labの活動に関する更新情報をまとめています。出品やサイト更新など、節目となる内容を掲載しています。"
+
+    # canonical 未指定なら /news/ を使う（最低限の安全策）
+    can = canonical.strip() or f"{SITE_ORIGIN}/news/"
+
+    head_html = render_head(
+        title=seo_title,
+        description=description,
+        canonical=can,
+        og_image=f"{SITE_ORIGIN}/assets/images/top/raralab-logo-l.png",  # 画像は無難に固定（任意）
+    )
+
     return f'''<!doctype html>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width,initial-scale=1">
-<title>News | Rara Lab</title>
-<link rel="stylesheet" href="/assets/css/site.css">
+<html lang="ja">
+{head_html}
 <body>
 {logo_html}
 {nav_html}
@@ -518,19 +540,26 @@ def news_index_html(cards: str, prev_link: str = None, next_link: str = None) ->
 
 </main>
 </body>
+</html>
 '''
-
 
 def news_detail_html(news: dict, body_html: str) -> str:
     """
     個別NewsページのフルHTMLを返す。
     body_html は assets/news/body/<slug>.html に書いた本文スニペット。
     """
-    date  = html.escape(news.get("date") or "")
-    title = html.escape(news.get("title") or "")
+    slug = (news.get("slug") or "").strip()
 
+    date_raw  = (news.get("date") or "")
+    title_raw = (news.get("title") or "")
+
+    date  = html.escape(date_raw)
+    title = html.escape(title_raw)
+
+    # ---- hero image block ----
     hero_block = ""
     image_file = (news.get("image_file") or "").strip()
+    og_image = ""
     if image_file:
         src = resolve_news_image_src(image_file)
         if src:
@@ -541,7 +570,10 @@ def news_detail_html(news: dict, body_html: str) -> str:
           <img src="{src_attr}" alt="{title}">
         </p>
       </section>'''
+            # og:image は絶対URL推奨
+            og_image = src if src.startswith("http") else (SITE_ORIGIN + src)
 
+    # ---- body with date injection ----
     if "</h1>" in body_html:
         body_with_date = re.sub(
             r"</h1>",
@@ -558,14 +590,24 @@ def news_detail_html(news: dict, body_html: str) -> str:
         <p class="news-back"><a href="/news/">News 一覧へ戻る</a></p>
       </section>'''
 
+    # ---- SEO/head ----
+    seo_title = f"{title_raw} | Rara Lab" if title_raw else "News | Rara Lab"
+    canonical = build_news_canonical(slug) if slug else f"{SITE_ORIGIN}/news/"
+    description = build_news_description(body_html, fallback_title=title_raw)
+
+    head_html = render_head(
+        title=seo_title,
+        description=description,
+        canonical=canonical,
+        og_image=og_image
+    )
+
     logo_html = render_partial("top_logo.html")
     nav_html  = render_partial("nav_main.html")
 
     return f'''<!doctype html>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width,initial-scale=1">
-<title>{title} | Rara Lab</title>
-<link rel="stylesheet" href="/assets/css/site.css">
+<html lang="ja">
+{head_html}
 <body>
 {logo_html}
 {nav_html}
@@ -574,8 +616,8 @@ def news_detail_html(news: dict, body_html: str) -> str:
 {hero_block}{body_block}
     </article>
   </main>
-</body>'''
-
+</body>
+</html>'''
 
 # ---- Image helpers ----
 def primary_images(slug: str):
@@ -794,10 +836,11 @@ def news_card_html(n: dict) -> str:
     return render_news_index_card(n)
 
 
-def gallery_index_html(cards: str, prev_link: str = None, next_link: str = None) -> str:
+def gallery_index_html(cards: str, prev_link: str = None, next_link: str = None, canonical: str = "") -> str:
     """
     ギャラリー一覧ページ全体のHTML。
     ヘッダーは「ロゴ → メニュー」を共通で表示する。
+    canonical は呼び出し側で、そのページの絶対URLを渡す（推奨）。
     """
     pager_parts = []
     if prev_link or next_link:
@@ -815,11 +858,21 @@ def gallery_index_html(cards: str, prev_link: str = None, next_link: str = None)
     logo_html = render_partial("top_logo.html")
     nav_html  = render_partial("nav_main.html")
 
+    seo_title = "Gallery | Rara Lab"
+    description = "Rara Labがこれまでに制作した作品ギャラリーです。写真、制作過程、スペック、購入ページへのリンクを掲載しています。販売状況はショップの商品ページでご確認いただけます。"
+
+    can = canonical.strip() or f"{SITE_ORIGIN}/gallery/"
+
+    head_html = render_head(
+        title=seo_title,
+        description=description,
+        canonical=can,
+        og_image=f"{SITE_ORIGIN}/assets/images/top/raralab-logo-l.png",  # 固定でOK（任意）
+    )
+
     return f'''<!doctype html>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Gallery – Rara Lab</title>
-<link rel="stylesheet" href="/assets/css/site.css">
+<html lang="ja">
+{head_html}
 <body>
 {logo_html}
 {nav_html}
@@ -845,6 +898,7 @@ def gallery_index_html(cards: str, prev_link: str = None, next_link: str = None)
 
 </main>
 </body>
+</html>
 '''
 
 
@@ -882,11 +936,27 @@ def top_index_html(new_cards: str, top_news_cards_html: str) -> str:
 </section>
 '''
 
+    # ---- SEO / head ----
+    seo_title = "Rara Lab | Faceted Gemstones and Gallery"
+    description = (
+        "Rara Labは、ファセットカットによる宝石ルースを制作・展示するギャラリーサイトです。"
+        "研磨作品の写真、制作過程、スペック、販売情報を掲載しています。"
+    )
+
+    canonical = f"{SITE_ORIGIN}/"
+    og_image = f"{SITE_ORIGIN}/assets/images/top/raralab-logo-l.png"
+    # ※ ヒーロー画像をOGPに使いたくなったら、ここを差し替えるだけ
+
+    head_html = render_head(
+        title=seo_title,
+        description=description,
+        canonical=canonical,
+        og_image=og_image,
+    )
+
     return f'''<!doctype html>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Rara Lab</title>
-<link rel="stylesheet" href="/assets/css/site.css">
+<html lang="ja">
+{head_html}
 <body class="home">
 {logo_html}
 {hero_html}
@@ -897,7 +967,9 @@ def top_index_html(new_cards: str, top_news_cards_html: str) -> str:
 {news_block}
 {more_html}
 {cta_html}
-</body>'''
+</body>
+</html>'''
+
 
 def detail_html(it):
     """ギャラリー／詳細ページ（1石）のフルHTMLを返す。"""
@@ -1196,8 +1268,14 @@ def build():
         if page_num < page_count:
             next_link = f"/gallery/page-{page_num+1}.html"
 
+        # canonical（絶対URL）をページごとに作る
+        if page_num == 1:
+            canonical = f"{SITE_ORIGIN}/gallery/"
+        else:
+            canonical = f"{SITE_ORIGIN}/gallery/page-{page_num}.html"
+
         out_path.write_text(
-            inject_footer(gallery_index_html(cards, prev_link=prev_link, next_link=next_link)),
+            inject_footer(gallery_index_html(cards, prev_link=prev_link, next_link=next_link, canonical=canonical)),
             encoding="utf-8"
         )
 
@@ -1234,13 +1312,19 @@ def build():
             if page_num < page_count:
                 next_link = f"/news/page-{page_num+1}.html"
 
+            # canonical（絶対URL）をページごとに作る
+            if page_num == 1:
+                canonical = f"{SITE_ORIGIN}/news/"
+            else:
+                canonical = f"{SITE_ORIGIN}/news/page-{page_num}.html"
+
             out_path.write_text(
-                inject_footer(news_index_html(cards, prev_link=prev_link, next_link=next_link)),
+                inject_footer(news_index_html(cards, prev_link=prev_link, next_link=next_link, canonical=canonical)),
                 encoding="utf-8"
             )
     else:
         (OUT_NEWS / "index.html").write_text(
-            inject_footer(news_index_html("")),
+            inject_footer(news_index_html("", canonical=f"{SITE_ORIGIN}/news/")),
             encoding="utf-8"
         )
 
