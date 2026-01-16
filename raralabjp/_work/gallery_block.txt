@@ -11,4 +11,5 @@ Size: 5.01 × 5.04 × 3.34 mm
 Origin: Africa
 Treatment: None
 Clarity: Loupe clean
+image_order: DSC_4359 DSC_4363 DSC_4366 DSC_4370 DSC_4375 DSC_4372 DSC_4386 DSC_4396 DSC_4406 DSC_4413 DSC_4404 DSC_4214 DSC_4393 DSC_4389 
 process_image_order: DSC_2341 DSC_2344 DSC_2347

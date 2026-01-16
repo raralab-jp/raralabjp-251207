@@ -1,0 +1,14 @@
+URLs: shop=https://www.raralab.shop/product/dragon-garnet-0579ct-garnet-cushion/DBASMHF66OQ2V2PJSSK7ANGI; 
+image_order: DSC_3996 DSC_3998 DSC_4000 DSC_4003 DSC_4006 DSC_4010 DSC_4018 DSC_4020 DSC_4025 DSC_0375 DSC_0395 DSC_4026 DSC_4031 DSC_4036 DSC_4038 DSC_4558
+process_image_order: DSC_2380 DSC_2384 DSC_2386 DSC_3716 DSC_3720 DSC_3798 DSC_3802,DSC_2380 DSC_2384 DSC_2386 DSC_3716 DSC_3720 DSC_3798 DSC_3802
+Title JP: ドラゴン・ガーネット 0.579ct “GARNET CUSHION”
+design_is_named: 1 
+Stone: Dragon Garnet
+Facet Design: “GARNET CUSHION”
+Designed by Jim Perkins
+Faceted by Rara Lab
+Carat: 0.579ct
+Size: 5.05 × 5.03 × 3.13 mm
+Origin: Lindi (Tanzania)
+Treatment: None
+Clarity: Inclusion visible under 10x

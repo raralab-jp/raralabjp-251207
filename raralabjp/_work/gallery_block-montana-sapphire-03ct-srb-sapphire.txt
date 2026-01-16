@@ -2,6 +2,7 @@ URLs: shop=https://www.raralab.shop/product/montana-sapphire-03ct-srb-sapphire/1
 Title JP: モンタナ・サファイア 0.3ct “SRB Sapphire”
 Stone: Montana Sapphire
 Facet Design: “SRB Sapphire”  
+design_is_named: 1
 Designed by Sean O'Neil  
 Faceted by Rara Lab  
 Carat: 0.3ct

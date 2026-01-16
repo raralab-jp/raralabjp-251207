@@ -1,7 +1,8 @@
 URLs: shop=https://www.raralab.shop/product/montana-sapphire-02ct-srb-montana-sapphire/124; video=
 Title JP: モンタナサファイア 0.2ct “SRB Montana Sapphire”
 Stone: Montana Sapphire 
-Facet Design: “SRB Montana Sapphire”
+Facet Design: “SRB Montana Sapphire"
+design_is_named: 1
 Designed by JP Szymanski
 Faceted by Rara Lab
 Carat: 0.2ct

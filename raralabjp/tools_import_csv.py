@@ -1,5 +1,6 @@
 #!/usr/bin/env python3
-import csv, json, pathlib
+#!/usr/bin/env python3
+import csv, json, pathlib, re
 
 root = pathlib.Path(".")
 csvp = root / "assets/data/items.csv"
@@ -21,16 +22,43 @@ else:
 # slug をキーにしたインデックス
 index = {it.get("slug"): it for it in items if it.get("slug")}
 
+def _clean_order_field(v) -> str:
+    if v is None:
+        return ""
+    s = str(v).strip()
+    # ラベル残留を除去
+    s = re.sub(r"\bprocess_image_order\s*:\s*", "", s, flags=re.IGNORECASE)
+    s = re.sub(r"\bimage_order\s*:\s*", "", s, flags=re.IGNORECASE)
+    # IDっぽいものだけ残す（DSC_#### 等）
+    ids = re.findall(r"(?:DSC_\d+|IMG_\d+|\d{4,})", s)
+    return " ".join(ids)
+
+def normalize_orders(row: dict) -> None:
+    img = _clean_order_field(row.get("image_order"))
+    proc = _clean_order_field(row.get("process_image_order"))
+
+    # 典型事故：image_order に "process_image_order: ..." が入って proc が空
+    raw_img = str(row.get("image_order") or "")
+    if (not proc) and re.search(r"\bprocess_image_order\s*:", raw_img, flags=re.IGNORECASE):
+        proc = img
+        img = ""
+
+    row["image_order"] = img
+    row["process_image_order"] = proc
+
 with csvp.open(newline="", encoding="utf-8") as f:
     r = csv.DictReader(f)
 
     for row in r:
+        normalize_orders(row)  # ← ★ここ（最初）
+
         slug = (row.get("slug") or "").strip()
         if not slug:
             continue
 
         def S(k):
-            return (row.get(k) or "").strip()
+            v = row.get(k)
+            return "" if v is None else str(v).strip()
 
         def F(k):
             v = (row.get(k) or "").strip()

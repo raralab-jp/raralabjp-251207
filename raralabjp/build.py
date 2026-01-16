@@ -35,6 +35,66 @@ TOP_HERO     = ROOT / "assets" / "partials" / "top_hero.html"
 TOP_SECTIONS = ROOT / "assets" / "partials" / "top_sections.html"
 PARTIALS_DIR = ROOT / "assets" / "partials"
 
+SITE_ORIGIN = "https://raralab.jp"  # 本番ドメインを固定
+
+def build_gallery_canonical(slug: str) -> str:
+    return f"{SITE_ORIGIN}/gallery/{slug}/"
+
+def _s(v) -> str:
+    """None/float/int などが来ても安全に文字列化してstripする。"""
+    if v is None:
+        return ""
+    return str(v).strip()
+
+def build_gallery_description(it: dict) -> str:
+    stone  = _s(it.get("stone"))
+    carat  = _s(it.get("carat"))
+    origin = _s(it.get("origin_en"))
+
+    base = []
+    if stone and carat:
+        base.append(f"Rara Labが研磨した{stone} {carat}ctのルース。")
+    elif stone:
+        base.append(f"Rara Labが研磨した{stone}のルース。")
+    else:
+        base.append("Rara Labのギャラリー詳細ページです。")
+
+    if origin:
+        base.append(f"産地：{origin}。")
+    base.append("写真、制作過程、スペック、購入ページへのリンクを掲載しています。")
+
+    return " ".join(base)
+
+def render_head(*, title: str, description: str, canonical: str, og_image: str = "", twitter_site: str = "@raralab") -> str:
+    # og_image は絶対URLを推奨
+    og_type = "article"  # ギャラリー詳細はとりあえず article でOK（後でProductでも可）
+    parts = [
+        '<head>',
+        '  <meta charset="utf-8">',
+        '  <meta name="viewport" content="width=device-width,initial-scale=1">',
+        f"  <title>{html.escape(title)}</title>",
+        f'  <meta name="description" content="{html.escape(description)}">',
+        f'  <link rel="canonical" href="{html.escape(canonical)}">',
+        '  <link rel="stylesheet" href="/assets/css/site.css">',
+    ]
+
+    if og_image:
+        parts += [
+            f'  <meta property="og:type" content="{og_type}">',
+            '  <meta property="og:site_name" content="Rara Lab">',
+            f'  <meta property="og:title" content="{html.escape(title)}">',
+            f'  <meta property="og:description" content="{html.escape(description)}">',
+            f'  <meta property="og:url" content="{html.escape(canonical)}">',
+            f'  <meta property="og:image" content="{html.escape(og_image)}">',
+            '  <meta name="twitter:card" content="summary_large_image">',
+            f'  <meta name="twitter:site" content="{html.escape(twitter_site)}">',
+            f'  <meta name="twitter:title" content="{html.escape(title)}">',
+            f'  <meta name="twitter:description" content="{html.escape(description)}">',
+            f'  <meta name="twitter:image" content="{html.escape(og_image)}">',
+        ]
+
+    parts.append("</head>")
+    return "\n".join(parts)
 
 def render_partial(name: str) -> str:
     """
@@ -843,7 +903,7 @@ def detail_html(it):
     """ギャラリー／詳細ページ（1石）のフルHTMLを返す。"""
     slug   = it["slug"]
     stone  = it.get("stone","")
-    carat  = it.get("carat","")
+    carat = _s(it.get("carat"))
     design = it.get("design_name","")
 
     title    = f'{stone} – {carat}ct' if stone and carat else (stone or slug)
@@ -858,7 +918,15 @@ def detail_html(it):
     if not hero_thumb:
         print(f"WARN: hero cover image missing for slug={slug}", file=sys.stderr)
 
-    image_order = it.get("image_order", "")
+    raw_image_order = it.get("image_order", "") or ""
+
+    # "process_image_order:" が混入していたら除去（保険）
+    raw_image_order = re.sub(r"\bprocess_image_order\s*:\s*", "", str(raw_image_order), flags=re.IGNORECASE)
+
+    # IDっぽいもの（DSC_#### など）だけ抽出して並べ直す
+    order_ids = re.findall(r"(?:DSC_\d+|IMG_\d+|\d{4,})", raw_image_order)
+
+    image_order = " ".join(order_ids)
     thumbs_all = all_images(slug, image_order=image_order)
 
     process_order = (it.get("process_image_order", "") or "").strip()
@@ -931,7 +999,7 @@ def detail_html(it):
             img_class_attr = f' class="{active}"' if active else ""
             items.append(
                 f'<a class="thumb" href="#" data-full="{f4k}">'
-                f'<img src="{t}"{img_class_attr} alt="{html.escape(title)}" loading="lazy" decoding="async"></a>'
+                f'<img src="{t}"{img_class_attr} alt="" loading="lazy" decoding="async"></a>'
             )
 
         label_html = f'<p class="thumbs-label">{html.escape(label_text)}</p>\n' if label_text else ""
@@ -991,17 +1059,36 @@ def detail_html(it):
     logo_html = render_partial("top_logo.html")
     nav_html  = render_partial("nav_main.html")
 
+    # ---- SEO values ----
+    h1_title = title  # 既存の見出し用
+    seo_title = f"{h1_title} | Rara Lab"
+
+    canonical = build_gallery_canonical(slug)
+    description = build_gallery_description(it)
+
+    # og:image は「ヒーロー画像があれば使う」。Xの見栄え重視なら jpg(4k) 推奨
+    og_image = ""
+    if hero_4k:
+        og_image = SITE_ORIGIN + hero_4k  # hero_4k は "/assets/..." 形式なので絶対URL化
+    elif hero_display:
+        og_image = SITE_ORIGIN + hero_display
+
+    head_html = render_head(
+        title=seo_title,
+        description=description,
+        canonical=canonical,
+        og_image=og_image
+    )
+
     return f'''<!doctype html>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width,initial-scale=1">
-<title>{html.escape(title)} – Rara Lab</title>
-<link rel="stylesheet" href="/assets/css/site.css">
+<html lang="ja">
+{head_html}
 <body>
 {logo_html}
 {nav_html}
 <main class="detail">
   {breadcrumb}
-  <h1 class="title">{html.escape(title)}</h1>
+  <h1 class="title">{html.escape(h1_title)}</h1>
   {'<h2 class="subtitle">'+html.escape(subtitle)+'</h2>' if subtitle else ''}
   <section class="hero">
     {hero_html}
@@ -1024,6 +1111,7 @@ def detail_html(it):
 
 <script src="/assets/js/lightbox.js"></script>
 </body>
+</html>
 '''
 
 def build_site_css():
