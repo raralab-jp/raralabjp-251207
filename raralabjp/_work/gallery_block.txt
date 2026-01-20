@@ -1,15 +1,15 @@
-URLs: shop=https://www.raralab.shop/product/zircon-0718ct-bright-rose-modified-for-zircon/CXFRB6VT6MQWDMHFIBR6FPYV; video=
-Title JP: ジルコン 0.718ct "Bright Rose"
-Stone: Zircon
-Facet Design: Bright Rose
-Modification: Modified for Zircon
-Designed by Allan Beck
-Design Is Named: 1
+URLs: shop=; video=★ht./iframe
+image_order: ★ない場合は削除★
+process_image_order: ★ない場合は削除★
+Title JP: 
+Stone: 
+Facet Design: 
+design_is_named: 1
+modification_note:
 Faceted by Rara Lab
-Carat: 0.718ct
-Size: 5.01 × 5.04 × 3.34 mm
-Origin: Africa
-Treatment: None
-Clarity: Loupe clean
-image_order: DSC_4359 DSC_4363 DSC_4366 DSC_4370 DSC_4375 DSC_4372 DSC_4386 DSC_4396 DSC_4406 DSC_4413 DSC_4404 DSC_4214 DSC_4393 DSC_4389 
-process_image_order: DSC_2341 DSC_2344 DSC_2347
+Designed by
+Carat: 
+Size: 
+Origin: 
+Treatment: 
+Clarity: 
