@@ -1,0 +1,12 @@
+URLs: shop=https://www.raralab.shop/product/montana-sapphire-0413ct-smallest-hex-apex/102
+design_is_named: 1
+Title JP: モンタナサファイア 0.413ct “SMALLEST HEX APEX”
+Stone: Montana Sapphire
+Facet Design:  “SMALLEST HEX APEX”
+Faceted by Rara Lab
+Designed by Robert H. Long
+Carat: 0.413ct
+Size: 4.06mm x 4.06mm x 2.94mm
+Origin: Rock Creek, Montana (US)
+Treatment: Heated
+Crarity: Eye Clean

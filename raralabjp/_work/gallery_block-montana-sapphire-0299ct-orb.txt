@@ -1,0 +1,12 @@
+URLs: shop=https://www.raralab.shop/product/montana-sapphire-orb-mod-0299ct/88
+design_is_named: 1
+Title JP: ブルーモンタナサファイア “Orb” 0.299ct
+Stone: Montana Sapphire
+Facet Design: “Orb”
+Faceted by Rara Lab
+Designed by Scott Laborie
+Carat: 0.299ct
+Size: 3.82mm x 3.85mm x 2.39mm
+Origin: Montana, US
+Treatment: Heated
+Clarity: Slightly Included
