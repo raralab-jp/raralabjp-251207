@@ -1,5 +1,6 @@
 URLs: shop=https://www.raralab.shop/product/montana-sapphire-orb-mod-0299ct/88
 design_is_named: 1
+modification_note: Modified
 Title JP: ブルーモンタナサファイア “Orb” 0.299ct
 Stone: Montana Sapphire
 Facet Design: “Orb”

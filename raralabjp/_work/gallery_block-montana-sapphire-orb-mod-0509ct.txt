@@ -1,10 +1,11 @@
 URLs: shop=https://www.raralab.shop/product/montana-sapphire-orb-mod-0509ct/89
 design_is_named: 1
+modification_note: Pavilion modified
 Title JP: モンタナサファイア “Orb” 0.509ct
 Stone: Montana Sapphire
 Facet Design:  “Orb”
 Faceted by Rara Lab
-Designed by Scott Laborie, modified
+Designed by Scott Laborie
 Carat: 0.509ct
 Size: 4.54mm x 4.56mm x 2.37mm
 Origin: Montana, US

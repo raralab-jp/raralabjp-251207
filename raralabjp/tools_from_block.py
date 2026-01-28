@@ -17,7 +17,7 @@ def pick(labels, text, default=""):
     Allows leading whitespace before labels.
     """
     for label in labels:
-        pat = rf"^\s*{re.escape(label)}\s*[:：]?\s*(.*)$"
+        pat = rf"^\s*{re.escape(label)}\s*(?:[:：]\s*(.*))?\s*$"
         ms = re.findall(pat, text, flags=re.M | re.I)
         if ms:
             return ms[-1].strip()
@@ -134,7 +134,7 @@ process_image_order = pick(["process_image_order"], text, default="").strip()
 # -----------------------------
 # Optional: modification note + design quote flag
 # -----------------------------
-modification_note = pick(["Modification"], text, default="").strip()
+modification_note = pick(["modification_note", "Modification Note"], text, default="").strip()
 design_is_named = to_bool01(pick(["Design Is Named", "design_is_named"], text, default=""))
 
 # -----------------------------
