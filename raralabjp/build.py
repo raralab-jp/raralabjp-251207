@@ -35,6 +35,11 @@ TOP_HERO     = ROOT / "assets" / "partials" / "top_hero.html"
 TOP_SECTIONS = ROOT / "assets" / "partials" / "top_sections.html"
 PARTIALS_DIR = ROOT / "assets" / "partials"
 
+GEMDIARY_RAW_DIR  = ROOT / "assets" / "gemdiary" / "raw"
+GEMDIARY_BODY_DIR = ROOT / "assets" / "gemdiary" / "body"
+
+OUT_GEMDIARY = SITE_ROOT / "gemdiary"
+
 SITE_ORIGIN = "https://raralab.jp"  # 本番ドメインを固定
 
 def build_gallery_canonical(slug: str) -> str:
@@ -543,6 +548,71 @@ def news_index_html(cards: str, prev_link: str = None, next_link: str = None, ca
 </html>
 '''
 
+def extract_gemdiary_meta(raw_index_path: Path) -> dict:
+    text = raw_index_path.read_text(encoding="utf-8", errors="replace")
+
+    def m1(pattern: str) -> str:
+        m = re.search(pattern, text, flags=re.I)
+        return m.group(1).strip() if m else ""
+
+    title = m1(r"<title>\s*(.*?)\s*</title>")
+    date  = m1(r'<meta\s+name="date"\s+content="([^"]+)"')
+    canonical = m1(r'<link\s+rel="canonical"\s+href="([^"]+)"')
+
+    return {"title": title, "date": date, "canonical": canonical}
+
+def gemdiary_detail_html(meta: dict, body_html: str) -> str:
+    slug = (meta.get("slug") or "").strip()
+
+    title_raw = (meta.get("title") or "")
+    date_raw  = (meta.get("date") or "")
+
+    title = html.escape(title_raw)
+    date  = html.escape(date_raw)
+
+    # dateは本文の上に軽く出す（不要なら消してOK）
+    date_block = f'<p class="post-date">{date}</p>' if date_raw else ""
+
+    body_block = f'''
+      <section class="post-body">
+        {date_block}
+        {body_html}
+      </section>'''
+
+    seo_title = f"{title_raw} | Rara Lab" if title_raw else "Gem Diary | Rara Lab"
+
+    # canonical は基本ここで生成。rawにあるcanonicalと一致するので安心。
+    canonical = f"{SITE_ORIGIN}/gemdiary/{slug}/" if slug else f"{SITE_ORIGIN}/gemdiary/"
+
+    description = build_news_description(body_html, fallback_title=title_raw)  # 既存関数流用
+
+    head_html = render_head(
+        title=seo_title,
+        description=description,
+        canonical=canonical,
+        og_image=""
+    )
+
+    logo_html = render_partial("top_logo.html")
+    nav_html  = render_partial("nav_main.html")
+
+    return f'''<!doctype html>
+<html lang="ja">
+{head_html}
+<body>
+{logo_html}
+{nav_html}
+  <main class="detail gemdiary-detail">
+    <article>
+      <h1>{title}</h1>
+{body_block}
+      <p class="post-back"><a href="/news/">Newsへ</a></p>
+    </article>
+  </main>
+</body>
+</html>'''
+
+
 def news_detail_html(news: dict, body_html: str) -> str:
     """
     個別NewsページのフルHTMLを返す。
@@ -996,7 +1066,7 @@ def detail_html(it):
     raw_image_order = re.sub(r"\bprocess_image_order\s*:\s*", "", str(raw_image_order), flags=re.IGNORECASE)
 
     # IDっぽいもの（DSC_#### など）だけ抽出して並べ直す
-    order_ids = re.findall(r"(?:DSC_\d+|IMG_\d+|\d{4,})", raw_image_order)
+    order_ids = re.findall(r"(?:DSC_\d+|IMG_\d+|IMGP_\d+|\d{4,})", raw_image_order)
 
     image_order = " ".join(order_ids)
     thumbs_all = all_images(slug, image_order=image_order)
@@ -1363,6 +1433,28 @@ def build():
         out_dir.mkdir(parents=True, exist_ok=True)
         (out_dir / "index.html").write_text(html_text, encoding="utf-8")
 
+    # ---- Gemdiary detail pages (/gemdiary/<slug>/index.html) ----
+    # assets/gemdiary/body/<slug>.html を本文として使用
+    if GEMDIARY_BODY_DIR.exists():
+        for body_path in sorted(GEMDIARY_BODY_DIR.glob("*.html")):
+            slug = body_path.stem.strip()
+            if not slug or slug == "index":
+                continue
+
+            # raw の meta を読む（無ければ最低限で）
+            raw_index = GEMDIARY_RAW_DIR / slug / "index.html"
+            meta = {"slug": slug}
+            if raw_index.exists():
+                meta.update(extract_gemdiary_meta(raw_index))
+
+            body_html = body_path.read_text(encoding="utf-8")
+
+            html_text = inject_footer(gemdiary_detail_html(meta, body_html))
+            out_dir = OUT_GEMDIARY / slug
+            out_dir.mkdir(parents=True, exist_ok=True)
+            (out_dir / "index.html").write_text(html_text, encoding="utf-8")
+    else:
+        print("[gemdiary] skip: assets/gemdiary/body not found")
 
 if __name__ == "__main__":
     build()

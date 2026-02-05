@@ -30,7 +30,7 @@ def _clean_order_field(v) -> str:
     s = re.sub(r"\bprocess_image_order\s*:\s*", "", s, flags=re.IGNORECASE)
     s = re.sub(r"\bimage_order\s*:\s*", "", s, flags=re.IGNORECASE)
     # IDっぽいものだけ残す（DSC_#### 等）
-    ids = re.findall(r"(?:DSC_\d+|IMG_\d+|\d{4,})", s)
+    ids = re.findall(r"(?:DSC_\d+|IMG_\d+|IMGP_\d+|\d{4,})", s)
     return " ".join(ids)
 
 def normalize_orders(row: dict) -> None:

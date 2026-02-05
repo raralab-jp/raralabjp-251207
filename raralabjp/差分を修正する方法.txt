@@ -1,0 +1,7 @@
+こぴって
+検索して
+置換！
+git diff raralabjp/build.py
+で確認
+
+Patch Applyはクセツヨで沼ったのでおすすめできない！
