@@ -95,7 +95,15 @@ def carat_token_no_dot(c: str) -> str:
 # -----------------------------
 def first_content_line(text: str) -> str:
     # fixed labels; skip if line starts with these labels (colon optional, whitespace allowed)
-    skip_labels = ("Title JP", "Japanese Title", "Product ID", "ProductID", "ID")
+    skip_labels = (
+        "URLs", "image_order", "process_image_order",
+        "Title JP", "Japanese Title", "Product ID", "ProductID", "ID",
+        "Stone", "Stone JP", "stone_ja", "Facet Design", "Design", "Designed by", "Designer", "Faceted by",
+        "Carat", "Size", "Origin", "Treatment", "Clarity",
+        "Design Is Named", "design_is_named", "modification_note", "Modification Note",
+        "商品番号", "石種", "石種JP", "石種日本語", "ファセットデザイン", "デザイナー", "研磨", "重さ", "サイズ",
+        "産地", "処理", "透明度", "鑑別", "デザイン改変",
+    )
     for ln in text.splitlines():
         s = ln.strip()
         if not s:
@@ -112,18 +120,49 @@ first = first_content_line(text)
 # Prefer fixed labels (your policy)
 # -----------------------------
 title_jp_input = pick(["Title JP", "Japanese Title"], text, default="")
+product_id = pick(["Product ID", "ProductID", "ID", "商品番号"], text, default="").strip()
 
-design_name_raw = pick(["Facet Design"], text, default="")
+# English fields are kept for existing gallery/slug behavior.
+# Japanese labels are added as optional master/listing fields.
+#
+# Policy:
+#   Stone / 石種       = English stone name for slug and legacy gallery field
+#   Stone JP / 石種JP = Japanese stone name for title_jp and listing/master fields
+#
+# Backward compatibility:
+#   Older test data may use "石種: Montana Sapphire". If that value is ASCII/slugifiable,
+#   it is treated as the English stone name below, not as the Japanese display name.
+stone_ja = pick(["Stone JP", "stone_ja", "石種JP", "石種日本語"], text, default="").strip()
+stone_jp_legacy = pick(["石種"], text, default="").strip()
+if not stone_ja and stone_jp_legacy and not slugify(stone_jp_legacy):
+    # If someone writes "石種: モンタナサファイア", keep it as Japanese display name.
+    stone_ja = stone_jp_legacy
+
+design_name_raw = pick(["Facet Design", "ファセットデザイン"], text, default="")
 if not design_name_raw:
     design_name_raw = pick(["Design"], text, default="")
 
-designer = pick(["Designed by", "Designer"], text, default="")
+designer = pick(["Designed by", "Designer", "デザイナー"], text, default="")
 faceted_by = pick(["Faceted by"], text, default="Rara Lab")
+faceted_by_ja = pick(["研磨"], text, default="").strip()
 
-size_mm = pick(["Size"], text, default="")
+size_mm = pick(["Size", "サイズ"], text, default="")
 origin_en = pick(["Origin"], text, default="")
+origin_ja = pick(["産地"], text, default="")
+if not origin_en and origin_ja and re.search(r"[A-Za-z]", origin_ja):
+    origin_en = origin_ja
+
 treatment = pick(["Treatment"], text, default="")
+treatment_ja = pick(["処理"], text, default="")
+if not treatment and treatment_ja and re.search(r"[A-Za-z]", treatment_ja):
+    treatment = treatment_ja
+
 clarity = pick(["Clarity"], text, default="")
+clarity_note_ja = pick(["透明度"], text, default="")
+if not clarity and clarity_note_ja and re.search(r"[A-Za-z]", clarity_note_ja):
+    clarity = clarity_note_ja
+cert_lab_ja = pick(["鑑別"], text, default="").strip()
+cert_lab_en = pick(["cert_lab_en", "Cert Lab EN"], text, default="").strip()
 
 # -----------------------------
 # Image order (optional)
@@ -134,7 +173,28 @@ process_image_order = pick(["process_image_order"], text, default="").strip()
 # -----------------------------
 # Optional: modification note + design quote flag
 # -----------------------------
-modification_note = pick(["modification_note", "Modification Note"], text, default="").strip()
+modification_note = pick(["modification_note", "Modification Note", "デザイン改変"], text, default="").strip()
+
+# Safety guard:
+# If the modification field accidentally captured the next labeled field
+# (for example "デザイナー: TJ Jackson"), treat it as empty.
+# Modification should be shown only when the user writes an actual note in
+# modification_note / Modification Note / デザイン改変.
+_modification_bad_prefixes = (
+    "デザイナー:", "デザイナー：",
+    "Designer:", "Designer：",
+    "Designed by:", "Designed by：",
+    "研磨:", "研磨：",
+    "Faceted by:", "Faceted by：",
+    "石種:", "石種：",
+    "Stone:", "Stone：",
+    "産地:", "産地：",
+    "Origin:", "Origin：",
+)
+if modification_note.startswith(_modification_bad_prefixes):
+    warn(f"modification_note looks like another field and was ignored: {modification_note!r}")
+    modification_note = ""
+
 design_is_named = to_bool01(pick(["Design Is Named", "design_is_named"], text, default=""))
 
 # -----------------------------
@@ -168,16 +228,26 @@ if shop_url and "cloudflarestream.com" in shop_url:
 stone = ""
 carat = ""
 
-# Prefer explicit Stone label (English, for slug stability)
+# Prefer explicit Stone label (English, for slug stability).
+# If only the Japanese label is supplied but the value is ASCII/slugifiable
+# (e.g. "石種: Montana Sapphire"), safely use it for the legacy stone field too.
 stone_labeled = pick(["Stone"], text, default="").strip()
-has_stone_label = bool(stone_labeled)
-if has_stone_label:
+stone_legacy_labeled = pick(["石種"], text, default="").strip()
+has_stone_label = bool(stone_labeled or stone_legacy_labeled)
+if stone_labeled:
     stone = stone_labeled
     if not slugify(stone):
         warn("Stone label exists but cannot be slugified. Use English in 'Stone:'.")
+elif stone_legacy_labeled and slugify(stone_legacy_labeled):
+    # Japanese label with English value, e.g. "石種: Montana Sapphire"
+    stone = stone_legacy_labeled
+elif stone_legacy_labeled:
+    # Japanese-only value is useful for title_jp, but not for slug stability.
+    stone = ""
+    warn("石種 is Japanese/non-ascii. Add 'Stone:' in English or use '石種: English' + '石種JP: 日本語'.")
 
 # Carat: prefer label (fixed)
-carat_labeled = parse_carat_value(pick(["Carat"], text, default=""))
+carat_labeled = parse_carat_value(pick(["Carat", "重さ"], text, default=""))
 has_carat_label = bool(carat_labeled)
 if has_carat_label:
     carat = carat_labeled
@@ -280,19 +350,20 @@ wrap_design = bool(design_name_raw) or bool(re.match(r'^(.+?)\s*[“"](.*?)[”"
 if design_is_named == "":
     design_is_named = "1" if wrap_design else "0"
 
-# title default: prefer explicit input; else generate (may be English)
+# title default: prefer explicit input; else generate from Japanese stone name when available.
 if title_jp_input:
     title_default = title_jp_input
 else:
-    if stone and carat and design_name:
+    title_stone = stone_ja or stone
+    if title_stone and carat and design_name:
         if wrap_design:
-            title_default = f"{stone} {carat}ct “{design_name}”"
+            title_default = f"{title_stone} {carat}ct “{design_name}”"
         else:
-            title_default = f"{stone} {carat}ct {design_name}"
+            title_default = f"{title_stone} {carat}ct {design_name}"
     else:
         title_default = ""
-    if title_default:
-        warn("title_jp was auto-generated (may be English). Consider adding 'Title JP:' line.")
+    if title_default and not stone_ja:
+        warn("title_jp was auto-generated with English stone name. Add 'Stone JP:' or '石種JP:' for Japanese title.")
 
 # -----------------------------
 # Args
@@ -307,6 +378,7 @@ args, _ = ap.parse_known_args()
 if args.debug:
     print("DBG first =", repr(first), file=sys.stderr)
     print("DBG stone =", repr(stone), file=sys.stderr)
+    print("DBG stone_ja =", repr(stone_ja), file=sys.stderr)
     print("DBG carat =", repr(carat), file=sys.stderr)
     print("DBG carat_token =", repr(carat_token), file=sys.stderr)
     print("DBG design_name =", repr(design_name), file=sys.stderr)
@@ -327,10 +399,10 @@ if not carat:
     warn("carat is empty")
 if not size_mm:
     warn("size_mm is empty")
-if not treatment_norm:
+if not treatment_norm and not treatment_ja:
     warn("treatment is empty")
-if not origin_en:
-    warn("origin_en is empty (fill later)")
+if not origin_en and not origin_ja:
+    warn("origin is empty (fill later)")
 if not args.slug:
     warn("slug is empty")
 if not args.title_jp:
@@ -344,6 +416,8 @@ header = [
     "size_mm","origin_en","treatment","clarity_note_en",
     "title_jp","date","tags","image_order","process_image_order","video_url","shop_url",
     "modification_note","design_is_named",
+    "product_id","stone_ja","faceted_by_ja","origin_ja","treatment_ja","clarity_note_ja",
+    "cert_lab_ja","cert_lab_en","title_jp_override","clarity_note_ja_override","clarity_note_en_override",
 ]
 
 row = {
@@ -366,6 +440,17 @@ row = {
     "shop_url": shop_url,
     "modification_note": modification_note,
     "design_is_named": design_is_named,
+    "product_id": product_id,
+    "stone_ja": stone_ja,
+    "faceted_by_ja": faceted_by_ja,
+    "origin_ja": origin_ja,
+    "treatment_ja": treatment_ja,
+    "clarity_note_ja": clarity_note_ja,
+    "cert_lab_ja": cert_lab_ja,
+    "cert_lab_en": cert_lab_en,
+    "title_jp_override": "",
+    "clarity_note_ja_override": "",
+    "clarity_note_en_override": "",
 }
 
 buf = io.StringIO()

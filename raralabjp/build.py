@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-import json, html, re, csv
+import json, html, re, csv, argparse
 from pathlib import Path
 import shutil
 import sys
@@ -18,6 +18,7 @@ SITE_ROOT = ROOT / "site"
 SITE_ROOT.mkdir(parents=True, exist_ok=True)
 
 DATA = ROOT / "assets" / "data" / "items.json"
+MASTER_CSV = ROOT / "assets" / "data" / "items_master.csv"
 
 # ギャラリー・ニュースは site/ 以下に出力
 OUT_GALLERY = SITE_ROOT / "gallery"
@@ -1256,6 +1257,190 @@ def detail_html(it):
 </html>
 '''
 
+# ---- Master CSV / Listing renderer ----
+MASTER_FIELDNAMES = [
+    "slug", "stone", "design_name", "designer", "faceted_by", "carat",
+    "size_mm", "origin_en", "treatment", "clarity_note_en",
+    "title_jp", "date", "tags", "image_order", "process_image_order", "video_url", "shop_url",
+    "modification_note", "design_is_named",
+    "product_id", "stone_ja", "faceted_by_ja", "origin_ja", "treatment_ja", "clarity_note_ja",
+    "cert_lab_ja", "cert_lab_en", "title_jp_override", "clarity_note_ja_override", "clarity_note_en_override",
+]
+
+
+def _mv(row: dict, key: str) -> str:
+    return _s(row.get(key))
+
+
+def read_master_csv(csv_path: Path):
+    rows = []
+    if not csv_path.exists():
+        return rows
+    with csv_path.open(encoding="utf-8", newline="") as f:
+        reader = csv.DictReader(f)
+        for row in reader:
+            rows.append({k: _s(v) for k, v in row.items()})
+    return rows
+
+
+def design_display_text(design_name: str, design_is_named: str) -> str:
+    design_name = _s(design_name)
+    if not design_name:
+        return ""
+    return f'“{design_name}”' if _s(design_is_named) == "1" else design_name
+
+
+def resolve_title_jp(row: dict) -> str:
+    override = _mv(row, "title_jp_override")
+    if override:
+        return override
+
+    title_jp = _mv(row, "title_jp")
+    if title_jp:
+        return title_jp
+
+    stone_ja = _mv(row, "stone_ja")
+    carat = _mv(row, "carat")
+    design_name = _mv(row, "design_name")
+    if stone_ja and carat and design_name:
+        return f'{stone_ja} {carat}ct {design_display_text(design_name, row.get("design_is_named"))}'
+    return ""
+
+
+def resolve_clarity_note_ja(row: dict) -> str:
+    return _mv(row, "clarity_note_ja_override") or _mv(row, "clarity_note_ja")
+
+
+def resolve_clarity_note_en(row: dict) -> str:
+    return _mv(row, "clarity_note_en_override") or _mv(row, "clarity_note_en")
+
+
+def master_row_to_gallery_item(row: dict) -> dict:
+    return {
+        "slug": _mv(row, "slug"),
+        "title": resolve_title_jp(row),
+        "title_jp": resolve_title_jp(row),
+        "stone": _mv(row, "stone"),
+        "stone_ja": _mv(row, "stone_ja"),
+        "carat": _mv(row, "carat"),
+        "design_name": _mv(row, "design_name"),
+        "designer": _mv(row, "designer"),
+        "faceted_by": _mv(row, "faceted_by"),
+        "faceted_by_ja": _mv(row, "faceted_by_ja"),
+        "origin_en": _mv(row, "origin_en"),
+        "origin_ja": _mv(row, "origin_ja"),
+        "treatment": _mv(row, "treatment"),
+        "treatment_ja": _mv(row, "treatment_ja"),
+        "clarity_note_en": resolve_clarity_note_en(row),
+        "clarity_note_ja": resolve_clarity_note_ja(row),
+        "cert_lab_ja": _mv(row, "cert_lab_ja"),
+        "cert_lab_en": _mv(row, "cert_lab_en"),
+        "size_mm": _mv(row, "size_mm"),
+        "product_id": _mv(row, "product_id"),
+        "modification_note": _mv(row, "modification_note"),
+        "design_is_named": _mv(row, "design_is_named"),
+        "date": _mv(row, "date"),
+        "image_order": _mv(row, "image_order"),
+        "process_image_order": _mv(row, "process_image_order"),
+        "video_url": _mv(row, "video_url"),
+        "shop_url": _mv(row, "shop_url"),
+        "tags": _mv(row, "tags"),
+    }
+
+
+def render_listing_blocks(row: dict) -> dict:
+    title_jp = resolve_title_jp(row)
+    clarity_ja = resolve_clarity_note_ja(row)
+    clarity_en = resolve_clarity_note_en(row)
+    design_jp = design_display_text(_mv(row, "design_name"), row.get("design_is_named"))
+    design_en = design_display_text(_mv(row, "design_name"), row.get("design_is_named"))
+
+    ja_lines = []
+    if title_jp:
+        ja_lines.append(title_jp)
+    if _mv(row, "stone_ja"):
+        ja_lines.append(f'石種：{_mv(row, "stone_ja")}')
+    if _mv(row, "carat"):
+        ja_lines.append(f'重さ：{_mv(row, "carat")}ct')
+    if _mv(row, "size_mm"):
+        ja_lines.append(f'サイズ：{_mv(row, "size_mm")}')
+    if design_jp:
+        ja_lines.append(f'ファセットデザイン：{design_jp}')
+    if _mv(row, "designer"):
+        ja_lines.append(f'デザイナー：{_mv(row, "designer")}')
+    if _mv(row, "faceted_by_ja"):
+        ja_lines.append(f'研磨：{_mv(row, "faceted_by_ja")}')
+    elif _mv(row, "faceted_by"):
+        ja_lines.append(f'研磨：{_mv(row, "faceted_by")}')
+    if _mv(row, "origin_ja"):
+        ja_lines.append(f'産地：{_mv(row, "origin_ja")}')
+    if _mv(row, "treatment_ja"):
+        ja_lines.append(f'処理：{_mv(row, "treatment_ja")}')
+    if clarity_ja:
+        ja_lines.append(f'透明度：{clarity_ja}')
+    if _mv(row, "cert_lab_ja"):
+        ja_lines.append(f'鑑別：{_mv(row, "cert_lab_ja")}')
+    if _mv(row, "modification_note"):
+        ja_lines.append(f'デザイン改変：{_mv(row, "modification_note")}')
+    if _mv(row, "product_id"):
+        ja_lines.append(f'\n商品番号：{_mv(row, "product_id")}')
+
+    en_lines = []
+    if _mv(row, "stone") and _mv(row, "carat"):
+        en_lines.append(f'{_mv(row, "stone")} {_mv(row, "carat")}ct {design_en}'.strip())
+    elif _mv(row, "stone"):
+        en_lines.append(_mv(row, "stone"))
+    if _mv(row, "stone"):
+        en_lines.append(f'Stone: {_mv(row, "stone")}')
+    if _mv(row, "carat"):
+        en_lines.append(f'Weight: {_mv(row, "carat")}ct')
+    if _mv(row, "size_mm"):
+        en_lines.append(f'Size: {_mv(row, "size_mm")}')
+    if design_en:
+        en_lines.append(f'Design: {design_en}')
+    if _mv(row, "designer"):
+        en_lines.append(f'Designer: {_mv(row, "designer")}')
+    if _mv(row, "faceted_by"):
+        en_lines.append(f'Faceted by: {_mv(row, "faceted_by")}')
+    if _mv(row, "origin_en"):
+        en_lines.append(f'Origin: {_mv(row, "origin_en")}')
+    if _mv(row, "treatment"):
+        en_lines.append(f'Treatment: {_mv(row, "treatment")}')
+    if clarity_en:
+        en_lines.append(f'Clarity: {clarity_en}')
+    if _mv(row, "cert_lab_en"):
+        en_lines.append(f'Certificate: {_mv(row, "cert_lab_en")}')
+    if _mv(row, "modification_note"):
+        en_lines.append(f'Modification: {_mv(row, "modification_note")}')
+    if _mv(row, "product_id"):
+        en_lines.append(f'\nProduct ID: {_mv(row, "product_id")}')
+
+    return {
+        "ja": "\n".join(ja_lines),
+        "en": "\n".join(en_lines),
+    }
+
+
+def render_master_outputs(rows, target: str) -> str:
+    parts = []
+    for idx, row in enumerate(rows, start=1):
+        slug = _mv(row, "slug") or f"row-{idx}"
+        if target in ("gallery", "all"):
+            parts.append(f"### gallery:{slug}")
+            parts.append(json.dumps(master_row_to_gallery_item(row), ensure_ascii=False, indent=2))
+        if target in ("listing", "all"):
+            blocks = render_listing_blocks(row)
+            parts.append(f"### listing:{slug}:ja")
+            parts.append(blocks["ja"])
+            parts.append(f"### listing:{slug}:en")
+            parts.append(blocks["en"])
+    return "\n\n".join(part for part in parts if part.strip()) + ("\n" if parts else "")
+
+
+def run_master_renderer(csv_path: Path, target: str):
+    rows = read_master_csv(csv_path)
+    sys.stdout.write(render_master_outputs(rows, target=target))
+
 def build_site_css():
     """
     assets/css/src/*.css を名前順に結合して assets/css/site.css を生成する。
@@ -1457,5 +1642,13 @@ def build():
         print("[gemdiary] skip: assets/gemdiary/body not found")
 
 if __name__ == "__main__":
-    build()
-    print("✅ build complete: gallery, news, details, and top index generated.")
+    ap = argparse.ArgumentParser()
+    ap.add_argument("--target", choices=["gallery", "listing", "all"], default="gallery")
+    ap.add_argument("--master-csv", default="")
+    args = ap.parse_args()
+
+    if args.master_csv:
+        run_master_renderer(Path(args.master_csv), target=args.target)
+    else:
+        build()
+        print("✅ build complete: gallery, news, details, and top index generated.")

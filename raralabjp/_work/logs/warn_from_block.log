@@ -12,3 +12,9 @@ WARN: origin_en is empty (fill later)
 WARN: origin_en is empty (fill later)
 WARN: origin_en is empty (fill later)
 WARN: carat decimals should be 1 or 3 digits by policy: '1.16'
+WARN: carat decimals should be 1 or 3 digits by policy: '1.16'
+WARN: carat decimals should be 1 or 3 digits by policy: '1.16'
+WARN: title_jp was auto-generated (may be English). Consider adding 'Title JP:' line.
+WARN: modification_note looks like another field and was ignored: 'デザイナー: TJ Jackson'
+WARN: modification_note looks like another field and was ignored: 'デザイナー: TJ Jackson'
+WARN: modification_note looks like another field and was ignored: 'デザイナー: TJ Jackson'
