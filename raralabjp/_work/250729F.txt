@@ -1,7 +1,7 @@
-URLs: shop=; gallery=https://www.raralab.jp/gallery/montana-sapphire-0223ct-smallest-hex/; video=; note=
+URLs: shop=; video= https://customer-jnhhy169io6el95i.cloudflarestream.com/c368131f8b4a5fbab5c6dd03ef842d64/iframe
 image_order:
 process_image_order:
-商品番号: TEST-SQUARE-001
+商品番号: 250729F
 石種: Montana Sapphire
 石種JP: モンタナ・サファイア
 ファセットデザイン: Smallest Hex
@@ -13,6 +13,5 @@ design_is_named: 1
 サイズ: 3.54x3.50×2.13 mm
 産地: Montana, USA
 処理: Unheated
-クラリティ: Eye clean
-カット備考: 10倍ルーペで確認できるごくわずかなミートポイントのずれあり
+透明度: Eye clean
 鑑別: 日独宝石研究所

@@ -15,9 +15,13 @@ def pick(labels, text, default=""):
     Labels are treated as plain strings (not regex).
     Accepts both ':' and '：'.
     Allows leading whitespace before labels.
+
+    Important:
+    Do not let \s* consume the newline after an empty label.
+    Use [ \t]* instead of \s* around the colon.
     """
     for label in labels:
-        pat = rf"^\s*{re.escape(label)}\s*(?:[:：]\s*(.*))?\s*$"
+        pat = rf"^[ \t]*{re.escape(label)}[ \t]*(?:[:：][ \t]*(.*))?[ \t]*$"
         ms = re.findall(pat, text, flags=re.M | re.I)
         if ms:
             return ms[-1].strip()
@@ -157,10 +161,13 @@ treatment_ja = pick(["処理"], text, default="")
 if not treatment and treatment_ja and re.search(r"[A-Za-z]", treatment_ja):
     treatment = treatment_ja
 
-clarity = pick(["Clarity"], text, default="")
-clarity_note_ja = pick(["透明度"], text, default="")
+clarity = pick(["Clarity", "クラリティ"], text, default="")
+clarity_note_ja = pick(["透明度", "クラリティ"], text, default="")
 if not clarity and clarity_note_ja and re.search(r"[A-Za-z]", clarity_note_ja):
     clarity = clarity_note_ja
+
+cut_note = pick(["カット備考", "Cut Note", "cut_note"], text, default="").strip()
+
 cert_lab_ja = pick(["鑑別"], text, default="").strip()
 cert_lab_en = pick(["cert_lab_en", "Cert Lab EN"], text, default="").strip()
 
@@ -204,6 +211,8 @@ urls_line = pick(["URLs"], text, default="").strip()
 
 shop_url = ""
 video_url = ""
+gallery_url = ""
+note_url = ""
 
 if urls_line:
     for part in urls_line.split(";"):
@@ -212,6 +221,10 @@ if urls_line:
             shop_url = p[len("shop="):].strip()
         elif p.startswith("video="):
             video_url = p[len("video="):].strip()
+        elif p.startswith("gallery="):
+            gallery_url = p[len("gallery="):].strip()
+        elif p.startswith("note="):
+            note_url = p[len("note="):].strip()
 
 # sanity check (detect mix-up, do not auto-fix)
 if "raralab.shop" in video_url:
@@ -417,7 +430,7 @@ header = [
     "title_jp","date","tags","image_order","process_image_order","video_url","shop_url",
     "modification_note","design_is_named",
     "product_id","stone_ja","faceted_by_ja","origin_ja","treatment_ja","clarity_note_ja",
-    "cert_lab_ja","cert_lab_en","title_jp_override","clarity_note_ja_override","clarity_note_en_override",
+    "cert_lab_ja","cert_lab_en","title_jp_override","clarity_note_ja_override","clarity_note_en_override","gallery_url","note_url","cut_note",
 ]
 
 row = {
@@ -451,6 +464,9 @@ row = {
     "title_jp_override": "",
     "clarity_note_ja_override": "",
     "clarity_note_en_override": "",
+    "gallery_url": gallery_url,
+    "note_url": note_url,
+    "cut_note": cut_note,
 }
 
 buf = io.StringIO()

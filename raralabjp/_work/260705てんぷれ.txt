@@ -1,0 +1,18 @@
+URLs: shop=; gallery=; video=; note=
+image_order:
+process_image_order:
+商品番号:
+石種: montana_sapphire
+石種JP: モンタナ・サファイア
+ファセットデザイン:
+design_is_named: 1
+デザイン改変:
+デザイナー:
+研磨: Rara Lab
+重さ:
+サイズ:
+産地:
+処理:
+クラリティ:
+カット備考:
+鑑別:

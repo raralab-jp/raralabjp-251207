@@ -1264,7 +1264,7 @@ MASTER_FIELDNAMES = [
     "title_jp", "date", "tags", "image_order", "process_image_order", "video_url", "shop_url",
     "modification_note", "design_is_named",
     "product_id", "stone_ja", "faceted_by_ja", "origin_ja", "treatment_ja", "clarity_note_ja",
-    "cert_lab_ja", "cert_lab_en", "title_jp_override", "clarity_note_ja_override", "clarity_note_en_override",
+    "cert_lab_ja", "cert_lab_en", "title_jp_override", "clarity_note_ja_override", "clarity_note_en_override", "gallery_url", "note_url", "cut_note",
 ]
 
 
@@ -1377,7 +1377,7 @@ def render_listing_blocks(row: dict) -> dict:
     if _mv(row, "treatment_ja"):
         ja_lines.append(f'処理：{_mv(row, "treatment_ja")}')
     if clarity_ja:
-        ja_lines.append(f'透明度：{clarity_ja}')
+        ja_lines.append(f'クラリティ：{clarity_ja}')
     if _mv(row, "cert_lab_ja"):
         ja_lines.append(f'鑑別：{_mv(row, "cert_lab_ja")}')
     if _mv(row, "modification_note"):
@@ -1420,6 +1420,68 @@ def render_listing_blocks(row: dict) -> dict:
         "en": "\n".join(en_lines),
     }
 
+def build_square_seo_description(row: dict) -> str:
+    title = resolve_title_jp(row)
+    stone_ja = _mv(row, "stone_ja")
+    carat = _mv(row, "carat")
+    origin_ja = _mv(row, "origin_ja")
+    treatment_ja = _mv(row, "treatment_ja")
+
+    parts = []
+
+    if title:
+        parts.append(title)
+    elif stone_ja and carat:
+        parts.append(f"{stone_ja} {carat}ct")
+
+    if origin_ja:
+        parts.append(f"産地：{origin_ja}")
+
+    if treatment_ja:
+        parts.append(f"処理：{treatment_ja}")
+
+    parts.append("Rara Labが研磨した宝石ルースです。")
+
+    text = "。".join(p.strip("。") for p in parts if p).strip()
+    if text and not text.endswith("。"):
+        text += "。"
+
+    return text[:160]
+
+
+def render_square_output(row: dict) -> dict:
+    title_jp = resolve_title_jp(row)
+    blocks = render_listing_blocks(row)
+
+    gallery_url = _mv(row, "gallery_url")
+    note_url = _mv(row, "note_url")
+
+    intro_lines = []
+
+    if gallery_url:
+        intro_lines.append("公式サイトのギャラリーページはこちらです。")
+        intro_lines.append(gallery_url)
+        intro_lines.append("")
+
+    if note_url:
+        intro_lines.append("この石の制作過程をノートで公開中です。")
+        intro_lines.append(note_url)
+        intro_lines.append("")
+
+    description = "\n".join([
+        *intro_lines,
+        blocks["ja"],
+        "",
+        "☆☆☆☆☆☆",
+        "",
+        blocks["en"],
+    ]).strip()
+
+    return {
+        "title": title_jp,
+        "description": description,
+        "seo_description": build_square_seo_description(row),
+    }
 
 def render_master_outputs(rows, target: str) -> str:
     parts = []
@@ -1434,6 +1496,14 @@ def render_master_outputs(rows, target: str) -> str:
             parts.append(blocks["ja"])
             parts.append(f"### listing:{slug}:en")
             parts.append(blocks["en"])
+        if target in ("square", "all"):
+            square = render_square_output(row)
+            parts.append(f"### square:{slug}:title")
+            parts.append(square["title"])
+            parts.append(f"### square:{slug}:description")
+            parts.append(square["description"])
+            parts.append(f"### square:{slug}:seo_description")
+            parts.append(square["seo_description"])
     return "\n\n".join(part for part in parts if part.strip()) + ("\n" if parts else "")
 
 
@@ -1643,7 +1713,7 @@ def build():
 
 if __name__ == "__main__":
     ap = argparse.ArgumentParser()
-    ap.add_argument("--target", choices=["gallery", "listing", "all"], default="gallery")
+    ap.add_argument("--target", choices=["gallery", "listing", "square", "all"], default="gallery")
     ap.add_argument("--master-csv", default="")
     args = ap.parse_args()
 
