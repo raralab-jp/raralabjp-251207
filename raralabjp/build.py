@@ -4,6 +4,16 @@ from pathlib import Path
 import shutil
 import sys
 
+from labels import (
+    STONE_LABELS,
+    ORIGIN_LABELS,
+    TREATMENT_LABELS,
+    CLARITY_LABELS,
+    CERT_LABELS,
+    PERSON_LABELS,
+    label,
+)
+
 # ---- WebP 変換用ライブラリ (Pillow) の読み込み ----
 try:
     from PIL import Image
@@ -1271,6 +1281,15 @@ MASTER_FIELDNAMES = [
 def _mv(row: dict, key: str) -> str:
     return _s(row.get(key))
 
+def display_value(row: dict, key: str, table: dict, lang: str, fallback_key: str = "") -> str:
+    raw = _mv(row, key)
+    if raw:
+        return label(table, raw, lang)
+
+    if fallback_key:
+        return _mv(row, fallback_key)
+
+    return ""
 
 def read_master_csv(csv_path: Path):
     rows = []
@@ -1347,39 +1366,72 @@ def master_row_to_gallery_item(row: dict) -> dict:
         "tags": _mv(row, "tags"),
     }
 
+def warn_unknown_label(table: dict, value: str, field_name: str):
+    value = _s(value)
+    if value and value not in table:
+        print(
+            f"WARN: Unknown {field_name} label: {value}",
+            file=sys.stderr,
+        )
 
 def render_listing_blocks(row: dict) -> dict:
+    warn_unknown_label(STONE_LABELS, _mv(row, "stone"), "stone")
+    warn_unknown_label(ORIGIN_LABELS, _mv(row, "origin_en"), "origin")
+    warn_unknown_label(TREATMENT_LABELS, _mv(row, "treatment"), "treatment")
+    warn_unknown_label(CLARITY_LABELS, resolve_clarity_note_en(row), "clarity")
+    warn_unknown_label(PERSON_LABELS, _mv(row, "designer"), "designer")
+    warn_unknown_label(PERSON_LABELS, _mv(row, "faceted_by"), "faceted_by")
+    warn_unknown_label(CERT_LABELS, _mv(row, "cert_lab_ja") or _mv(row, "cert_lab_en"), "cert_lab")
+
     title_jp = resolve_title_jp(row)
-    clarity_ja = resolve_clarity_note_ja(row)
-    clarity_en = resolve_clarity_note_en(row)
+    clarity_raw = resolve_clarity_note_en(row)
+    clarity_ja = label(CLARITY_LABELS, clarity_raw, "ja")
+    clarity_en = label(CLARITY_LABELS, clarity_raw, "en")
+
+    stone_ja = label(STONE_LABELS, _mv(row, "stone"), "ja")
+    stone_en = label(STONE_LABELS, _mv(row, "stone"), "en")
+
+    origin_ja = label(ORIGIN_LABELS, _mv(row, "origin_en"), "ja")
+    origin_en = label(ORIGIN_LABELS, _mv(row, "origin_en"), "en")
+
+    treatment_ja = label(TREATMENT_LABELS, _mv(row, "treatment"), "ja")
+    treatment_en = label(TREATMENT_LABELS, _mv(row, "treatment"), "en")
+
     design_jp = design_display_text(_mv(row, "design_name"), row.get("design_is_named"))
     design_en = design_display_text(_mv(row, "design_name"), row.get("design_is_named"))
+
+    designer_ja = label(PERSON_LABELS, _mv(row, "designer"), "ja")
+    designer_en = label(PERSON_LABELS, _mv(row, "designer"), "en")
+
+    faceted_by_ja = label(PERSON_LABELS, _mv(row, "faceted_by"), "ja")
+    faceted_by_en = label(PERSON_LABELS, _mv(row, "faceted_by"), "en")
+
+    cert_lab_ja = label(CERT_LABELS, _mv(row, "cert_lab_ja") or _mv(row, "cert_lab_en"), "ja")
+    cert_lab_en = label(CERT_LABELS, _mv(row, "cert_lab_en") or _mv(row, "cert_lab_ja"), "en")
 
     ja_lines = []
     if title_jp:
         ja_lines.append(title_jp)
-    if _mv(row, "stone_ja"):
-        ja_lines.append(f'石種：{_mv(row, "stone_ja")}')
+    if stone_ja:
+        ja_lines.append(f"石種：{stone_ja}")
     if _mv(row, "carat"):
         ja_lines.append(f'重さ：{_mv(row, "carat")}ct')
     if _mv(row, "size_mm"):
         ja_lines.append(f'サイズ：{_mv(row, "size_mm")}')
     if design_jp:
         ja_lines.append(f'ファセットデザイン：{design_jp}')
-    if _mv(row, "designer"):
-        ja_lines.append(f'デザイナー：{_mv(row, "designer")}')
-    if _mv(row, "faceted_by_ja"):
-        ja_lines.append(f'研磨：{_mv(row, "faceted_by_ja")}')
-    elif _mv(row, "faceted_by"):
-        ja_lines.append(f'研磨：{_mv(row, "faceted_by")}')
-    if _mv(row, "origin_ja"):
-        ja_lines.append(f'産地：{_mv(row, "origin_ja")}')
-    if _mv(row, "treatment_ja"):
-        ja_lines.append(f'処理：{_mv(row, "treatment_ja")}')
+    if designer_ja:
+        ja_lines.append(f"デザイナー：{designer_ja}")
+    if faceted_by_ja:
+        ja_lines.append(f"研磨：{faceted_by_ja}")
+    if origin_ja:
+        ja_lines.append(f"産地：{origin_ja}")
+    if treatment_ja:
+        ja_lines.append(f"処理：{treatment_ja}")
     if clarity_ja:
         ja_lines.append(f'クラリティ：{clarity_ja}')
-    if _mv(row, "cert_lab_ja"):
-        ja_lines.append(f'鑑別：{_mv(row, "cert_lab_ja")}')
+    if cert_lab_ja:
+        ja_lines.append(f"鑑別：{cert_lab_ja}")
     if _mv(row, "modification_note"):
         ja_lines.append(f'デザイン改変：{_mv(row, "modification_note")}')
     if _mv(row, "product_id"):
@@ -1390,26 +1442,26 @@ def render_listing_blocks(row: dict) -> dict:
         en_lines.append(f'{_mv(row, "stone")} {_mv(row, "carat")}ct {design_en}'.strip())
     elif _mv(row, "stone"):
         en_lines.append(_mv(row, "stone"))
-    if _mv(row, "stone"):
-        en_lines.append(f'Stone: {_mv(row, "stone")}')
+    if stone_en:
+        en_lines.append(f"Stone: {stone_en}")
     if _mv(row, "carat"):
         en_lines.append(f'Weight: {_mv(row, "carat")}ct')
     if _mv(row, "size_mm"):
         en_lines.append(f'Size: {_mv(row, "size_mm")}')
     if design_en:
         en_lines.append(f'Design: {design_en}')
-    if _mv(row, "designer"):
-        en_lines.append(f'Designer: {_mv(row, "designer")}')
-    if _mv(row, "faceted_by"):
-        en_lines.append(f'Faceted by: {_mv(row, "faceted_by")}')
-    if _mv(row, "origin_en"):
+    if designer_en:
+        en_lines.append(f"Designer: {designer_en}")
+    if faceted_by_en:
+        en_lines.append(f"Faceted by: {faceted_by_en}")
+    if origin_en:
         en_lines.append(f'Origin: {_mv(row, "origin_en")}')
-    if _mv(row, "treatment"):
-        en_lines.append(f'Treatment: {_mv(row, "treatment")}')
+    if treatment_en:
+        en_lines.append(f"Treatment: {treatment_en}")
     if clarity_en:
         en_lines.append(f'Clarity: {clarity_en}')
-    if _mv(row, "cert_lab_en"):
-        en_lines.append(f'Certificate: {_mv(row, "cert_lab_en")}')
+    if cert_lab_en:
+        en_lines.append(f"Certification: {cert_lab_en}")
     if _mv(row, "modification_note"):
         en_lines.append(f'Modification: {_mv(row, "modification_note")}')
     if _mv(row, "product_id"):
@@ -1506,10 +1558,31 @@ def render_master_outputs(rows, target: str) -> str:
             parts.append(square["seo_description"])
     return "\n\n".join(part for part in parts if part.strip()) + ("\n" if parts else "")
 
-
-def run_master_renderer(csv_path: Path, target: str):
+def run_master_renderer(csv_path: Path, target: str, slug: str = "", out_dir: str = ""):
     rows = read_master_csv(csv_path)
-    sys.stdout.write(render_master_outputs(rows, target=target))
+
+    if slug:
+        rows = [row for row in rows if _mv(row, "slug") == slug]
+        if not rows:
+            print(f"ERROR: slug not found: {slug}", file=sys.stderr)
+            raise SystemExit(1)
+
+    output = render_master_outputs(rows, target=target)
+
+    if out_dir:
+        out_path = Path(out_dir)
+        out_path.mkdir(parents=True, exist_ok=True)
+
+        if slug:
+            filename = f"{slug}_{target}.txt"
+        else:
+            filename = f"all_{target}.txt"
+
+        dest = out_path / filename
+        dest.write_text(output, encoding="utf-8")
+        print(f"✅ output written: {dest}")
+    else:
+        sys.stdout.write(output)
 
 def build_site_css():
     """
@@ -1715,10 +1788,17 @@ if __name__ == "__main__":
     ap = argparse.ArgumentParser()
     ap.add_argument("--target", choices=["gallery", "listing", "square", "all"], default="gallery")
     ap.add_argument("--master-csv", default="")
+    ap.add_argument("--slug", default="")
+    ap.add_argument("--out-dir", default="")
     args = ap.parse_args()
 
     if args.master_csv:
-        run_master_renderer(Path(args.master_csv), target=args.target)
+        run_master_renderer(
+            Path(args.master_csv),
+            target=args.target,
+            slug=args.slug,
+            out_dir=args.out_dir,
+        )
     else:
         build()
         print("✅ build complete: gallery, news, details, and top index generated.")
