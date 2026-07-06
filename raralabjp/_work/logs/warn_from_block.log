@@ -18,3 +18,6 @@ WARN: title_jp was auto-generated (may be English). Consider adding 'Title JP:' 
 WARN: modification_note looks like another field and was ignored: 'デザイナー: TJ Jackson'
 WARN: modification_note looks like another field and was ignored: 'デザイナー: TJ Jackson'
 WARN: modification_note looks like another field and was ignored: 'デザイナー: TJ Jackson'
+WARN: title_jp was auto-generated with English stone name. Add 'Stone JP:' or '石種JP:' for Japanese title.
+WARN: title_jp was auto-generated with English stone name. Add 'Stone JP:' or '石種JP:' for Japanese title.
+WARN: title_jp was auto-generated with English stone name. Add 'Stone JP:' or '石種JP:' for Japanese title.

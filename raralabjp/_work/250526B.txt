@@ -1,0 +1,38 @@
+# ==========================================
+# Rara Lab Gallery Block Template
+# ==========================================
+
+URLs:
+  shop=
+  gallery=
+  video=
+  note=
+
+image_order:
+process_image_order:
+
+商品番号: 250526B
+
+Stone: Montana Sapphire
+Title JP:
+
+Facet Design: Smallest Hex
+design_is_named: 1
+デザイン改変:
+
+Designer: TJ Jackson
+Faceted by: Rara Lab
+
+Carat: 0.322ct
+Size: 3.74x3.66×2.50 mm
+
+Origin: Rock Creek, Montana, USA
+Treatment: Heated
+
+Clarity: Eye clean
+
+カット備考:
+
+鑑別: 日独宝石研究所
+
+Tags:

@@ -164,14 +164,14 @@ def read_top_sections() -> str:
 
 def ensure_webp_thumbs():
     """
-    assets/images/thumb/ 以下の JPG/PNG から、同名の .webp を自動生成する。
+    assets/images/1200px/ 以下の JPG/PNG から、同名の .webp を自動生成する。
     ・すでに .webp がある場合は何もしない
     ・Pillow が無い場合も何もしない
     """
     if Image is None:
         return
 
-    thumb_dir = ROOT / "assets" / "images" / "thumb"
+    thumb_dir = ROOT / "assets" / "images" / "1200px"
     if not thumb_dir.exists():
         return
 
@@ -197,14 +197,14 @@ def ensure_webp_thumbs():
 
 def ensure_webp_large():
     """
-    assets/images/4k/ 以下の JPG/PNG から、assets/images/large/ に表示用 WebP を生成する。
+    assets/images/2500px/ 以下の JPG/PNG から、assets/images/large/ に表示用 WebP を生成する。
     - 差分ビルド（mtimeで新しいものだけ）
     - 長辺 max_long_edge に収める
     """
     if Image is None:
         return
 
-    src_dir = ROOT / "assets" / "images" / "4k"
+    src_dir = ROOT / "assets" / "images" / "2500px"
     dst_dir = ROOT / "assets" / "images" / "large"
     if not src_dir.exists():
         return
@@ -709,8 +709,8 @@ def primary_images(slug: str):
         f"{slug.replace('-', '_')}-cover",
     ]
 
-    thumb_dir = ROOT / "assets" / "images" / "thumb"
-    fourk_dir = ROOT / "assets" / "images" / "4k"
+    thumb_dir = ROOT / "assets" / "images" / "1200px"
+    fourk_dir = ROOT / "assets" / "images" / "2500px"
 
     thumb = None
     fourk = None
@@ -719,7 +719,7 @@ def primary_images(slug: str):
         for ext in exts:
             p = thumb_dir / f"{base}{ext}"
             if p.exists():
-                thumb = f"/assets/images/thumb/{p.name}"
+                thumb = f"/assets/images/1200px/{p.name}"
                 break
         if thumb:
             break
@@ -728,7 +728,7 @@ def primary_images(slug: str):
         for ext in exts:
             p = fourk_dir / f"{base}{ext}"
             if p.exists():
-                fourk = f"/assets/images/4k/{p.name}"
+                fourk = f"/assets/images/2500px/{p.name}"
                 break
         if fourk:
             break
@@ -737,27 +737,27 @@ def primary_images(slug: str):
 
 def thumb_to_4k(thumb_path: str) -> str:
     """
-    サムネのパス (/assets/images/thumb/xxx.ext) から、
-    実際に存在する 4K 画像 (/assets/images/4k/xxx.*) を探して返す。
+    サムネのパス (/assets/images/1200px/xxx.ext) から、
+    実際に存在する 4K 画像 (/assets/images/2500px/xxx.*) を探して返す。
     なければ拡張子そのままで /4k/ に置き換えたものを返す（後方互換用）。
     """
     name = Path(thumb_path).name
     stem = Path(name).stem
 
-    fourk_dir = ROOT / "assets" / "images" / "4k"
+    fourk_dir = ROOT / "assets" / "images" / "2500px"
     exts = (".webp", ".jpg", ".jpeg", ".png", ".WEBP", ".JPG", ".JPEG", ".PNG")
 
     for ext in exts:
         candidate = fourk_dir / f"{stem}{ext}"
         if candidate.exists():
-            return f"/assets/images/4k/{candidate.name}"
+            return f"/assets/images/2500px/{candidate.name}"
 
-    return thumb_path.replace("/thumb/", "/4k/")
+    return thumb_path.replace("/1200px/", "/2500px/")
 
 
 def path_to_large(src_path: str) -> str:
     """
-    /assets/images/4k/xxx.jpg or /assets/images/thumb/xxx.webp などから
+    /assets/images/2500px/xxx.jpg or /assets/images/1200px/xxx.webp などから
     /assets/images/large/xxx.webp を返す（表示用）。
     """
     name = Path(src_path).name
@@ -770,7 +770,7 @@ def all_images(slug: str, image_order: str = ""):
     サムネ用フォルダから slug で始まるファイルを列挙する。
     WebP と JPG/PNG が重複している場合、WebP を優先して採用し、JPG/PNG は除外する。
     """
-    thumb_dir = ROOT / "assets" / "images" / "thumb"
+    thumb_dir = ROOT / "assets" / "images" / "1200px"
     if not thumb_dir.exists():
         return []
 
@@ -790,7 +790,7 @@ def all_images(slug: str, image_order: str = ""):
             continue
 
         is_cover = "-cover." in low or "_cover." in low
-        path = f"/assets/images/thumb/{name}"
+        path = f"/assets/images/1200px/{name}"
         candidates.append((name, path, is_cover))
 
     if not candidates:
@@ -1314,15 +1314,17 @@ def resolve_title_jp(row: dict) -> str:
     if override:
         return override
 
+    stone_ja = label(STONE_LABELS, _mv(row, "stone"), "ja")
+    carat = _mv(row, "carat")
+    design_name = _mv(row, "design_name")
+
+    if stone_ja and carat and design_name:
+        return f'{stone_ja} {carat}ct {design_display_text(design_name, row.get("design_is_named"))}'
+
     title_jp = _mv(row, "title_jp")
     if title_jp:
         return title_jp
 
-    stone_ja = _mv(row, "stone_ja")
-    carat = _mv(row, "carat")
-    design_name = _mv(row, "design_name")
-    if stone_ja and carat and design_name:
-        return f'{stone_ja} {carat}ct {design_display_text(design_name, row.get("design_is_named"))}'
     return ""
 
 
