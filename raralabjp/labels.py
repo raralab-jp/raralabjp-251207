@@ -13,6 +13,35 @@ STONE_LABELS = {
         "ja": "ピンク・トルマリン",
         "en": "Pink Tourmaline",
     },
+    "Blue Sapphire": {
+        "ja": "ブルー・サファイア",
+        "en": "Blue Sapphire",
+    },
+    "Pink Sapphire": {
+        "ja": "ピンク・サファイア",
+        "en": "Pink Sapphire",
+    },
+    "Color Change Sapphire": {
+        "ja": "カラーチェンジ・サファイア",
+        "en": "Color Change Sapphire",
+    },
+    "Umba Sapphire": {
+        "ja": "ウンバ・サファイア",
+        "en": "Umba Sapphire",
+    },
+
+    "Pink Tourmaline": {
+        "ja": "ピンク・トルマリン",
+        "en": "Pink Tourmaline",
+    },
+    "Green Tourmaline": {
+        "ja": "グリーン・トルマリン",
+        "en": "Green Tourmaline",
+    },
+    "Bi-color Tourmaline": {
+        "ja": "バイカラー・トルマリン",
+        "en": "Bi-color Tourmaline",
+    },
 }
 
 ORIGIN_LABELS = {
@@ -62,13 +91,25 @@ TREATMENT_LABELS = {
 }
 
 CLARITY_LABELS = {
+    "Loupe clean": {
+        "ja": "10倍ルーペで目立つインクルージョンなし",
+        "en": "Loupe clean",
+    },
     "Eye clean": {
         "ja": "肉眼で目立つインクルージョンなし",
         "en": "Eye clean",
     },
-    "Loupe clean": {
-        "ja": "10倍ルーペで目立つインクルージョンなし",
-        "en": "Loupe clean",
+    "Inclusion visible under 10x": {
+        "ja": "10倍ルーペで見えるインクルージョンあり",
+        "en": "Inclusion visible under 10x",
+    },
+    "Inclusion visible to the naked eye": {
+        "ja": "肉眼で確認できるインクルージョンあり",
+        "en": "Inclusion visible to the naked eye",
+    },
+    "Included": {
+        "ja": "インクルージョンあり",
+        "en": "Included",
     },
 }
 

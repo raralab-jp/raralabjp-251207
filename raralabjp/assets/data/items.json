@@ -18,7 +18,8 @@
     "video_url": "",
     "shop_url": "",
     "modification_note": null,
-    "design_is_named": "1"
+    "design_is_named": "1",
+    "additional_note": null
   },
   {
     "slug": "montana-sapphire-0223ct-smallest-hex",
@@ -39,7 +40,8 @@
     "video_url": "https://customer-jnhhy169io6el95i.cloudflarestream.com/c368131f8b4a5fbab5c6dd03ef842d64/iframe",
     "shop_url": "",
     "modification_note": null,
-    "design_is_named": "1"
+    "design_is_named": "1",
+    "additional_note": null
   },
   {
     "slug": "pink-tourmaline-116ct-procrastination",
@@ -60,7 +62,8 @@
     "video_url": "",
     "shop_url": "",
     "modification_note": null,
-    "design_is_named": "1"
+    "design_is_named": "1",
+    "additional_note": null
   },
   {
     "slug": "pink-tourmaline-0856ct-tessellation-13-f",
@@ -81,7 +84,8 @@
     "video_url": "",
     "shop_url": "",
     "modification_note": null,
-    "design_is_named": "1"
+    "design_is_named": "1",
+    "additional_note": null
   },
   {
     "slug": "zircon-0718ct-bright-rose",
@@ -102,7 +106,8 @@
     "video_url": "",
     "shop_url": "https://www.raralab.shop/product/zircon-0718ct-bright-rose-modified-for-zircon/CXFRB6VT6MQWDMHFIBR6FPYV",
     "modification_note": "Modified for Zircon",
-    "design_is_named": "1"
+    "design_is_named": "1",
+    "additional_note": null
   },
   {
     "slug": "zircon-1019ct-tessellation-20",
@@ -114,7 +119,7 @@
     "size_mm": "5.43 × 5.41 × 3.86mm",
     "origin_en": "Unknown",
     "treatment": "Heated by Rara Lab",
-    "clarity_note_en": "No inclusion visible under 10x",
+    "clarity_note_en": "Loupe clean",
     "title_jp": "ジルコン 1.019ct “Tessellation 20”",
     "date": "2025-12-02",
     "tags": [],
@@ -123,7 +128,8 @@
     "video_url": "",
     "shop_url": "https://www.raralab.shop/product/zircon-1019ct-tessellation-20/MWFO6A2MLYPOR7AHBQUFU5MC?cp=true&sa=false&sbp=false&q=false&category_id=37",
     "modification_note": null,
-    "design_is_named": "1"
+    "design_is_named": "1",
+    "additional_note": null
   },
   {
     "slug": "umba-sapphire-0517ct-cushion-in-a-square",
@@ -144,7 +150,8 @@
     "video_url": "",
     "shop_url": "https://www.raralab.shop/product/umba-sapphire-0517ct-cushion-in-a-square/121",
     "modification_note": null,
-    "design_is_named": null
+    "design_is_named": null,
+    "additional_note": null
   },
   {
     "slug": "blue-sapphire-0280ct-cushion-in-a-square-v2",
@@ -165,7 +172,8 @@
     "video_url": "",
     "shop_url": "https://www.raralab.shop/product/blue-sapphire-0280ct-cushion-in-a-square-v2/5R7GYJCA6HOUFV67LTCXGD6S",
     "modification_note": null,
-    "design_is_named": null
+    "design_is_named": null,
+    "additional_note": null
   },
   {
     "slug": "color-change-sapphire-0411ct-french-cut",
@@ -186,7 +194,8 @@
     "video_url": "",
     "shop_url": "https://www.raralab.shop/product/color-change-sapphire-0411ct-french-cut/119",
     "modification_note": null,
-    "design_is_named": null
+    "design_is_named": null,
+    "additional_note": null
   },
   {
     "slug": "pink-sapphire-0318ct-square-step-barion-v3",
@@ -207,7 +216,8 @@
     "video_url": "",
     "shop_url": "https://www.raralab.shop/product/pink-sapphire-0318ct-square-step-barion-v3/GUPXEXD2PQ34CU3P2ENOGRQI",
     "modification_note": null,
-    "design_is_named": null
+    "design_is_named": null,
+    "additional_note": null
   },
   {
     "slug": "dragon-garnet-0626ct-maelstrom-authority",
@@ -228,7 +238,8 @@
     "video_url": "",
     "shop_url": "https://www.raralab.shop/product/dragon-garnet-0626ct-maelstrom_authority/AOAVBAB3SSHZRXJTNR37EOHZ",
     "modification_note": null,
-    "design_is_named": "1"
+    "design_is_named": "1",
+    "additional_note": null
   },
   {
     "slug": "dragon-garnet-0579ct-garnet-cushion",
@@ -249,7 +260,8 @@
     "video_url": "",
     "shop_url": "https://www.raralab.shop/product/dragon-garnet-0579ct-garnet-cushion/DBASMHF66OQ2V2PJSSK7ANGI",
     "modification_note": null,
-    "design_is_named": "1"
+    "design_is_named": "1",
+    "additional_note": null
   },
   {
     "slug": "aquamarine-06ct-fiorello-80",
@@ -270,7 +282,8 @@
     "video_url": "",
     "shop_url": "https://www.raralab.shop/product/aquamarine-06ct-fiorello-80/115",
     "modification_note": null,
-    "design_is_named": null
+    "design_is_named": null,
+    "additional_note": null
   },
   {
     "slug": "oregon-sunstone-0640ct-corky-st-clair",
@@ -291,7 +304,8 @@
     "video_url": "",
     "shop_url": "https://www.raralab.shop/product/oregon-sunstone-corky-st-clair-0640ct/75",
     "modification_note": null,
-    "design_is_named": null
+    "design_is_named": null,
+    "additional_note": null
   },
   {
     "slug": "montana-sapphire-0509ct-standard-round-brilliant-cut",
@@ -312,7 +326,8 @@
     "video_url": "",
     "shop_url": "https://www.raralab.shop/product/montana-sapphire-0509ct-standard-round-brilliant-cut/122",
     "modification_note": null,
-    "design_is_named": "0"
+    "design_is_named": "0",
+    "additional_note": null
   },
   {
     "slug": "montana-sapphire-03ct-srb-sapphire",
@@ -333,7 +348,8 @@
     "video_url": "",
     "shop_url": "https://www.raralab.shop/product/montana-sapphire-03ct-srb-sapphire/123",
     "modification_note": null,
-    "design_is_named": "1"
+    "design_is_named": "1",
+    "additional_note": null
   },
   {
     "slug": "montana-sapphire-02ct-srb-montana-sapphire",
@@ -354,7 +370,8 @@
     "video_url": "",
     "shop_url": "https://www.raralab.shop/product/montana-sapphire-02ct-srb-montana-sapphire/124",
     "modification_note": null,
-    "design_is_named": "1"
+    "design_is_named": "1",
+    "additional_note": null
   },
   {
     "slug": "oregon-sunstone-0908ct-temple-ruin",
@@ -375,7 +392,8 @@
     "video_url": "",
     "shop_url": "https://www.raralab.shop/product/oregon-sunstone-temple-ruins-0908ct/74",
     "modification_note": null,
-    "design_is_named": null
+    "design_is_named": null,
+    "additional_note": null
   },
   {
     "slug": "umba-zircon-0519ct-squartuguese2",
@@ -396,7 +414,8 @@
     "video_url": "",
     "shop_url": "https://www.raralab.shop/product/umba-zircon-0519ct-squartuguese2/109",
     "modification_note": null,
-    "design_is_named": "1"
+    "design_is_named": "1",
+    "additional_note": null
   },
   {
     "slug": "zircon-1290ct-squartuguese2",
@@ -417,7 +436,8 @@
     "video_url": "",
     "shop_url": "https://www.raralab.shop/product/zircon-1290ct-squartuguese2/108",
     "modification_note": null,
-    "design_is_named": "1"
+    "design_is_named": "1",
+    "additional_note": null
   },
   {
     "slug": "montana-sapphire-0418ct-zoras-sapphire",
@@ -438,7 +458,8 @@
     "video_url": "",
     "shop_url": "https://www.raralab.shop/product/montana-sapphire-0418ct-zoras-sapphire/112",
     "modification_note": null,
-    "design_is_named": "1"
+    "design_is_named": "1",
+    "additional_note": null
   },
   {
     "slug": "montana-sapphire-0423ct-zoras-sapphire",
@@ -450,7 +471,7 @@
     "size_mm": "4.40mm x 4.37mm x 3.12mm",
     "origin_en": "Rock Creek, Montana, USA",
     "treatment": "Heated",
-    "clarity_note_en": "Visible Inclusion (center)",
+    "clarity_note_en": "Inclusion visible under 10x",
     "title_jp": "モンタナ・サファイア 0.423ct “Zora's Sapphire”",
     "date": "2024-12-30",
     "tags": [],
@@ -459,7 +480,8 @@
     "video_url": "",
     "shop_url": "https://www.raralab.shop/product/montana-sapphire-0423ct-zoras-sapphire/110",
     "modification_note": null,
-    "design_is_named": "1"
+    "design_is_named": "1",
+    "additional_note": null
   },
   {
     "slug": "montana-sapphire-0323ct-tessellation-12-f",
@@ -480,7 +502,8 @@
     "video_url": "",
     "shop_url": "https://www.raralab.shop/product/montana-sapphire-0323ct-tessellation-12-f/97",
     "modification_note": null,
-    "design_is_named": "1"
+    "design_is_named": "1",
+    "additional_note": null
   },
   {
     "slug": "montana-sapphire-0448ct-smallest-hex-apex",
@@ -501,7 +524,8 @@
     "video_url": "",
     "shop_url": "https://www.raralab.shop/product/montana-sapphire-0448ct-smallest-hex-apex/103",
     "modification_note": null,
-    "design_is_named": "1"
+    "design_is_named": "1",
+    "additional_note": null
   },
   {
     "slug": "montana-sapphire-0413ct-smallest-hex-apex",
@@ -522,7 +546,8 @@
     "video_url": "",
     "shop_url": "https://www.raralab.shop/product/montana-sapphire-0413ct-smallest-hex-apex/102",
     "modification_note": null,
-    "design_is_named": "1"
+    "design_is_named": "1",
+    "additional_note": null
   },
   {
     "slug": "montana-sapphire-0317ct-simple-jack",
@@ -543,7 +568,8 @@
     "video_url": "",
     "shop_url": "https://www.raralab.shop/product/montana-sapphire-0317ct-simple-jack-mod/100",
     "modification_note": "Modified for Sapphire",
-    "design_is_named": "1"
+    "design_is_named": "1",
+    "additional_note": null
   },
   {
     "slug": "montana-sapphire-0412ct-simple-jack",
@@ -564,7 +590,8 @@
     "video_url": "",
     "shop_url": "https://www.raralab.shop/product/montana-sapphire-0412ct-simple-jack-mod/99",
     "modification_note": "Modified for Sapphire",
-    "design_is_named": "1"
+    "design_is_named": "1",
+    "additional_note": null
   },
   {
     "slug": "montana-sapphire-0509ct-orb",
@@ -585,7 +612,8 @@
     "video_url": "",
     "shop_url": "https://www.raralab.shop/product/montana-sapphire-orb-mod-0509ct/89",
     "modification_note": "Pavilion modified",
-    "design_is_named": "1"
+    "design_is_named": "1",
+    "additional_note": null
   },
   {
     "slug": "montana-sapphire-0836ct-orb",
@@ -606,7 +634,8 @@
     "video_url": "",
     "shop_url": "https://www.raralab.shop/product/montana-sapphire-orb-0836ct/87",
     "modification_note": null,
-    "design_is_named": "1"
+    "design_is_named": "1",
+    "additional_note": null
   },
   {
     "slug": "montana-sapphire-0299ct-orb",
@@ -618,7 +647,7 @@
     "size_mm": "3.82mm x 3.85mm x 2.39mm",
     "origin_en": "Montana, USA",
     "treatment": "Heated",
-    "clarity_note_en": "Slightly Included",
+    "clarity_note_en": "Inclusion visible under 10x",
     "title_jp": "ブルー・モンタナ・サファイア “Orb” 0.299ct",
     "date": "2024-07-29",
     "tags": [],
@@ -627,6 +656,7 @@
     "video_url": "",
     "shop_url": "https://www.raralab.shop/product/montana-sapphire-orb-mod-0299ct/88",
     "modification_note": "Modified",
-    "design_is_named": "1"
+    "design_is_named": "1",
+    "additional_note": null
   }
 ]

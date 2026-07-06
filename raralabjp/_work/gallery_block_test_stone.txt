@@ -2,8 +2,8 @@ URLs: shop=; gallery=https://www.raralab.jp/gallery/montana-sapphire-0223ct-smal
 image_order:
 process_image_order:
 商品番号: TEST-SQUARE-001
-石種: Montana Sapphire
-石種JP: モンタナ・サファイア
+石種: Color Change Sapphire
+石種JP:
 ファセットデザイン: Smallest Hex
 design_is_named: 1
 デザイン改変:

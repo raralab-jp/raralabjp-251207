@@ -166,8 +166,6 @@ clarity_note_ja = pick(["透明度", "クラリティ"], text, default="")
 if not clarity and clarity_note_ja and re.search(r"[A-Za-z]", clarity_note_ja):
     clarity = clarity_note_ja
 
-cut_note = pick(["カット備考", "Cut Note", "cut_note"], text, default="").strip()
-
 cert_lab_ja = pick(["鑑別"], text, default="").strip()
 cert_lab_en = pick(["cert_lab_en", "Cert Lab EN"], text, default="").strip()
 
@@ -181,6 +179,12 @@ process_image_order = pick(["process_image_order"], text, default="").strip()
 # Optional: modification note + design quote flag
 # -----------------------------
 modification_note = pick(["modification_note", "Modification Note", "デザイン改変"], text, default="").strip()
+
+additional_note = pick(
+    ["additional_note", "Additional Note", "カット備考"],
+    text,
+    default=""
+).strip()
 
 # Safety guard:
 # If the modification field accidentally captured the next labeled field
@@ -428,9 +432,9 @@ header = [
     "slug","stone","design_name","designer","faceted_by","carat",
     "size_mm","origin_en","treatment","clarity_note_en",
     "title_jp","date","tags","image_order","process_image_order","video_url","shop_url",
-    "modification_note","design_is_named",
+    "modification_note","additional_note","design_is_named",
     "product_id","stone_ja","faceted_by_ja","origin_ja","treatment_ja","clarity_note_ja",
-    "cert_lab_ja","cert_lab_en","title_jp_override","clarity_note_ja_override","clarity_note_en_override","gallery_url","note_url","cut_note",
+    "cert_lab_ja","cert_lab_en","title_jp_override","clarity_note_ja_override","clarity_note_en_override","gallery_url","note_url",
 ]
 
 row = {
@@ -452,6 +456,7 @@ row = {
     "video_url": video_url,
     "shop_url": shop_url,
     "modification_note": modification_note,
+    "additional_note": additional_note,
     "design_is_named": design_is_named,
     "product_id": product_id,
     "stone_ja": stone_ja,
@@ -466,7 +471,6 @@ row = {
     "clarity_note_en_override": "",
     "gallery_url": gallery_url,
     "note_url": note_url,
-    "cut_note": cut_note,
 }
 
 buf = io.StringIO()

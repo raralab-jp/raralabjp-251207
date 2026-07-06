@@ -1387,6 +1387,7 @@ def render_listing_blocks(row: dict) -> dict:
     clarity_raw = resolve_clarity_note_en(row)
     clarity_ja = label(CLARITY_LABELS, clarity_raw, "ja")
     clarity_en = label(CLARITY_LABELS, clarity_raw, "en")
+    additional_note = _mv(row, "additional_note")
 
     stone_ja = label(STONE_LABELS, _mv(row, "stone"), "ja")
     stone_en = label(STONE_LABELS, _mv(row, "stone"), "en")
@@ -1430,6 +1431,8 @@ def render_listing_blocks(row: dict) -> dict:
         ja_lines.append(f"処理：{treatment_ja}")
     if clarity_ja:
         ja_lines.append(f'クラリティ：{clarity_ja}')
+    if additional_note:
+        ja_lines.append(f"カット備考：{additional_note}")
     if cert_lab_ja:
         ja_lines.append(f"鑑別：{cert_lab_ja}")
     if _mv(row, "modification_note"):
@@ -1460,6 +1463,8 @@ def render_listing_blocks(row: dict) -> dict:
         en_lines.append(f"Treatment: {treatment_en}")
     if clarity_en:
         en_lines.append(f'Clarity: {clarity_en}')
+    if additional_note:
+        en_lines.append(f"Additional Note: {additional_note}")
     if cert_lab_en:
         en_lines.append(f"Certification: {cert_lab_en}")
     if _mv(row, "modification_note"):
@@ -1474,10 +1479,12 @@ def render_listing_blocks(row: dict) -> dict:
 
 def build_square_seo_description(row: dict) -> str:
     title = resolve_title_jp(row)
-    stone_ja = _mv(row, "stone_ja")
+
+    stone_ja = label(STONE_LABELS, _mv(row, "stone"), "ja")
     carat = _mv(row, "carat")
-    origin_ja = _mv(row, "origin_ja")
-    treatment_ja = _mv(row, "treatment_ja")
+
+    origin_ja = label(ORIGIN_LABELS, _mv(row, "origin_en"), "ja")
+    treatment_ja = label(TREATMENT_LABELS, _mv(row, "treatment"), "ja")
 
     parts = []
 

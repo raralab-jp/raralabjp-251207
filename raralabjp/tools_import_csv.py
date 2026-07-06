@@ -108,6 +108,7 @@ with csvp.open(newline="", encoding="utf-8") as f:
 
             # ★追加（今回の目的）
             "modification_note": mod_note,
+            "additional_note": S("additional_note") or None,
             "design_is_named": design_is_named,
         })
         index[slug] = it

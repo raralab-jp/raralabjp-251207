@@ -4,6 +4,14 @@ import sys
 from pathlib import Path
 
 NORMALIZE = {
+    "stone": {
+        "Pink Tourmaline": "Pink Tourmaline",
+        "Green Tourmaline": "Green Tourmaline",
+        "Blue Sapphire": "Blue Sapphire",
+        "Pink Sapphire": "Pink Sapphire",
+        "Color Change Sapphire": "Color Change Sapphire",
+        "Bi-color Tourmaline": "Bi-color Tourmaline",
+    },
     "stone_ja": {
         "モンタナサファイア": "モンタナ・サファイア",
     },
@@ -32,6 +40,9 @@ NORMALIZE = {
     "clarity_note_en": {
         "Eye Clean": "Eye clean",
         "Loupe Clean": "Loupe clean",
+        "No inclusion visible under 10x": "Loupe clean",
+        "Visible Inclusion (center)": "Inclusion visible under 10x",
+        "Slightly Included": "Inclusion visible under 10x",
     },
     "clarity_note_ja": {
         "Eye clean": "肉眼で目立つインクルージョンなし",
