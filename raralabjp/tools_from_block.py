@@ -1,6 +1,8 @@
 #!/usr/bin/env python3
 import re, io, csv, sys, argparse
 
+from labels import STONE_LABELS, label
+
 # -----------------------------
 # Read input text (from stdin)
 # -----------------------------
@@ -367,11 +369,12 @@ wrap_design = bool(design_name_raw) or bool(re.match(r'^(.+?)\s*[“"](.*?)[”"
 if design_is_named == "":
     design_is_named = "1" if wrap_design else "0"
 
-# title default: prefer explicit input; else generate from Japanese stone name when available.
+# title default: prefer explicit input; else generate from labels.py Japanese stone name.
 if title_jp_input:
     title_default = title_jp_input
 else:
-    title_stone = stone_ja or stone
+    title_stone = stone_ja or label(STONE_LABELS, stone, "ja") or stone
+
     if title_stone and carat and design_name:
         if wrap_design:
             title_default = f"{title_stone} {carat}ct “{design_name}”"
@@ -379,8 +382,9 @@ else:
             title_default = f"{title_stone} {carat}ct {design_name}"
     else:
         title_default = ""
-    if title_default and not stone_ja:
-        warn("title_jp was auto-generated with English stone name. Add 'Stone JP:' or '石種JP:' for Japanese title.")
+
+    if title_default and title_stone == stone:
+        warn("title_jp was auto-generated with English stone name. Add this stone to STONE_LABELS or add 'Stone JP:' / '石種JP:'.")
 
 # -----------------------------
 # Args

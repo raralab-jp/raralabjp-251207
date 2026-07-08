@@ -1,0 +1,51 @@
+design_is_named: 1
+Title JP: ピンクトルマリン "Tessellation 13 (F)"
+Stone: 
+Facet Design: 
+Faceted by Rara Lab
+Designed by Arya Akhavan
+Origin:  
+Clarity: Loupe Clean
+Carat: 
+Size: 
+Treatment: 
+
+
+# ==========================================
+# Rara Lab Gallery Block Template
+# ==========================================
+
+URLs:
+  shop=
+  gallery=
+  video=
+  note=
+
+image_order:
+process_image_order:
+
+商品番号: 250828A
+
+Stone: Pink Tourmaline
+Title JP:
+
+Facet Design: Tessellation 13 (F)
+design_is_named: 1
+デザイン改変:
+
+Designer: Arya Akhavan
+Faceted by: Rara Lab
+
+Carat: 0.856ct
+Size: 6.79×4.82x4.40 mm
+
+Origin: Congo
+Treatment: Possible irradiation; not tested
+
+Clarity: Loupe clean
+
+カット備考: ガードル付近に10倍ルーペで見えるカケあり
+
+鑑別: 日独宝石研究所
+
+Tags:
