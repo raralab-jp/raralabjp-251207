@@ -1,17 +1,38 @@
-URLs: shop=; video= https://customer-jnhhy169io6el95i.cloudflarestream.com/c368131f8b4a5fbab5c6dd03ef842d64/iframe
+# ==========================================
+# Rara Lab Gallery Block Template
+# ==========================================
+
+URLs:
+  shop=
+  gallery=
+  video=https://customer-jnhhy169io6el95i.cloudflarestream.com/c368131f8b4a5fbab5c6dd03ef842d64/iframe
+  note=
+
 image_order:
 process_image_order:
+
 商品番号: 250729F
-石種: Montana Sapphire
-石種JP: モンタナ・サファイア
-ファセットデザイン: Smallest Hex
+
+Stone: Montana Sapphire
+Title JP:
+
+Facet Design: Smallest Hex
 design_is_named: 1
 デザイン改変:
-デザイナー: TJ Jackson
-研磨: Rara Lab
-重さ: 0.223ct
-サイズ: 3.54x3.50×2.13 mm
-産地: Montana, USA
-処理: Unheated
-透明度: Eye clean
+
+Designer: TJ Jackson
+Faceted by: Rara Lab
+
+Carat: 0.223ct
+Size: 3.54x3.50×2.13 mm
+
+Origin: Montana, USA
+Treatment: Heated
+
+Clarity: Inclusion visible under 10x
+
+カット備考:
+
 鑑別: 日独宝石研究所
+
+Tags:

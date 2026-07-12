@@ -220,9 +220,12 @@ video_url = ""
 gallery_url = ""
 note_url = ""
 
+# 1行形式：
+# URLs: shop=...; gallery=...; video=...; note=...
 if urls_line:
     for part in urls_line.split(";"):
         p = part.strip()
+
         if p.startswith("shop="):
             shop_url = p[len("shop="):].strip()
         elif p.startswith("video="):
@@ -231,6 +234,29 @@ if urls_line:
             gallery_url = p[len("gallery="):].strip()
         elif p.startswith("note="):
             note_url = p[len("note="):].strip()
+
+# 複数行形式：
+# URLs:
+#   shop=...
+#   gallery=...
+#   video=...
+#   note=...
+def pick_url_value(name: str) -> str:
+    pattern = rf"^[ \t]*{re.escape(name)}[ \t]*=[ \t]*(.*?)[ \t]*$"
+    matches = re.findall(pattern, text, flags=re.M | re.I)
+    return matches[-1].strip() if matches else ""
+
+if not shop_url:
+    shop_url = pick_url_value("shop")
+
+if not gallery_url:
+    gallery_url = pick_url_value("gallery")
+
+if not video_url:
+    video_url = pick_url_value("video")
+
+if not note_url:
+    note_url = pick_url_value("note")
 
 # sanity check (detect mix-up, do not auto-fix)
 if "raralab.shop" in video_url:

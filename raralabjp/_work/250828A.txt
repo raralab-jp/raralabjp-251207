@@ -1,16 +1,3 @@
-design_is_named: 1
-Title JP: ピンクトルマリン "Tessellation 13 (F)"
-Stone: 
-Facet Design: 
-Faceted by Rara Lab
-Designed by Arya Akhavan
-Origin:  
-Clarity: Loupe Clean
-Carat: 
-Size: 
-Treatment: 
-
-
 # ==========================================
 # Rara Lab Gallery Block Template
 # ==========================================
