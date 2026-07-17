@@ -1,0 +1,53 @@
+design_is_named: 1
+Title JP: ピンク・トルマリン 1.16ct "Procrastination"
+Stone: Pink Tourmaline
+Facet Design: Procrastination
+Faceted by Rara Lab
+Designed by Arya Akhavan
+Carat: 1.16ct
+Size: 4.6 × 6.8 × 4.9 mm
+Origin: Afghanistan
+Treatment: Unkown
+Clarity: A surface-reaching crack is visible near the edge of the table.
+
+
+# ==========================================
+# Rara Lab Gallery Block Template
+# ==========================================
+
+URLs:
+  shop=
+  gallery=
+  video=
+  note=
+
+image_order:
+process_image_order:
+
+商品番号: 250821n
+
+Stone: Pink Tourmaline
+Title JP:
+
+Facet Design: Procrastination
+design_is_named: 1
+デザイン改変:
+
+Designer: Arya Akhavan
+Faceted by: Rara Lab
+
+Carat: 1.16ct
+Size: 4.6 × 6.8 × 4.9 mm
+
+Origin: Afghanistan
+Treatment: Unkown
+
+
+Clarity: Inclusion visible to the naked eye
+
+
+カット備考: テーブル端に表面に達するクラックあり
+
+鑑別: 日独宝石研究所
+
+Tags:
