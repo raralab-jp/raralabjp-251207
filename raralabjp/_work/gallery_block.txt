@@ -1,37 +1,39 @@
+
 # ==========================================
 # Rara Lab Gallery Block Template
 # ==========================================
 
 URLs:
-  shop=https://www.raralab.shop/product/montana-sapphire-0413ct-smallest-hex-apex/102
+  shop=shop=https://www.raralab.shop/product/zircon-0718ct-bright-rose-modified-for-zircon/CXFRB6VT6MQWDMHFIBR6FPYV
   gallery=
-  video=https://customer-jnhhy169io6el95i.cloudflarestream.com/f0ef61e42bb2149afc658163ef786858/iframe
+  video=https://customer-jnhhy169io6el95i.cloudflarestream.com/af6778c679369c33a1f045bb6f122fe6/iframe
+
   note=
 
-image_order:
-process_image_order:
+DSC_4359 DSC_4363 DSC_4366 DSC_4370 DSC_4375 DSC_4372 DSC_4386 DSC_4396 DSC_4406 DSC_4413 DSC_4404 DSC_4214 DSC_4393 DSC_4389 
+process_image_order: DSC_2341 DSC_2344 DSC_2347
 
-商品番号: 241208E
+商品番号: 250413A
 
-Stone: Montana Sapphire
+Stone: Zircon
 Title JP:
 
-Facet Design: SMALLEST HEX APEX
+Facet Design: Bright Rose
 design_is_named: 1
-デザイン改変:
+デザイン改変: Modified for Zircon
 
-Designer: Robert H. Long
+Designer: Allan Beck
 Faceted by: Rara Lab
 
-Carat: 0.413ct
-Size: 4.06mm x 4.06mm x 2.94mm
+Carat: 0.718ct
+Size: 5.01 × 5.04 × 3.34 mm
 
-Origin: Rock Creek, Montana (US)
-Treatment: Heated
 
-Clarity: Eye clean
+Origin: Africa
+Treatment: None
+Clarity: Loupe clean
 
-カット備考: ガードル近くに10倍ルーペで見えるズレあり
+カット備考:
 
 鑑別: 日独宝石研究所
 

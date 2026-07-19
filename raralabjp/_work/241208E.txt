@@ -1,0 +1,38 @@
+# ==========================================
+# Rara Lab Gallery Block Template
+# ==========================================
+
+URLs:
+  shop=https://www.raralab.shop/product/montana-sapphire-0413ct-smallest-hex-apex/102
+  gallery=
+  video=https://customer-jnhhy169io6el95i.cloudflarestream.com/5fd8d857197cb308deaa3c235190fa79/iframe
+  note=
+
+image_order:
+process_image_order:
+
+商品番号: 241208E
+
+Stone: Montana Sapphire
+Title JP:
+
+Facet Design: SMALLEST HEX APEX
+design_is_named: 1
+デザイン改変:
+
+Designer: Robert H. Long
+Faceted by: Rara Lab
+
+Carat: 0.413ct
+Size: 4.06mm x 4.06mm x 2.94mm
+
+Origin: Rock Creek, Montana (US)
+Treatment: Heated
+
+Clarity: Eye clean
+
+カット備考: ガードル近くに10倍ルーペで見えるズレあり
+
+鑑別: 日独宝石研究所
+
+Tags:
