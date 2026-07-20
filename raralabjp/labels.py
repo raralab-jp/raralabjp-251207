@@ -42,6 +42,10 @@ STONE_LABELS = {
         "ja": "バイカラー・トルマリン",
         "en": "Bi-color Tourmaline",
     },
+    "Zircon": {
+        "ja": "ジルコン",
+        "en": "Zircon",
+    },
 }
 
 ORIGIN_LABELS = {
@@ -68,6 +72,10 @@ ORIGIN_LABELS = {
     "Afghanistan": {
         "ja": "アフガニスタン",
         "en": "Afghanistan",
+    },
+    "Africa": {
+        "ja": "アフリカ",
+        "en": "Africa",
     },
 }
 
@@ -157,6 +165,10 @@ PERSON_LABELS = {
     "Sean O'Neil": {
         "ja": "Sean O’Neil",
         "en": "Sean O’Neil",
+    },
+    "Allan Beck": {
+        "ja": "Allan Beck",
+        "en": "Allan Beck",
     },
 }
 

@@ -4,13 +4,12 @@
 # ==========================================
 
 URLs:
-  shop=shop=https://www.raralab.shop/product/zircon-0718ct-bright-rose-modified-for-zircon/CXFRB6VT6MQWDMHFIBR6FPYV
+  shop=https://www.raralab.shop/product/zircon-0718ct-bright-rose-modified-for-zircon/CXFRB6VT6MQWDMHFIBR6FPYV
   gallery=
   video=https://customer-jnhhy169io6el95i.cloudflarestream.com/af6778c679369c33a1f045bb6f122fe6/iframe
 
   note=
 
-DSC_4359 DSC_4363 DSC_4366 DSC_4370 DSC_4375 DSC_4372 DSC_4386 DSC_4396 DSC_4406 DSC_4413 DSC_4404 DSC_4214 DSC_4393 DSC_4389 
 process_image_order: DSC_2341 DSC_2344 DSC_2347
 
 商品番号: 250413A
