@@ -11,6 +11,7 @@ from labels import (
     CLARITY_LABELS,
     CERT_LABELS,
     PERSON_LABELS,
+    MODIFICATION_LABELS,
     label,
 )
 
@@ -1384,7 +1385,11 @@ def render_listing_blocks(row: dict) -> dict:
     warn_unknown_label(PERSON_LABELS, _mv(row, "designer"), "designer")
     warn_unknown_label(PERSON_LABELS, _mv(row, "faceted_by"), "faceted_by")
     warn_unknown_label(CERT_LABELS, _mv(row, "cert_lab_ja") or _mv(row, "cert_lab_en"), "cert_lab")
-
+    warn_unknown_label(
+        MODIFICATION_LABELS,
+        _mv(row, "modification_note"),
+        "modification_note",
+    )
     title_jp = resolve_title_jp(row)
     clarity_raw = resolve_clarity_note_en(row)
     clarity_ja = label(CLARITY_LABELS, clarity_raw, "ja")
@@ -1412,67 +1417,118 @@ def render_listing_blocks(row: dict) -> dict:
     cert_lab_ja = label(CERT_LABELS, _mv(row, "cert_lab_ja") or _mv(row, "cert_lab_en"), "ja")
     cert_lab_en = label(CERT_LABELS, _mv(row, "cert_lab_en") or _mv(row, "cert_lab_ja"), "en")
 
-    ja_lines = []
-    if title_jp:
-        ja_lines.append(title_jp)
+    modification_ja = label(
+        MODIFICATION_LABELS,
+        _mv(row, "modification_note"),
+        "ja",
+    )
+
+    modification_en = label(
+        MODIFICATION_LABELS,
+        _mv(row, "modification_note"),
+        "en",
+    )
+
+    ja_basic_lines = []
     if stone_ja:
-        ja_lines.append(f"石種：{stone_ja}")
-    if _mv(row, "carat"):
-        ja_lines.append(f'重さ：{_mv(row, "carat")}ct')
-    if _mv(row, "size_mm"):
-        ja_lines.append(f'サイズ：{_mv(row, "size_mm")}')
-    if design_jp:
-        ja_lines.append(f'ファセットデザイン：{design_jp}')
-    if designer_ja:
-        ja_lines.append(f"デザイナー：{designer_ja}")
-    if faceted_by_ja:
-        ja_lines.append(f"研磨：{faceted_by_ja}")
+        ja_basic_lines.append(f"石種：{stone_ja}")
     if origin_ja:
-        ja_lines.append(f"産地：{origin_ja}")
+        ja_basic_lines.append(f"産地：{origin_ja}")
+    if _mv(row, "carat"):
+        ja_basic_lines.append(f'重さ：{_mv(row, "carat")}ct')
+    if _mv(row, "size_mm"):
+        ja_basic_lines.append(f'サイズ：{_mv(row, "size_mm")}')
+
+    ja_condition_lines = []
     if treatment_ja:
-        ja_lines.append(f"処理：{treatment_ja}")
+        ja_condition_lines.append(f"処理：{treatment_ja}")
     if clarity_ja:
-        ja_lines.append(f'クラリティ：{clarity_ja}')
-    if additional_note:
-        ja_lines.append(f"カット備考：{additional_note}")
+        ja_condition_lines.append(f"クラリティ：{clarity_ja}")
     if cert_lab_ja:
-        ja_lines.append(f"鑑別：{cert_lab_ja}")
+        ja_condition_lines.append(f"鑑別：{cert_lab_ja}")
+
+    ja_cut_lines = []
+    if design_jp:
+        ja_cut_lines.append(f"ファセットデザイン：{design_jp}")
+    if designer_ja:
+        ja_cut_lines.append(f"デザイナー：{designer_ja}")
     if _mv(row, "modification_note"):
-        ja_lines.append(f'デザイン改変：{_mv(row, "modification_note")}')
+        ja_cut_lines.append(
+            f'デザイン改変：{_mv(row, "modification_note")}'
+        )
+    if additional_note:
+        ja_cut_lines.append(f"カット備考：{additional_note}")
+    if faceted_by_ja:
+        ja_cut_lines.append(f"研磨：{faceted_by_ja}")
+
+    ja_product_lines = []
+    if modification_ja:
+        ja_cut_lines.append(f"デザイン改変：{modification_ja}")
+
+    ja_groups = [
+        ja_basic_lines,
+        ja_condition_lines,
+        ja_cut_lines,
+        ja_product_lines,
+    ]
+
+    ja_lines = []
+    for group in ja_groups:
+        if not group:
+            continue
+        if ja_lines:
+            ja_lines.append("　")
+        ja_lines.extend(group)
+
+    en_basic_lines = []
+    if stone_en:
+        en_basic_lines.append(f"Stone: {stone_en}")
+    if origin_en:
+        en_basic_lines.append(f"Origin: {origin_en}")
+    if _mv(row, "carat"):
+        en_basic_lines.append(f'Weight: {_mv(row, "carat")}ct')
+    if _mv(row, "size_mm"):
+        en_basic_lines.append(f'Size: {_mv(row, "size_mm")}')
+
+    en_condition_lines = []
+    if treatment_en:
+        en_condition_lines.append(f"Treatment: {treatment_en}")
+    if clarity_en:
+        en_condition_lines.append(f"Clarity: {clarity_en}")
+    if cert_lab_en:
+        en_condition_lines.append(f"Certification: {cert_lab_en}")
+
+    en_cut_lines = []
+    if design_en:
+        en_cut_lines.append(f"Design: {design_en}")
+    if designer_en:
+        en_cut_lines.append(f"Designer: {designer_en}")
+    if modification_en:
+        en_cut_lines.append(f"Modification: {modification_en}")
+
+    if additional_note:
+        en_cut_lines.append(f"Additional Note: {additional_note}")
+    if faceted_by_en:
+        en_cut_lines.append(f"Faceted by: {faceted_by_en}")
+
+    en_product_lines = []
     if _mv(row, "product_id"):
-        ja_lines.append(f'\n商品番号：{_mv(row, "product_id")}')
+        en_product_lines.append(f'Product ID: {_mv(row, "product_id")}')
+
+    en_groups = [
+        en_basic_lines,
+        en_condition_lines,
+        en_cut_lines,
+        en_product_lines,
+    ]
 
     en_lines = []
-    if _mv(row, "stone") and _mv(row, "carat"):
-        en_lines.append(f'{_mv(row, "stone")} {_mv(row, "carat")}ct {design_en}'.strip())
-    elif _mv(row, "stone"):
-        en_lines.append(_mv(row, "stone"))
-    if stone_en:
-        en_lines.append(f"Stone: {stone_en}")
-    if _mv(row, "carat"):
-        en_lines.append(f'Weight: {_mv(row, "carat")}ct')
-    if _mv(row, "size_mm"):
-        en_lines.append(f'Size: {_mv(row, "size_mm")}')
-    if design_en:
-        en_lines.append(f'Design: {design_en}')
-    if designer_en:
-        en_lines.append(f"Designer: {designer_en}")
-    if faceted_by_en:
-        en_lines.append(f"Faceted by: {faceted_by_en}")
-    if origin_en:
-        en_lines.append(f'Origin: {_mv(row, "origin_en")}')
-    if treatment_en:
-        en_lines.append(f"Treatment: {treatment_en}")
-    if clarity_en:
-        en_lines.append(f'Clarity: {clarity_en}')
-    if additional_note:
-        en_lines.append(f"Additional Note: {additional_note}")
-    if cert_lab_en:
-        en_lines.append(f"Certification: {cert_lab_en}")
-    if _mv(row, "modification_note"):
-        en_lines.append(f'Modification: {_mv(row, "modification_note")}')
-    if _mv(row, "product_id"):
-        en_lines.append(f'\nProduct ID: {_mv(row, "product_id")}')
+    for group in en_groups:
+        if not group:
+            continue
+        if en_lines:
+            en_lines.append("　")
+        en_lines.extend(group)
 
     return {
         "ja": "\n".join(ja_lines),
@@ -1532,9 +1588,9 @@ def render_square_output(row: dict) -> dict:
     description = "\n".join([
         *intro_lines,
         blocks["ja"],
-        "",
+        "　",
         "☆☆☆☆☆☆",
-        "",
+        "　",
         blocks["en"],
     ]).strip()
 

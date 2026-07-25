@@ -5,7 +5,7 @@
 
 URLs:
   shop=https://www.raralab.shop/product/zircon-0718ct-bright-rose-modified-for-zircon/CXFRB6VT6MQWDMHFIBR6FPYV
-  gallery=
+  gallery=https://raralab.jp/gallery/zircon-0718ct-bright-rose/
   video=https://customer-jnhhy169io6el95i.cloudflarestream.com/af6778c679369c33a1f045bb6f122fe6/iframe
 
   note=

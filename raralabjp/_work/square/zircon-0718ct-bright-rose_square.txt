@@ -4,36 +4,40 @@
 
 ### square:zircon-0718ct-bright-rose:description
 
-ジルコン 0.718ct “Bright Rose”
+公式サイトのギャラリーページはこちらです。
+https://raralab.jp/gallery/zircon-0718ct-bright-rose/
+
 石種：ジルコン
+産地：アフリカ
 重さ：0.718ct
 サイズ：5.01 × 5.04 × 3.34 mm
-ファセットデザイン：“Bright Rose”
-デザイナー：Allan Beck
-研磨：Rara Lab
-産地：アフリカ
+　
 処理：なし
 クラリティ：10倍ルーペで目立つインクルージョンなし
 鑑別：日独宝石研究所
+　
+ファセットデザイン：“Bright Rose”
+デザイナー：Allan Beck
 デザイン改変：Modified for Zircon
-
-商品番号：250413A
-
+研磨：Rara Lab
+デザイン改変：ジルコン用に調整
+　
 ☆☆☆☆☆☆
-
-Zircon 0.718ct “Bright Rose”
+　
 Stone: Zircon
+Origin: Africa
 Weight: 0.718ct
 Size: 5.01 × 5.04 × 3.34 mm
-Design: “Bright Rose”
-Designer: Allan Beck
-Faceted by: Rara Lab
-Origin: Africa
+　
 Treatment: None
 Clarity: Loupe clean
 Certification: Japan Germany Gemmological Laboratory
+　
+Design: “Bright Rose”
+Designer: Allan Beck
 Modification: Modified for Zircon
-
+Faceted by: Rara Lab
+　
 Product ID: 250413A
 
 ### square:zircon-0718ct-bright-rose:seo_description

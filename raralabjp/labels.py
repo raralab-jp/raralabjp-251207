@@ -121,6 +121,13 @@ CLARITY_LABELS = {
     },
 }
 
+MODIFICATION_LABELS = {
+    "Modified for Zircon": {
+        "ja": "ジルコン用に調整",
+        "en": "Modified for Zircon",
+    },
+}
+
 CERT_LABELS = {
     "日独宝石研究所": {
         "ja": "日独宝石研究所",
