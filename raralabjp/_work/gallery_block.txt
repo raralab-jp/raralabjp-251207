@@ -3,39 +3,35 @@
 # ==========================================
 
 URLs:
-  shop=https://www.raralab.shop/product/zircon-1019ct-tessellation-20/MWFO6A2MLYPOR7AHBQUFU5MC?
-  gallery=https://raralab.jp/gallery/zircon-1019ct-tessellation-20/
+  shop=https://www.raralab.shop/product/montana-sapphire-0448ct-smallest-hex-apex/103
+  gallery=
   video=
   note=
 
 image_order:
-process_image_order: DSC_2365 DSC_2367
+process_image_order:
 
-商品番号: 250413C
+商品番号: 241208F
 
-Stone: Zircon
+Stone: Montana Sapphire
 Title JP:
 
-Facet Design: Tessellation 20
+Facet Design: SMALLEST HEX APEX
 design_is_named: 1
 デザイン改変:
 
-Designer: Arya Akhavan
+Designer: Robert H. Long
 Faceted by: Rara Lab
 
+Carat: 0.448ct
+Size: 4.25mm x 4.23mm x 2.99mm
 
-Carat: 1.019ct
-Size: 5.43 × 5.41 × 3.86mm
-
-Origin: Unknown
+Origin: Montana, US
 Treatment: Heated
-# Unknown
-# Possible irradiation; not tested
 
 Clarity: Eye clean
 
-
-カット備考: Rara Labによる加熱、ガードル付近にカケあり
+カット備考:
 
 鑑別: 日独宝石研究所
 

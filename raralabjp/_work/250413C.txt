@@ -1,0 +1,42 @@
+# ==========================================
+# Rara Lab Gallery Block Template
+# ==========================================
+
+URLs:
+  shop=https://www.raralab.shop/product/zircon-1019ct-tessellation-20/MWFO6A2MLYPOR7AHBQUFU5MC?
+  gallery=https://raralab.jp/gallery/zircon-1019ct-tessellation-20/
+  video=
+  note=
+
+image_order:
+process_image_order: DSC_2365 DSC_2367
+
+商品番号: 250413C
+
+Stone: Zircon
+Title JP:
+
+Facet Design: Tessellation 20
+design_is_named: 1
+デザイン改変:
+
+Designer: Arya Akhavan
+Faceted by: Rara Lab
+
+
+Carat: 1.019ct
+Size: 5.43 × 5.41 × 3.86mm
+
+Origin: Unknown
+Treatment: Heated
+# Unknown
+# Possible irradiation; not tested
+
+Clarity: Eye clean
+
+
+カット備考: Rara Labによる加熱、ガードル付近にカケあり
+
+鑑別: 日独宝石研究所
+
+Tags:
