@@ -710,10 +710,13 @@ main.detail .thumbs-label {
 
 /* bar */
 main.detail .thumbs {
+  --thumb-gap: 12px;
+  --thumb-visible: 4.5;
+
   width: 100%;
   display: flex;
   flex-wrap: nowrap;
-  gap: 12px;
+  gap: var(--thumb-gap);
 
   overflow-x: auto;
   overflow-y: hidden;
@@ -721,11 +724,17 @@ main.detail .thumbs {
 
   justify-content: flex-start;
   padding-bottom: 6px;
+  margin-bottom: 12px;
 }
 
 /* each thumb cell */
 main.detail .thumbs a.thumb {
-  flex: 0 0 auto;          /* これがないと縮んで崩れます */
+  flex: 0 0 calc(
+    (100% - (var(--thumb-visible) - 1) * var(--thumb-gap))
+    / var(--thumb-visible)
+  );
+
+  box-sizing: border-box;
   display: grid;
   place-items: center;
   min-width: 44px;
@@ -736,24 +745,24 @@ main.detail .thumbs a.thumb {
 
 /* image: NO CROP */
 main.detail .thumbs a.thumb img {
-  width: 72px;
+  width: 100%;
   aspect-ratio: 1 / 1;
   height: auto;
 
-  object-fit: contain;     /* ← cover をやめる */
-  background: var(--panel-bg);     /* 余白が出るので下地を敷く */
+  object-fit: contain;
+  background: var(--panel-bg);
   display: block;
 }
 
-@media (min-width: 481px){
-  main.detail .thumbs a.thumb img{
-    width: 80px;
+@media (min-width: 481px) {
+  main.detail .thumbs {
+    --thumb-visible: 8.5;
   }
 }
 
-@media (min-width: 1024px){
-  main.detail .thumbs a.thumb img{
-    width: 88px;
+@media (min-width: 1024px) {
+  main.detail .thumbs {
+    --thumb-visible: 9.5;
   }
 }
 

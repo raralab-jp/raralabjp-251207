@@ -1161,9 +1161,9 @@ def detail_html(it):
 
     blocks = []
     if thumbs:
-        blocks.append(render_thumbs_block(thumbs, f"Photos ({len(thumbs)})", kind="photos"))
+        blocks.append(render_thumbs_block(thumbs, "", kind="photos"))
     if process_thumbs:
-        blocks.append(render_thumbs_block(process_thumbs, f"Making ({len(process_thumbs)})", kind="process"))
+        blocks.append(render_thumbs_block(process_thumbs, "Making", kind="process"))
 
     thumbs_html = ""
     if blocks:
