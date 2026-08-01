@@ -54,7 +54,7 @@ ORIGIN_LABELS = {
         "en": "Montana, USA",
     },
     "Rock Creek, Montana, USA": {
-        "ja": "ロッククリーク、モンタナ（アメリカ）",
+        "ja": "モンタナ州ロッククリーク（アメリカ）",
         "en": "Rock Creek, Montana, USA",
     },
     "Umba, Tanzania": {
@@ -176,6 +176,10 @@ PERSON_LABELS = {
     "Allan Beck": {
         "ja": "Allan Beck",
         "en": "Allan Beck",
+    },
+    "Robert H. Long": {
+        "ja": "Robert H. Long",
+        "en": "Robert H. Long",
     },
 }
 

@@ -3,35 +3,36 @@
 # ==========================================
 
 URLs:
-  shop=https://www.raralab.shop/product/montana-sapphire-0448ct-smallest-hex-apex/103
-  gallery=https://raralab.jp/gallery/montana-sapphire-0448ct-smallest-hex-apex/
+  shop=
+  gallery=
   video=
   note=
 
 image_order:
-process_image_order:
+process_image_order: 260610-164010.jpg 260610-164345.jpg 260611-181107.jpg 260611-181458.jpg 260615-182627.jpg 260615-182803.jpg 260617-232701.jpg 260620-160648.jpg 260620-163146.jpg 260620-163204.jpg
 
-商品番号: 241208F
+商品番号: 250806H
 
 Stone: Montana Sapphire
 Title JP:
 
-Facet Design: SMALLEST HEX APEX
-design_is_named: 1
+Facet Design: Cut Corner Rectangle Step
+design_is_named: 0
 デザイン改変:
 
-Designer: Robert H. Long
+Designer: Rara Lab
 Faceted by: Rara Lab
 
-Carat: 0.448ct
-Size: 4.25mm x 4.23mm x 2.99mm
+Carat: 0.405ct
+Size: 5.12×3.10×2.42 mm
 
-Origin: Montana, US
+Origin: Rock Creek, Montana, USA
 Treatment: Heated
 
-Clarity: Eye clean
 
-カット備考:
+Clarity: Loupe clean
+
+カット備考: バイカラー・サファイア（ゾーニングあり）
 
 鑑別: 日独宝石研究所
 

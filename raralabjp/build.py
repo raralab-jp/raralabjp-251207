@@ -1075,16 +1075,29 @@ def detail_html(it):
     raw_image_order = it.get("image_order", "") or ""
 
     # "process_image_order:" が混入していたら除去（保険）
-    raw_image_order = re.sub(r"\bprocess_image_order\s*:\s*", "", str(raw_image_order), flags=re.IGNORECASE)
+    raw_image_order = re.sub(
+        r"\bprocess_image_order\s*:\s*",
+        "",
+        str(raw_image_order),
+        flags=re.IGNORECASE
+    )
 
-    # IDっぽいもの（DSC_#### など）だけ抽出して並べ直す
-    order_ids = re.findall(r"(?:DSC_\d+|IMG_\d+|IMGP_\d+|\d{4,})", raw_image_order)
+    order_ids = [
+        Path(t.strip()).stem
+        for t in re.split(r"[,\s]+", str(raw_image_order))
+        if t.strip()
+    ]
 
     image_order = " ".join(order_ids)
     thumbs_all = all_images(slug, image_order=image_order)
 
     process_order = (it.get("process_image_order", "") or "").strip()
-    process_ids = [t for t in re.split(r"[,\s]+", process_order) if t.strip()]
+
+    process_ids = [
+        Path(t.strip()).stem
+        for t in re.split(r"[,\s]+", process_order)
+        if t.strip()
+    ]
 
     def _thumb_id(path: str) -> str:
         stem = Path(path).stem

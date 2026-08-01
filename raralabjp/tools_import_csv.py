@@ -25,12 +25,29 @@ index = {it.get("slug"): it for it in items if it.get("slug")}
 def _clean_order_field(v) -> str:
     if v is None:
         return ""
+
     s = str(v).strip()
+
     # ラベル残留を除去
-    s = re.sub(r"\bprocess_image_order\s*:\s*", "", s, flags=re.IGNORECASE)
-    s = re.sub(r"\bimage_order\s*:\s*", "", s, flags=re.IGNORECASE)
-    # IDっぽいものだけ残す（DSC_#### 等）
-    ids = re.findall(r"(?:DSC_\d+|IMG_\d+|IMGP_\d+|\d{4,})", s)
+    s = re.sub(
+        r"\bprocess_image_order\s*:\s*",
+        "",
+        s,
+        flags=re.IGNORECASE,
+    )
+    s = re.sub(
+        r"\bimage_order\s*:\s*",
+        "",
+        s,
+        flags=re.IGNORECASE,
+    )
+
+    ids = [
+        pathlib.Path(token.strip()).stem
+        for token in re.split(r"[,\s]+", s)
+        if token.strip()
+    ]
+
     return " ".join(ids)
 
 def normalize_orders(row: dict) -> None:
