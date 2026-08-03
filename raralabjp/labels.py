@@ -46,6 +46,10 @@ STONE_LABELS = {
         "ja": "ジルコン",
         "en": "Zircon",
     },
+    "Garnet": {
+        "ja": "ガーネット",
+        "en": "Garnet",
+    },
 }
 
 ORIGIN_LABELS = {
