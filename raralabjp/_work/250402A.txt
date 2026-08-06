@@ -1,0 +1,38 @@
+# ==========================================
+# Rara Lab Gallery Block Template
+# ==========================================
+
+URLs:
+  shop=
+  gallery=https://raralab.jp/gallery/garnet-0523ct-uso-da/
+  video=https://customer-jnhhy169io6el95i.cloudflarestream.com/50ef3f808ee12c026cb31fc8165bd4a7/iframe
+  note=
+
+image_order:
+process_image_order:
+
+商品番号: 250402A
+
+Stone: Garnet
+Title JP:
+
+Facet Design:Uso Da!
+design_is_named: 1
+デザイン改変:
+
+Designer: Arya Akhavan
+Faceted by: Rara Lab
+
+Carat: 0.523ct
+Size: 5.08×3.87×3.47 mm
+
+Origin: Africa
+Treatment: None
+
+Clarity: Inclusion visible to the naked eye
+
+カット備考:
+
+鑑別: 日独宝石研究所
+
+Tags:
