@@ -4,8 +4,8 @@
 
 URLs:
   shop=
-  gallery=
-  video=
+  gallery=https://raralab.jp/gallery/bi-color-sapphire-3689ct-round-rectangle-bca/
+  video=https://customer-jnhhy169io6el95i.cloudflarestream.com/6145d21e1d63eda4cc4792ef23ba3bd3/iframe
   note=
 
 image_order:
