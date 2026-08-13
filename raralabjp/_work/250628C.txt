@@ -1,0 +1,38 @@
+# ==========================================
+# Rara Lab Gallery Block Template
+# ==========================================
+
+URLs:
+  shop=
+  gallery=https://raralab.jp/gallery/bi-color-sapphire-3689ct-round-rectangle-bca/
+  video=https://customer-jnhhy169io6el95i.cloudflarestream.com/6145d21e1d63eda4cc4792ef23ba3bd3/iframe
+  note=
+
+image_order:
+process_image_order:
+
+商品番号: 250628C
+
+Stone: Bi-color Sapphire
+Title JP:
+
+Facet Design: Round Rectangle. BCA.
+design_is_named: 1
+デザイン改変: Modified for Dark Sapphire
+
+Designer: J Hamer
+Faceted by: Rara Lab
+
+Carat: 3.689ct
+Size: 11.30x8.19×5.20mm
+
+Origin: Nigeria
+Treatment: Heated
+
+Clarity: Loupe clean
+
+カット備考: ダークサファイアの色が明るく見えるようデザインを調整
+
+鑑別: 日独宝石研究所
+
+Tags:

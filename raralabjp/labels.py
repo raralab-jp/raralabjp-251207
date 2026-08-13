@@ -30,6 +30,11 @@ STONE_LABELS = {
         "en": "Umba Sapphire",
     },
 
+"Bi-color Sapphire": {
+    "ja": "バイカラー・サファイア",
+    "en": "Bi-color Sapphire",
+},
+
     "Pink Tourmaline": {
         "ja": "ピンク・トルマリン",
         "en": "Pink Tourmaline",

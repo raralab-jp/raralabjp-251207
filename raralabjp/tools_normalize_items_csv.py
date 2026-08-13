@@ -11,6 +11,7 @@ NORMALIZE = {
         "Pink Sapphire": "Pink Sapphire",
         "Color Change Sapphire": "Color Change Sapphire",
         "Bi-color Tourmaline": "Bi-color Tourmaline",
+        "Bi Color Sapphire": "Bi-color Sapphire",
     },
     "stone_ja": {
         "モンタナサファイア": "モンタナ・サファイア",
