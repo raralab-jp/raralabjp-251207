@@ -4,36 +4,36 @@
 
 URLs:
   shop=
-  gallery=
-  video=https://customer-jnhhy169io6el95i.cloudflarestream.com/b99379e2216a4691bd98584c8c90a0af/iframe
+  gallery=https://raralab.jp/gallery/pink-tourmaline-116ct-procrastination/
+  video=https://customer-jnhhy169io6el95i.cloudflarestream.com/e697e812a1a99b6459709e846c6976be/iframe
   note=
 
 image_order:
-process_image_order: 260531-155642.jpg 260601-024253.jpg 260601-180236.jpg 260601-180438.jpg 260607-012657.jpg
+process_image_order:
 
-商品番号: 250719A
+商品番号: 250821n
 
-
-Stone: Kenyan Sapphire
+Stone: Pink Tourmaline
 Title JP:
 
-Facet Design: New Window - for Dark Sapphire
+Facet Design: Procrastination
 design_is_named: 1
 デザイン改変:
 
-Designer: Rara Lab
+Designer: Arya Akhavan
 Faceted by: Rara Lab
 
-Carat: 0.526ct
-Size: 9.60×3.23×2.23 mm
+Carat: 1.16ct
+Size: 4.6 × 6.8 × 4.9 mm
 
-Origin: Kenya
-Treatment: Heated
-
-Clarity: Inclusion visible under 10x
+Origin: Afghanistan
+Treatment: Unkown
 
 
-カット備考: 欠けを防ぐために先端を2箇所丸めています
+Clarity: Inclusion visible to the naked eye
+
+
+カット備考: テーブル端に表面に達するクラックあり
 
 鑑別: 日独宝石研究所
 

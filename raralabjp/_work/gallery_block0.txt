@@ -1,0 +1,37 @@
+# ==========================================
+# Rara Lab Gallery Block Template
+# ==========================================
+
+URLs:
+  shop=
+  gallery=
+  video=https://customer-jnhhy169io6el95i.cloudflarestream.com/6139db1d3d2972ef4374c14cfd77c00f/iframe
+  note=
+
+image_order:
+process_image_order:
+
+商品番号: 250521E
+
+Stone: ソンゲア産サファイア
+Title JP:
+
+Facet Design: Tripod for Sapphire
+design_is_named: 1
+デザイン改変:
+
+Designer: Rara lab
+Faceted by: Rara Lab
+
+Carat : 0.518ct
+Size: 4.55×4.73×3.03 mm
+Origin: Songea, Tanzania
+Treatment: Unheated
+
+Clarity: Included
+
+カット備考: 日独宝石研究所で非加熱検査を行いました
+
+鑑別: 日独宝石研究所
+
+Tags:
