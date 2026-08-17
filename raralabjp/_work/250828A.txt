@@ -4,8 +4,8 @@
 
 URLs:
   shop=
-  gallery=
-  video=
+  gallery=https://raralab.jp/gallery/pink-tourmaline-0856ct-tessellation-13-f/
+  video=https://customer-jnhhy169io6el95i.cloudflarestream.com/a03bed4ab85a4e1206f65f0173bc75ed/iframe
   note=
 
 image_order:
