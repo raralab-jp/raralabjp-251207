@@ -3,35 +3,34 @@
 # ==========================================
 
 URLs:
-  shop=https://www.raralab.shop/product/montana-sapphire-0448ct-smallest-hex-apex/103
-  gallery=https://raralab.jp/gallery/montana-sapphire-0448ct-smallest-hex-apex/
-  video=https://customer-jnhhy169io6el95i.cloudflarestream.com/7e4324c402acd1c259198ee45e2e48e3/iframe
+  shop=
+  gallery=
+  video=https://customer-jnhhy169io6el95i.cloudflarestream.com/6139db1d3d2972ef4374c14cfd77c00f/iframe
   note=
 
 image_order:
 process_image_order:
 
-商品番号: 241208F
+商品番号: 250521E
 
-Stone: Montana Sapphire
+Stone: Songea Sapphire
 Title JP:
 
-Facet Design: SMALLEST HEX APEX
+Facet Design: Tripod for Sapphire
 design_is_named: 1
 デザイン改変:
 
-Designer: Robert H. Long
+Designer: Rara lab
 Faceted by: Rara Lab
 
-Carat: 0.448ct
-Size: 4.25mm x 4.23mm x 2.99mm
+Carat : 0.518ct
+Size: 4.55×4.73×3.03 mm
+Origin: Songea, Tanzania
+Treatment: Unheated
 
-Origin: Montana, US
-Treatment: Heated
+Clarity: Included
 
-Clarity: Eye clean
-
-カット備考:
+カット備考: 日独宝石研究所で非加熱検査を行いました
 
 鑑別: 日独宝石研究所
 
