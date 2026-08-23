@@ -1,0 +1,109 @@
+:root {
+  --hero-max: 1080px;
+  --text-max: 760px;
+  --pad-x: clamp(16px, 3vw, 36px);
+  --text: #252525;
+  --muted: #6a6a6a;
+  --bg: #ffffff;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html {
+  background: var(--bg);
+}
+
+body {
+  margin: 0;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  background: var(--bg);
+  color: var(--text);
+  font-family: system-ui, -apple-system, BlinkMacSystemFont, "Helvetica Neue", Arial, sans-serif;
+  line-height: 1.7;
+  -webkit-font-smoothing: antialiased;
+}
+
+main {
+  width: 100%;
+  padding-top: clamp(24px, 3vw, 38px);
+}
+
+.renewal-hero {
+  /* PCでは写真の左右にしっかり白を残す */
+  width: min(84vw, var(--hero-max));
+  margin: 0 auto;
+}
+
+.renewal-hero picture,
+.renewal-hero img {
+  display: block;
+  width: 100%;
+}
+
+.renewal-hero img {
+  height: auto;
+  aspect-ratio: 4 / 3;
+  object-fit: cover;
+}
+
+.renewal-message {
+  width: min(calc(100% - (var(--pad-x) * 2)), var(--text-max));
+  margin: 0 auto;
+  padding: clamp(30px, 4vw, 48px) 0 clamp(40px, 5vw, 58px);
+  text-align: center;
+}
+
+.renewal-message h1 {
+  margin: 0;
+  font-size: clamp(1.45rem, 2.5vw, 2rem);
+  line-height: 1.45;
+  font-weight: 500;
+  letter-spacing: 0.035em;
+}
+
+.renewal-message p {
+  margin: 18px 0 0;
+  font-size: clamp(0.95rem, 1.4vw, 1.05rem);
+  color: var(--muted);
+}
+
+.site-footer {
+  width: min(calc(100% - (var(--pad-x) * 2)), var(--hero-max));
+  margin: auto auto 0;
+  padding: 0 0 24px;
+  text-align: center;
+}
+
+.site-footer p {
+  margin: 0;
+  font-size: 0.78rem;
+  color: #8a8a8a;
+}
+
+@media (max-width: 640px) {
+  main {
+    padding-top: 16px;
+  }
+
+  .renewal-hero {
+    width: calc(100% - 32px);
+  }
+
+  /* スマホ専用写真は縦位置をそのまま見せる */
+  .renewal-hero img {
+    aspect-ratio: 3 / 4;
+    object-fit: cover;
+  }
+
+  .renewal-message {
+    padding-top: 28px;
+  }
+
+  .desktop-break {
+    display: none;
+  }
+}
