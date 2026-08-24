@@ -52,7 +52,7 @@ GEMDIARY_BODY_DIR = ROOT / "assets" / "gemdiary" / "body"
 
 OUT_GEMDIARY = SITE_ROOT / "gemdiary"
 
-SITE_ORIGIN = "https://raralab.jp"  # 本番ドメインを固定
+SITE_ORIGIN = "https://awaifacets.com"  # 本番ドメインを固定
 
 def build_gallery_canonical(slug: str) -> str:
     return f"{SITE_ORIGIN}/gallery/{slug}/"
@@ -70,11 +70,11 @@ def build_gallery_description(it: dict) -> str:
 
     base = []
     if stone and carat:
-        base.append(f"Rara Labが研磨した{stone} {carat}ctのルース。")
+        base.append(f"awai facetsが研磨した{stone} {carat}ctのルース。")
     elif stone:
-        base.append(f"Rara Labが研磨した{stone}のルース。")
+        base.append(f"awai facetsが研磨した{stone}のルース。")
     else:
-        base.append("Rara Labのギャラリー詳細ページです。")
+        base.append("awai facetsのギャラリー詳細ページです。")
 
     if origin:
         base.append(f"産地：{origin}。")
@@ -90,7 +90,7 @@ def build_news_description(body_html: str, fallback_title: str = "") -> str:
     txt = re.sub(r"<[^>]+>", " ", body_html)
     txt = re.sub(r"\s+", " ", txt).strip()
     if not txt:
-        txt = fallback_title or "Rara LabのNews記事です。"
+        txt = fallback_title or "awai facetsのNews記事です。"
     return txt[:160]
 
 def render_head(*, title: str, description: str, canonical: str, og_image: str = "", twitter_site: str = "@raralab") -> str:
@@ -109,7 +109,7 @@ def render_head(*, title: str, description: str, canonical: str, og_image: str =
     if og_image:
         parts += [
             f'  <meta property="og:type" content="{og_type}">',
-            '  <meta property="og:site_name" content="Rara Lab">',
+            '  <meta property="og:site_name" content="awai facets">',
             f'  <meta property="og:title" content="{html.escape(title)}">',
             f'  <meta property="og:description" content="{html.escape(description)}">',
             f'  <meta property="og:url" content="{html.escape(canonical)}">',
@@ -516,8 +516,8 @@ def news_index_html(cards: str, prev_link: str = None, next_link: str = None, ca
     logo_html = render_partial("top_logo.html")
     nav_html  = render_partial("nav_main.html")
 
-    seo_title = "News | Rara Lab"
-    description = "Rara Labの活動に関する更新情報をまとめています。出品やサイト更新など、節目となる内容を掲載しています。"
+    seo_title = "News | awai facets"
+    description = "awai facetsの活動に関する更新情報をまとめています。出品やサイト更新など、節目となる内容を掲載しています。"
 
     # canonical 未指定なら /news/ を使う（最低限の安全策）
     can = canonical.strip() or f"{SITE_ORIGIN}/news/"
@@ -541,7 +541,7 @@ def news_index_html(cards: str, prev_link: str = None, next_link: str = None, ca
     <h1>News</h1>
     <div class="gallery-note">
       <p>
-        Rara Labの活動に関する更新情報をまとめています。
+        awai facetsの活動に関する更新情報をまとめています。
       </p>
       <p>
         出品やサイト更新など、節目となる内容を掲載しています。
@@ -591,7 +591,7 @@ def gemdiary_detail_html(meta: dict, body_html: str) -> str:
         {body_html}
       </section>'''
 
-    seo_title = f"{title_raw} | Rara Lab" if title_raw else "Gem Diary | Rara Lab"
+    seo_title = f"{title_raw} | awai facets" if title_raw else "Gem Diary | awai facets"
 
     # canonical は基本ここで生成。rawにあるcanonicalと一致するので安心。
     canonical = f"{SITE_ORIGIN}/gemdiary/{slug}/" if slug else f"{SITE_ORIGIN}/gemdiary/"
@@ -673,7 +673,7 @@ def news_detail_html(news: dict, body_html: str) -> str:
       </section>'''
 
     # ---- SEO/head ----
-    seo_title = f"{title_raw} | Rara Lab" if title_raw else "News | Rara Lab"
+    seo_title = f"{title_raw} | awai facets" if title_raw else "News | awai facets"
     canonical = build_news_canonical(slug) if slug else f"{SITE_ORIGIN}/news/"
     description = build_news_description(body_html, fallback_title=title_raw)
 
@@ -940,8 +940,8 @@ def gallery_index_html(cards: str, prev_link: str = None, next_link: str = None,
     logo_html = render_partial("top_logo.html")
     nav_html  = render_partial("nav_main.html")
 
-    seo_title = "Gallery | Rara Lab"
-    description = "Rara Labがこれまでに制作した作品ギャラリーです。写真、制作過程、スペック、購入ページへのリンクを掲載しています。販売状況はショップの商品ページでご確認いただけます。"
+    seo_title = "Gallery | awai facets"
+    description = "awai facetsがこれまでに制作した作品ギャラリーです。写真、制作過程、スペック、購入ページへのリンクを掲載しています。販売状況はショップの商品ページでご確認いただけます。"
 
     can = canonical.strip() or f"{SITE_ORIGIN}/gallery/"
 
@@ -964,7 +964,7 @@ def gallery_index_html(cards: str, prev_link: str = None, next_link: str = None,
     <h1>Gallery</h1>
     <div class="gallery-note">
       <p>
-      このギャラリーでは、Rara Labがこれまでに制作した作品をご紹介しています。
+      このギャラリーでは、awai facetsがこれまでに制作した作品をご紹介しています。
       </p>
       <p>
       一部に販売を終了している作品も含まれます。現在の販売状況は、ショップの商品ページでご確認いただけます。
@@ -1019,9 +1019,9 @@ def top_index_html(new_cards: str, top_news_cards_html: str) -> str:
 '''
 
     # ---- SEO / head ----
-    seo_title = "Rara Lab | Faceted Gemstones and Gallery"
+    seo_title = "awai facets | Faceted Gemstones and Gallery"
     description = (
-        "Rara Labは、ファセットカットによる宝石ルースを制作・展示するギャラリーサイトです。"
+        "awai facetsは、ファセットカットによる宝石ルースを制作・展示するギャラリーサイトです。"
         "研磨作品の写真、制作過程、スペック、販売情報を掲載しています。"
     )
 
@@ -1228,7 +1228,7 @@ def detail_html(it):
 
     # ---- SEO values ----
     h1_title = title  # 既存の見出し用
-    seo_title = f"{h1_title} | Rara Lab"
+    seo_title = f"{h1_title} | awai facets"
 
     canonical = build_gallery_canonical(slug)
     description = build_gallery_description(it)
@@ -1570,7 +1570,7 @@ def build_square_seo_description(row: dict) -> str:
     if treatment_ja:
         parts.append(f"処理：{treatment_ja}")
 
-    parts.append("Rara Labが研磨した宝石ルースです。")
+    parts.append("awai facetsが研磨した宝石ルースです。")
 
     text = "。".join(p.strip("。") for p in parts if p).strip()
     if text and not text.endswith("。"):
