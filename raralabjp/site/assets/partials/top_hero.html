@@ -1,5 +1,7 @@
 <section class="hero hero--contain">
-  <!-- 画像はそのまま非トリミング表示。差し替えたい時は src を入れ替え -->
-  <img src="/assets/images/top/hero.jpg"
-       alt="awai facets – gemstones and faceting">
+  <picture>
+    <source media="(max-width: 640px)" srcset="/assets/images/top/hero-mobile.jpg">
+    <img src="/assets/images/top/hero.jpg"
+         alt="awai facets – gemstones and faceting">
+  </picture>
 </section>

@@ -28,10 +28,13 @@
   </div>
 </header>
 <section class="hero hero--contain">
-  <!-- 画像はそのまま非トリミング表示。差し替えたい時は src を入れ替え -->
-  <img src="/assets/images/top/hero.jpg"
-       alt="awai facets – gemstones and faceting">
+  <picture>
+    <source media="(max-width: 640px)" srcset="/assets/images/top/hero-mobile.jpg">
+    <img src="/assets/images/top/hero.jpg"
+         alt="awai facets – gemstones and faceting">
+  </picture>
 </section>
+
 <nav class="hero-cta site-nav" aria-label="Global navigation">
   <a href="/gallery/">Gallery</a>
   <a href="https://shop.awaifacets.com/" target="_blank" rel="noopener">Shop</a>
@@ -39,6 +42,7 @@
   <a href="/news/">News</a>
   <a href="/archive/">Archive</a>
 </nav>
+
 <section class="top-intro">
   <section class="brand-intro">
     <p class="brand-intro-line1">
@@ -128,6 +132,7 @@
     </a>
   </div>
 </section>
+
 <p class="links">
   <!-- <a href="https://square…" target="_blank" rel="noopener">Shop（Square）</a> /
   <a href="https://note…" target="_blank" rel="noopener">制作記録（note）</a> /
