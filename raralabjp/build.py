@@ -93,7 +93,7 @@ def build_news_description(body_html: str, fallback_title: str = "") -> str:
         txt = fallback_title or "awai facetsのNews記事です。"
     return txt[:160]
 
-def render_head(*, title: str, description: str, canonical: str, og_image: str = "", twitter_site: str = "@raralab") -> str:
+def render_head(*, title: str, description: str, canonical: str, og_image: str = "", twitter_site: str = "@awaifacets") -> str:
     # og_image は絶対URLを推奨
     og_type = "article"  # ギャラリー詳細はとりあえず article でOK（後でProductでも可）
     parts = [
@@ -131,6 +131,21 @@ def render_partial(name: str) -> str:
     """
     p = PARTIALS_DIR / name.strip()
     return p.read_text(encoding="utf-8") if p.exists() else ""
+
+
+def rewrite_legacy_urls(html_text: str) -> str:
+    """公開HTML内の旧ブランドURL・アカウントURLを現行URLへ揃える。"""
+    replacements = (
+        ("https://www.raralab.shop", "https://shop.awaifacets.com"),
+        ("https://raralab.shop", "https://shop.awaifacets.com"),
+        ("https://www.raralab.jp", "https://awaifacets.com"),
+        ("https://raralab.jp", "https://awaifacets.com"),
+        ("https://x.com/raralab", "https://x.com/awaifacets"),
+        ("https://note.com/raralab_jp", "https://note.com/awaifacets"),
+    )
+    for old, new in replacements:
+        html_text = html_text.replace(old, new)
+    return html_text
 
 
 def inject_footer(html_text: str) -> str:
@@ -1829,7 +1844,7 @@ def build():
 
         body_path = NEWS_BODY_DIR / f"{slug}.html"
         if body_path.exists():
-            body_html = body_path.read_text(encoding="utf-8")
+            body_html = rewrite_legacy_urls(body_path.read_text(encoding="utf-8"))
         else:
             print(f"[warn] 本文が見つかりません: {body_path}")
             body_html = "<p>(本文が見つかりません)</p>"
@@ -1853,7 +1868,7 @@ def build():
             if raw_index.exists():
                 meta.update(extract_gemdiary_meta(raw_index))
 
-            body_html = body_path.read_text(encoding="utf-8")
+            body_html = rewrite_legacy_urls(body_path.read_text(encoding="utf-8"))
 
             html_text = inject_footer(gemdiary_detail_html(meta, body_html))
             out_dir = OUT_GEMDIARY / slug
