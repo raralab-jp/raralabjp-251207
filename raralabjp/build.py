@@ -94,9 +94,13 @@ def build_news_description(body_html: str, fallback_title: str = "") -> str:
         txt = fallback_title or "awai facetsのNews記事です。"
     return txt[:160]
 
-def render_head(*, title: str, description: str, canonical: str, og_image: str = "", twitter_site: str = "@awaifacets") -> str:
+def render_head(*, title: str, description: str, canonical: str, og_image: str = "", twitter_site: str = "@awaifacets", stylesheet_version: str = "") -> str:
     # og_image は絶対URLを推奨
     og_type = "article"  # ギャラリー詳細はとりあえず article でOK（後でProductでも可）
+    stylesheet_href = "/assets/css/site.css"
+    if stylesheet_version:
+        stylesheet_href += f"?v={html.escape(stylesheet_version)}"
+
     parts = [
         '<head>',
         '  <meta charset="utf-8">',
@@ -105,7 +109,7 @@ def render_head(*, title: str, description: str, canonical: str, og_image: str =
         f'  <meta name="description" content="{html.escape(description)}">',
         f'  <link rel="canonical" href="{html.escape(canonical)}">',
         '  <link rel="icon" href="/assets/icons/favicon.svg" type="image/svg+xml">',
-        '  <link rel="stylesheet" href="/assets/css/site.css">',
+        f'  <link rel="stylesheet" href="{stylesheet_href}">',
     ]
 
     if og_image:
@@ -1075,6 +1079,7 @@ def top_index_html(new_cards: str, top_news_cards_html: str) -> str:
         description=description,
         canonical=canonical,
         og_image=og_image,
+        stylesheet_version="20260901-home-layout",
     )
 
     return f'''<!doctype html>
