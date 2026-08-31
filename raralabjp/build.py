@@ -53,6 +53,7 @@ GEMDIARY_BODY_DIR = ROOT / "assets" / "gemdiary" / "body"
 OUT_GEMDIARY = SITE_ROOT / "gemdiary"
 
 SITE_ORIGIN = "https://awaifacets.com"  # 本番ドメインを固定
+DEFAULT_OG_IMAGE = f"{SITE_ORIGIN}/assets/images/top/awai-facets-og.jpg"
 
 def build_gallery_canonical(slug: str) -> str:
     return f"{SITE_ORIGIN}/gallery/{slug}/"
@@ -103,6 +104,7 @@ def render_head(*, title: str, description: str, canonical: str, og_image: str =
         f"  <title>{html.escape(title)}</title>",
         f'  <meta name="description" content="{html.escape(description)}">',
         f'  <link rel="canonical" href="{html.escape(canonical)}">',
+        '  <link rel="icon" href="/assets/icons/favicon.svg" type="image/svg+xml">',
         '  <link rel="stylesheet" href="/assets/css/site.css">',
     ]
 
@@ -146,6 +148,31 @@ def rewrite_legacy_urls(html_text: str) -> str:
     for old, new in replacements:
         html_text = html_text.replace(old, new)
     return html_text
+
+
+def rewrite_legacy_brand_assets(html_text: str) -> str:
+    """公開HTMLに残った旧ロゴ画像参照を現行ブランド表現へ揃える。"""
+    old_logo_path = "/assets/images/top/raralab-logo-l.png"
+    html_text = html_text.replace(
+        f"{SITE_ORIGIN}{old_logo_path}",
+        DEFAULT_OG_IMAGE,
+    )
+    logo_link_pattern = re.compile(
+        r'(<a\s+href=["\']/["\'][^>]*>)\s*'
+        r'<img\s+[^>]*src=["\']' + re.escape(old_logo_path) + r'["\'][^>]*>\s*'
+        r'(</a>)',
+        flags=re.IGNORECASE | re.DOTALL,
+    )
+    return logo_link_pattern.sub(r'\1awai facets\2', html_text)
+
+
+def normalize_published_html():
+    """再生成対象外の旧ページも含め、公開HTMLのブランド画像参照を正規化する。"""
+    for html_path in SITE_ROOT.rglob("*.html"):
+        original = html_path.read_text(encoding="utf-8", errors="ignore")
+        updated = rewrite_legacy_brand_assets(original)
+        if updated != original:
+            html_path.write_text(updated, encoding="utf-8")
 
 
 def inject_footer(html_text: str) -> str:
@@ -541,7 +568,7 @@ def news_index_html(cards: str, prev_link: str = None, next_link: str = None, ca
         title=seo_title,
         description=description,
         canonical=can,
-        og_image=f"{SITE_ORIGIN}/assets/images/top/raralab-logo-l.png",  # 画像は無難に固定（任意）
+        og_image=DEFAULT_OG_IMAGE,
     )
 
     return f'''<!doctype html>
@@ -964,7 +991,7 @@ def gallery_index_html(cards: str, prev_link: str = None, next_link: str = None,
         title=seo_title,
         description=description,
         canonical=can,
-        og_image=f"{SITE_ORIGIN}/assets/images/top/raralab-logo-l.png",  # 固定でOK（任意）
+        og_image=DEFAULT_OG_IMAGE,
     )
 
     return f'''<!doctype html>
@@ -1041,8 +1068,7 @@ def top_index_html(new_cards: str, top_news_cards_html: str) -> str:
     )
 
     canonical = f"{SITE_ORIGIN}/"
-    og_image = f"{SITE_ORIGIN}/assets/images/top/raralab-logo-l.png"
-    # ※ ヒーロー画像をOGPに使いたくなったら、ここを差し替えるだけ
+    og_image = DEFAULT_OG_IMAGE
 
     head_html = render_head(
         title=seo_title,
@@ -1876,6 +1902,8 @@ def build():
             (out_dir / "index.html").write_text(html_text, encoding="utf-8")
     else:
         print("[gemdiary] skip: assets/gemdiary/body not found")
+
+    normalize_published_html()
 
 if __name__ == "__main__":
     ap = argparse.ArgumentParser()

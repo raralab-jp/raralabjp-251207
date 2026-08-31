@@ -1,5 +1,13 @@
+@font-face {
+  font-family: "Inclusive Sans";
+  src: url("/assets/fonts/InclusiveSans-VariableFont_wght.ttf") format("truetype");
+  font-style: normal;
+  font-weight: 300 700;
+  font-display: swap;
+}
+
 body {
-  font-family: system-ui, -apple-system, "Helvetica Neue", Arial, sans-serif;
+  font-family: "Inclusive Sans", system-ui, -apple-system, "Helvetica Neue", Arial, sans-serif;
   line-height: 1.6;
 }
 
