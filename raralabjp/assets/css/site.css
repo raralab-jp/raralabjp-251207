@@ -1135,6 +1135,7 @@ body.home .top-sections:empty{ display: none; }
 
 /* Top内の主要ブロックを同一コンテナに揃える */
 body.home .site-header-inner,
+body.home .hero,
 body.home .hero-cta.site-nav,
 body.home .top-intro,
 body.home .top-section,
@@ -1155,7 +1156,7 @@ body.home .site-footer{
    Vertical rhythm (edit here only)
    ========================================= */
 
-/* Hero: full-bleedのまま余白だけ管理 */
+/* Hero: 主要コンテンツと同じコンテナ幅で余白を管理 */
 body.home .hero{
   margin-top: 0;
   padding-top: 10px;
@@ -1182,14 +1183,12 @@ body.home .top-section > .section-doubleline{
 
 
 /* =========================================
-   Hero: image only full-bleed
+   Hero: align with the main content container
    ========================================= */
 
 body.home .hero img{
-  width: 100vw;
-  max-width: none;
-  margin-left: calc(50% - 50vw);
-  margin-right: calc(50% - 50vw);
+  width: 100%;
+  max-width: 100%;
   display: block;
   height: auto;
 }
