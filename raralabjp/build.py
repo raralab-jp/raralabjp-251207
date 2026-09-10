@@ -354,6 +354,12 @@ def read_cta():
 # ---- Data ----
 def read_items():
     items = json.loads(DATA.read_text(encoding="utf-8"))
+    # Public records generated directly from the confirmed product master.
+    by_slug = {it["slug"]: it for it in items}
+    for record in sorted((ROOT / "assets/data/gallery_products").glob("*.json")):
+        product = json.loads(record.read_text(encoding="utf-8"))
+        by_slug[product["slug"]] = product
+    items = list(by_slug.values())
     # 新しい順（date がない場合は末尾）
     items.sort(key=lambda x: x.get("date", ""), reverse=True)
     return items
@@ -1164,6 +1170,12 @@ def detail_html(it):
 
     thumbs = [p for p in thumbs_all if _thumb_id(p) not in process_set]
 
+    # Explicit master selections exclude unselected files and preserve order,
+    # including a cover placed last in the photo strip. Hero/card still use cover.
+    if "photo_files" in it:
+        thumbs = ["/assets/images/1200px/" + Path(p).name for p in it["photo_files"]]
+        process_thumbs = ["/assets/images/1200px/" + Path(p).name for p in it.get("process_photo_files", [])]
+
     hero_display = ""
     hero_full = ""
 
@@ -1269,8 +1281,28 @@ def detail_html(it):
   <a href="{html.escape(product_url)}" class="cta-link" target="_blank" rel="noopener">ご購入はこちら →</a>
 </section>'''
 
+    if it.get("description_ja"):
+        def paragraph(value, lang):
+            return '<p lang="' + lang + '">' + html.escape(str(value)) + '</p>'
+        sections = []
+        for lang, suffix in [("ja", "ja"), ("en", "en")]:
+            title_text = it["product_name_" + suffix]
+            body = '<h2>' + html.escape(title_text) + '</h2>'
+            for field in ["description_", "inclusion_disclosure_", "cut_issue_disclosure_"]:
+                body += paragraph(it[field + suffix], lang)
+            labels = (["石種", "ファセットデザイン", "デザイナー", "重量", "サイズ", "産地", "処理", "鑑別", "商品番号", "価格"] if lang == "ja" else ["Stone", "Facet design", "Designer", "Carat", "Size", "Origin", "Treatment", "Certification", "Product ID", "Price"])
+            values = [it["stone_name_" + suffix], it["design_name"], it["designer"], it["weight_ct"] + "ct", it["dimensions_mm"] + " mm", it["origin"], it["treatment_" + suffix], it.get("certification_lab_" + suffix, ""), it["sku"], format(it["price_jpy"], ",") + ("円" if lang == "ja" else " JPY")]
+            body += '<dl>' + ''.join('<dt>' + html.escape(k) + '</dt><dd>' + html.escape(str(v)) + '</dd>' for k, v in zip(labels, values) if v) + '</dl>'
+            sections.append('<section class="master-description" lang="' + lang + '">' + body + '</section>')
+        plate_html = '<section class="plate master-product">' + ''.join(sections) + '</section>'
+
     logo_html = render_partial("top_logo.html")
     nav_html  = render_partial("nav_main.html")
+
+    if it.get("description_ja"):
+        # These legacy navigation destinations are not published yet.
+        for destination in ("about", "archive"):
+            nav_html = re.sub(r'\s*<a href="/' + destination + r'/">[^<]*</a>', "", nav_html)
 
     # ---- SEO values ----
     h1_title = title  # 既存の見出し用

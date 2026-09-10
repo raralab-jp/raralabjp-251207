@@ -860,6 +860,13 @@ main.detail section.cta-block{
 main.detail .thumbs-wrap{
   margin-bottom: calc(var(--detail-gap) * 1.2);
 }
+/* Confirmed master descriptions: keep long bilingual text readable. */
+.master-product { overflow-wrap: anywhere; }
+.master-product .master-description { margin: 2rem 0; font-size: 1rem; line-height: 1.7; }
+.master-product .master-description p { margin: 1rem 0; }
+.master-product h2 { font-size: 1.15rem; }
+.master-product dl { display: grid; grid-template-columns: minmax(6rem, 25%) 1fr; gap: .35rem 1rem; }
+.master-product dt, .master-product dd { margin: 0; }
 
 /* ---- 35_pages_news_detail.css ---- */
 /* ---- 35_pages_detail_news.css ---- */
