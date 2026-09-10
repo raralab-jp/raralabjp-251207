@@ -1,0 +1,21 @@
+URLs: shop=https://shop.awaifacets.com/product/winza-sapphire-0370ct-tessellation-27-b/CH3S3YAWDWDN7ZV7HNINPEHQ; gallery=https://awaifacets.com/gallery/winza-sapphire-0370ct-tessellation-27-b/; video=https://customer-jnhhy169io6el95i.cloudflarestream.com/609d2ff16d11e1d2342d6e7de5c1c3c0/iframe
+Title JP: ウィンザ・サファイア 0.370ct “Tessellation 27 (B)”
+Stone: Winza Sapphire
+Stone JP: ウィンザ・サファイア
+Facet Design: Tessellation 27 (B)
+design_is_named: 1
+Designed by: Arya Akhavan
+Faceted by: awai facets
+Carat: 0.370ct
+Size: 4.40 × 4.20 × 2.96 mm
+Origin: Winza, Tanzania
+Treatment: Heated
+Clarity: When viewed from the crown side under 10× magnification, widespread bubble-like inclusions can be observed. A crack near the girdle is also visible to the unaided eye from the crown side.
+透明度: クラウン側から10倍ルーペで見ると、泡状に見えるインクルージョンが 広がっているのを確認できます。また、クラウン側から、ガードル付近に 肉眼で確認できるクラックがあります。
+additional_note: パビリオン側のガードルに、10倍ルーペで確認できるずれがあります。
+Product ID: 260729B
+鑑別: 日独宝石研究所
+cert_lab_en: Japan Germany Gemmological Laboratory
+cover_image: winza-sapphire-0370ct-tessellation-27-b-cover.jpg
+image_order: 260910-163225 260910-163329 260910-163709 260910-163740 260910-164420 260910-164648 260910-164734 260910-165428 260911-112808
+process_image_order: 260729-154521 260729-154707 260803-161841 260803-162033 260813-191559 260813-191729 260814-162505 260814-162727 260814-211708 260816-163823 260909-110005

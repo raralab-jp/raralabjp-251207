@@ -137,6 +137,21 @@ MODIFICATION_LABELS = {
     },
 }
 
+COLOR_LABELS = {
+    "blue": {"ja": "ブルー", "en": "Blue"},
+    "green": {"ja": "グリーン", "en": "Green"},
+    "pink": {"ja": "ピンク", "en": "Pink"},
+    "yellow": {"ja": "イエロー", "en": "Yellow"},
+    "orange": {"ja": "オレンジ", "en": "Orange"},
+    "purple": {"ja": "バイオレット", "en": "Purple"},
+    "red": {"ja": "レッド", "en": "Red"},
+    "colorless": {"ja": "カラーレス（ホワイト）", "en": "Colorless"},
+    "multicolor": {"ja": "マルチカラー", "en": "Multicolor"},
+    "brown": {"ja": "ブラウン", "en": "Brown"},
+    "bicolor": {"ja": "バイカラー", "en": "Bicolor"},
+    "particolor": {"ja": "パーティカラー", "en": "Parti-color"},
+}
+
 CERT_LABELS = {
     "日独宝石研究所": {
         "ja": "日独宝石研究所",

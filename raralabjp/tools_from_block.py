@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 import re, io, csv, sys, argparse
 
-from labels import STONE_LABELS, label
+from labels import COLOR_LABELS, STONE_LABELS, label
 
 # -----------------------------
 # Read input text (from stdin)
@@ -106,6 +106,7 @@ def first_content_line(text: str) -> str:
         "Title JP", "Japanese Title", "Product ID", "ProductID", "ID",
         "Stone", "Stone JP", "stone_ja", "Facet Design", "Design", "Designed by", "Designer", "Faceted by",
         "Carat", "Size", "Origin", "Treatment", "Clarity",
+        "Colors", "色",
         "Design Is Named", "design_is_named", "modification_note", "Modification Note",
         "商品番号", "石種", "石種JP", "石種日本語", "ファセットデザイン", "デザイナー", "研磨", "重さ", "サイズ",
         "産地", "処理", "透明度", "鑑別", "デザイン改変",
@@ -171,9 +172,22 @@ if not clarity and clarity_note_ja and re.search(r"[A-Za-z]", clarity_note_ja):
 cert_lab_ja = pick(["鑑別"], text, default="").strip()
 cert_lab_en = pick(["cert_lab_en", "Cert Lab EN"], text, default="").strip()
 
+colors_raw = pick(["Colors", "色"], text, default="")
+colors = []
+for value in colors_raw.split(","):
+    color = value.strip().lower()
+    if not color:
+        continue
+    if color not in COLOR_LABELS:
+        warn(f"unknown color key ignored: {color}")
+        continue
+    if color not in colors:
+        colors.append(color)
+
 # -----------------------------
 # Image order (optional)
 # -----------------------------
+cover_image = pick(["cover_image", "Cover Image"], text, default="").strip()
 image_order = pick(["image_order"], text, default="").strip()
 process_image_order = pick(["process_image_order"], text, default="").strip()
 
@@ -434,6 +448,7 @@ if args.debug:
     print("DBG shop_url  =", repr(shop_url), file=sys.stderr)
     print("DBG modification_note =", repr(modification_note), file=sys.stderr)
     print("DBG design_is_named =", repr(design_is_named), file=sys.stderr)
+    print("DBG colors =", repr(colors), file=sys.stderr)
 
 # -----------------------------
 # WARN checks (do not stop CSV output)
@@ -461,10 +476,10 @@ if not args.title_jp:
 header = [
     "slug","stone","design_name","designer","faceted_by","carat",
     "size_mm","origin_en","treatment","clarity_note_en",
-    "title_jp","date","tags","image_order","process_image_order","video_url","shop_url",
+    "title_jp","date","tags","colors","image_order","process_image_order","video_url","shop_url",
     "modification_note","additional_note","design_is_named",
     "product_id","stone_ja","faceted_by_ja","origin_ja","treatment_ja","clarity_note_ja",
-    "cert_lab_ja","cert_lab_en","title_jp_override","clarity_note_ja_override","clarity_note_en_override","gallery_url","note_url",
+    "cert_lab_ja","cert_lab_en","title_jp_override","clarity_note_ja_override","clarity_note_en_override","gallery_url","note_url","cover_image","image_selection_policy",
 ]
 
 row = {
@@ -481,6 +496,7 @@ row = {
     "title_jp": args.title_jp,
     "date": args.date,
     "tags": "",
+    "colors": "|".join(colors),
     "image_order": image_order,
     "process_image_order": process_image_order,
     "video_url": video_url,
@@ -501,6 +517,8 @@ row = {
     "clarity_note_en_override": "",
     "gallery_url": gallery_url,
     "note_url": note_url,
+    "cover_image": cover_image,
+    "image_selection_policy": "explicit",
 }
 
 buf = io.StringIO()

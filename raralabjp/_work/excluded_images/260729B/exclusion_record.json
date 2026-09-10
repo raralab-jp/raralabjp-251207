@@ -1,0 +1,30 @@
+{
+  "sku": "260729B",
+  "reason": "ユーザーが意図的な不使用を確認。商品写真・Makingには含めない。",
+  "excluded_files": [
+    "winza-sapphire-0370ct-tessellation-27-b-260729-154155.jpg",
+    "winza-sapphire-0370ct-tessellation-27-b-260729-154323.jpg"
+  ],
+  "files": [
+    {
+      "original_path": "/Users/saitomirei/mireisfolder/Projects/raralabjp/assets/images/1200px/winza-sapphire-0370ct-tessellation-27-b-260729-154155.jpg",
+      "archived_path": "/Users/saitomirei/mireisfolder/Projects/raralabjp/_work/excluded_images/260729B/1200px/winza-sapphire-0370ct-tessellation-27-b-260729-154155.jpg",
+      "sha256": "27255c3f4642e004e9910c74e50660cf4ec36a45d1c37c6d3906d5d754eabcc7"
+    },
+    {
+      "original_path": "/Users/saitomirei/mireisfolder/Projects/raralabjp/assets/images/1200px/winza-sapphire-0370ct-tessellation-27-b-260729-154323.jpg",
+      "archived_path": "/Users/saitomirei/mireisfolder/Projects/raralabjp/_work/excluded_images/260729B/1200px/winza-sapphire-0370ct-tessellation-27-b-260729-154323.jpg",
+      "sha256": "f22e5cf2c5859094b8ed7140d46b89897ba0e8cec4cbd3d8a1b6bdcfc5fc6a61"
+    },
+    {
+      "original_path": "/Users/saitomirei/mireisfolder/Projects/raralabjp/assets/images/2500px/winza-sapphire-0370ct-tessellation-27-b-260729-154155.jpg",
+      "archived_path": "/Users/saitomirei/mireisfolder/Projects/raralabjp/_work/excluded_images/260729B/2500px/winza-sapphire-0370ct-tessellation-27-b-260729-154155.jpg",
+      "sha256": "d96b7157424803a463e28d59b56380ffb3a98c176bdcf297f71684d4492a280a"
+    },
+    {
+      "original_path": "/Users/saitomirei/mireisfolder/Projects/raralabjp/assets/images/2500px/winza-sapphire-0370ct-tessellation-27-b-260729-154323.jpg",
+      "archived_path": "/Users/saitomirei/mireisfolder/Projects/raralabjp/_work/excluded_images/260729B/2500px/winza-sapphire-0370ct-tessellation-27-b-260729-154323.jpg",
+      "sha256": "3429de682982e7e7eef86eb19c7b0399e47447abda8142b928be8d0d3e4fae7d"
+    }
+  ]
+}

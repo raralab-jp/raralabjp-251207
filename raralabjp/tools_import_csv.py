@@ -1,6 +1,13 @@
 #!/usr/bin/env python3
 #!/usr/bin/env python3
-import csv, json, pathlib, re
+import csv, json, pathlib, re, sys, argparse
+
+from labels import COLOR_LABELS
+
+parser = argparse.ArgumentParser()
+parser.add_argument("--slug", default="", help="Update only this product, preserving other JSON records")
+args = parser.parse_args()
+matched = False
 
 root = pathlib.Path(".")
 csvp = root / "assets/data/items.csv"
@@ -73,24 +80,28 @@ with csvp.open(newline="", encoding="utf-8") as f:
         if not slug:
             continue
 
+        if args.slug and slug != args.slug:
+            continue
+        matched = True
+
         def S(k):
             v = row.get(k)
             return "" if v is None else str(v).strip()
-
-        def F(k):
-            v = (row.get(k) or "").strip()
-            if not v:
-                return None
-            try:
-                return float(v)
-            except ValueError:
-                return None
 
         tags = [
             t.strip()
             for t in (S("tags").split("|") if S("tags") else [])
             if t.strip()
         ]
+        colors = []
+        for value in S("colors").split("|"):
+            color = value.strip().lower()
+            if not color:
+                continue
+            if color not in COLOR_LABELS:
+                print(f"WARN: unknown color key kept for {slug}: {color}", file=sys.stderr)
+            if color not in colors:
+                colors.append(color)
 
         # 新規追加フィールド（空なら None で落とす）
         mod_note = S("modification_note") or None
@@ -103,14 +114,24 @@ with csvp.open(newline="", encoding="utf-8") as f:
         design_is_named = din if din else None
 
         # 既存データがあれば引き継ぎつつ上書き
+        is_new = slug not in index
         it = index.get(slug, {})
+        # Keep the source's decimal places; never reconstruct precision from float.
+        carat_text = S("carat")
+        if carat_text and not re.fullmatch(r"[0-9]+(?:\.[0-9]+)?", carat_text):
+            parser.error(f"invalid carat for {slug}: {carat_text!r}")
+        if is_new or S("image_selection_policy") or it.get("image_selection_policy"):
+            if S("image_selection_policy") not in ("", "explicit"):
+                parser.error(f"unsupported image selection policy for {slug}")
+            it["image_selection_policy"] = "explicit"
+            it["cover_image"] = S("cover_image") or it.get("cover_image", "")
         it.update({
             "slug": slug,
             "stone": S("stone"),
             "design_name": S("design_name"),
             "designer": S("designer"),
             "faceted_by": S("faceted_by") or "Rara Lab",
-            "carat": F("carat"),
+            "carat": carat_text,
             "size_mm": S("size_mm"),
             "origin_en": S("origin_en"),
             "treatment": S("treatment"),
@@ -118,6 +139,7 @@ with csvp.open(newline="", encoding="utf-8") as f:
             "title_jp": S("title_jp"),
             "date": S("date"),
             "tags": tags,
+            "colors": colors,
             "image_order": S("image_order"),
             "process_image_order": S("process_image_order"),
             "video_url": S("video_url"),
@@ -129,6 +151,9 @@ with csvp.open(newline="", encoding="utf-8") as f:
             "design_is_named": design_is_named,
         })
         index[slug] = it
+
+if args.slug and not matched:
+    parser.error(f"slug not found in CSV: {args.slug}")
 
 # 日付で降順ソート
 out = list(index.values())

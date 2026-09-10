@@ -4,6 +4,8 @@ from pathlib import Path
 import shutil
 import sys
 
+from tools_validate_gallery_images import validate_gallery_images
+
 from labels import (
     STONE_LABELS,
     ORIGIN_LABELS,
@@ -12,6 +14,7 @@ from labels import (
     CERT_LABELS,
     PERSON_LABELS,
     MODIFICATION_LABELS,
+    COLOR_LABELS,
     label,
 )
 
@@ -1331,7 +1334,7 @@ def detail_html(it):
 MASTER_FIELDNAMES = [
     "slug", "stone", "design_name", "designer", "faceted_by", "carat",
     "size_mm", "origin_en", "treatment", "clarity_note_en",
-    "title_jp", "date", "tags", "image_order", "process_image_order", "video_url", "shop_url",
+    "title_jp", "date", "tags", "colors", "image_order", "process_image_order", "video_url", "shop_url",
     "modification_note", "design_is_named",
     "product_id", "stone_ja", "faceted_by_ja", "origin_ja", "treatment_ja", "clarity_note_ja",
     "cert_lab_ja", "cert_lab_en", "title_jp_override", "clarity_note_ja_override", "clarity_note_en_override", "gallery_url", "note_url", "cut_note",
@@ -1397,6 +1400,18 @@ def resolve_clarity_note_en(row: dict) -> str:
 
 
 def master_row_to_gallery_item(row: dict) -> dict:
+    colors = []
+    for value in _mv(row, "colors").split("|"):
+        color = value.strip().lower()
+        if not color:
+            continue
+        if color not in COLOR_LABELS:
+            print(
+                f"WARN: Unknown color label: {color}",
+                file=sys.stderr,
+            )
+        if color not in colors:
+            colors.append(color)
     return {
         "slug": _mv(row, "slug"),
         "title": resolve_title_jp(row),
@@ -1426,6 +1441,7 @@ def master_row_to_gallery_item(row: dict) -> dict:
         "video_url": _mv(row, "video_url"),
         "shop_url": _mv(row, "shop_url"),
         "tags": _mv(row, "tags"),
+        "colors": colors,
     }
 
 def warn_unknown_label(table: dict, value: str, field_name: str):
@@ -1731,6 +1747,10 @@ def build_site_css():
 
 # ---- Build ----
 def build():
+    # Stop before CSS, image conversion, copying, or HTML writes.
+    items = read_items()
+    validate_gallery_images(items, ROOT)
+
     # 先に CSS を生成してから assets をコピーする（生成物を site 側に反映させるため）
     build_site_css()
 
@@ -1765,7 +1785,6 @@ def build():
         dst_news_images.parent.mkdir(parents=True, exist_ok=True)
         shutil.copytree(src_news_images, dst_news_images)
 
-    items = read_items()  # date 降順（新しい順）でソート済み
 
     # ---- ギャラリー一覧（ページ分割）----
     pages = [items[i:i + PAGE_SIZE] for i in range(0, len(items), PAGE_SIZE)]
