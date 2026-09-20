@@ -1278,7 +1278,7 @@ def detail_html(it):
 
         if product_url:
             cta_html = f'''<section class="cta-block">
-  <a href="{html.escape(product_url)}" class="cta-link" target="_blank" rel="noopener">ご購入はこちら →</a>
+  <a href="{html.escape(product_url)}" class="cta-link" target="_blank" rel="noopener">商品を見る →</a>
 </section>'''
 
     if it.get("description_ja"):
