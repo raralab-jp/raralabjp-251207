@@ -1,0 +1,45 @@
+/* =================================================
+   Components (shared)
+   - Gallery / News / Home で流用する部品群
+   - HTMLの実クラスに合わせる（rl-gallery / rl-item / rl-link）
+   ================================================= */
+
+/* ---------- grid (gallery/news/home) ---------- */
+.rl-gallery {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+  gap: 18px;
+}
+
+/* ---------- card base ---------- */
+.rl-item {
+  margin: 0;              /* figureのデフォルト余白を消す */
+}
+
+.rl-link {
+  display: block;
+  text-decoration: none;
+  color: inherit;
+}
+
+/* ---------- thumbnail: always square ---------- */
+/* anchor直下の img を想定（あなたのHTMLに一致） */
+.rl-link > img {
+  width: 100%;
+  aspect-ratio: 1 / 1;
+  height: auto;           /* 念のため */
+  object-fit: cover;
+  display: block;
+  background: #f3f3f3;    /* 画像読み込み前の保険 */
+}
+
+/* ---------- caption ---------- */
+.rl-caption {
+  margin-top: 6px;
+  font-size: 0.9rem;
+  line-height: 1.4;
+}
+
+.rl-title {
+  font-size: 0.95rem;
+}

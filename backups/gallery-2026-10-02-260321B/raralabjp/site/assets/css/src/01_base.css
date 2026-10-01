@@ -1,0 +1,19 @@
+@font-face {
+  font-family: "Inclusive Sans";
+  src: url("/assets/fonts/InclusiveSans-VariableFont_wght.ttf") format("truetype");
+  font-style: normal;
+  font-weight: 300 700;
+  font-display: swap;
+}
+
+body {
+  font-family: "Inclusive Sans", system-ui, -apple-system, "Helvetica Neue", Arial, sans-serif;
+  line-height: 1.6;
+}
+
+a { color: inherit; }
+
+/* ---------- base color tokens ---------- */
+:root {
+  --panel-bg: #f3f3f3;
+}
