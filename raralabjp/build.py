@@ -36,6 +36,12 @@ OUT_GALLERY = SITE_ROOT / "gallery"
 OUT_GALLERY.mkdir(parents=True, exist_ok=True)
 PAGE_SIZE = 24
 
+# Trial limited to these two Gallery pages; keep the existing bottom link.
+TOP_SHOP_LINK_SLUGS = {
+    "winza-sapphire-0110ct-mirage",
+    "pink-tourmaline-0856ct-tessellation-13-f",
+}
+
 NEWS_CSV        = ROOT / "assets" / "news" / "news.csv"
 NEWS_BODY_DIR   = ROOT / "assets" / "news" / "body"
 NEWS_IMAGES_DIR = ROOT / "assets" / "news" / "images"
@@ -1230,6 +1236,7 @@ def detail_html(it):
 
     plate_html = ""
     cta_html   = ""
+    top_cta_html = ""
 
     if SHOW_SPECS:
         title_jp  = (it.get("title_jp") or "").strip()
@@ -1269,6 +1276,9 @@ def detail_html(it):
   <a href="{html.escape(product_url)}" class="cta-link" target="_blank" rel="noopener">商品を見る →</a>
 </section>'''
 
+    if cta_html and slug in TOP_SHOP_LINK_SLUGS:
+        top_cta_html = cta_html.replace('class="cta-block"', 'class="cta-block cta-block--top"', 1)
+
     logo_html = render_partial("top_logo.html")
     nav_html  = render_partial("nav_main.html")
 
@@ -1303,10 +1313,10 @@ def detail_html(it):
   {breadcrumb}
   <h1 class="title">{html.escape(h1_title)}</h1>
   {'<h2 class="subtitle">'+html.escape(subtitle)+'</h2>' if subtitle else ''}
-  <section class="hero">
+  <section class="hero{' hero--top-shop' if top_cta_html else ''}">
     {hero_html}
   </section>
-  {video_html}
+  {top_cta_html + chr(10) + "  " if top_cta_html else ""}{video_html}
   {thumbs_html}
   {plate_html}
   {cta_html}

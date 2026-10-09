@@ -1355,3 +1355,17 @@ body.home .top-more-desc{
 /* ---- 90_overrides.css ---- */
 
 
+
+/* Two-page upper purchase-link trial: align with the existing detail column. */
+main.detail section.hero.hero--top-shop { margin-bottom: 8px; }
+main.detail section.cta-block.cta-block--top {
+  margin-top: 0;
+  margin-bottom: 12px;
+  padding-top: 0;
+  text-align: left;
+}
+main.detail section.cta-block--top a.cta-link {
+  display: inline-flex;
+  align-items: center;
+  min-height: 44px;
+}
