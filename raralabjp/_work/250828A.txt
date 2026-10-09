@@ -9,7 +9,7 @@ URLs:
   note=
 
 image_order:
-process_image_order:
+process_image_order: 250828-232617 250828-231644
 
 商品番号: 250828A
 
