@@ -3,54 +3,89 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>ページが見つかりません</title>
+  <meta name="robots" content="noindex">
+  <title>ページが見つかりませんでした。 | awai facets</title>
+  <link rel="icon" href="/assets/icons/favicon.svg" type="image/svg+xml">
   <style>
+    @font-face {
+      font-family: "Inclusive Sans";
+      src: url("/assets/fonts/InclusiveSans-VariableFont_wght.ttf") format("truetype");
+      font-style: normal;
+      font-weight: 300 700;
+      font-display: swap;
+    }
+    * { box-sizing: border-box; }
     body {
-      font-family: system-ui, sans-serif;
-      padding: 40px 20px;
+      margin: 0;
+      min-height: 100vh;
+      min-height: 100svh;
+      display: flex;
+      flex-direction: column;
+      background: #fff;
+      color: #222;
+      font-family: "Inclusive Sans", system-ui, -apple-system, "Helvetica Neue", Arial, sans-serif;
+      line-height: 1.8;
+    }
+    a { color: inherit; }
+    .site-header { padding: 24px 20px 12px; text-align: center; }
+    .site-logo {
+      display: inline-block;
+      font-size: clamp(28px, 6vw, 42px);
+      font-weight: 400;
+      letter-spacing: .02em;
+      line-height: 1.2;
+      text-decoration: none;
+    }
+    main {
+      width: calc(100% - 40px);
       max-width: 600px;
       margin: 0 auto;
-      text-align: left;
-      line-height: 1.7;
+      padding: clamp(44px, 8vw, 88px) 0 64px;
+      flex: 1;
     }
-    h1 {
-      font-size: 1.8rem;
-      margin-bottom: 1rem;
-    }
-    a {
-      color: #444;
+    .error-code { margin: 0 0 12px; color: #777; font-size: 14px; letter-spacing: .12em; }
+    h1 { margin: 0 0 24px; font-size: clamp(23px, 3.5vw, 28px); line-height: 1.6; font-weight: 500; text-wrap: balance; }
+    .message { margin: 0; font-size: 16px; line-height: 1.9; }
+    .page-links { margin-top: 36px; }
+    .page-links ul { margin: 0; padding: 0; list-style: none; }
+    .page-links a {
+      display: flex;
+      align-items: center;
+      min-height: 64px;
+      padding: 16px 0;
+      color: #000;
+      font-size: 0.95rem;
+      font-weight: 400;
+      line-height: 1.6;
       text-decoration: underline;
+      text-underline-offset: 3px;
     }
-    .links {
-      margin-top: 2rem;
+    .page-links a:hover { text-decoration-color: currentColor; }
+    a:focus-visible { outline: 2px solid #444; outline-offset: 4px; border-radius: 1px; }
+    footer { padding: 0 20px 24px; color: #777; font-size: 12px; text-align: center; }
+    @media (max-width: 374px) {
+      main { width: calc(100% - 32px); }
+      h1 { font-size: 22px; }
     }
   </style>
 </head>
 <body>
-  <h1>ページが見つかりません</h1>
-
-  <p>
-    以前のサイト（Squarespace）で公開していた記事のリンクから
-    来られた可能性があります。
-    現在、記事は <strong>Archive</strong> へ順次移行中です。
-  </p>
-
-  <p>
-    制作の裏側は、
-    今後 <strong>note</strong> で公開していく予定です。
-  </p>
-
-<!--   <p>
-    写真をゆっくり見たい場合は <a href="/gallery/">Gallery</a> を、
-    最新のお知らせは <a href="/news/">News</a> をご覧いただけます。
-  </p>
-
-  <div class="links">
-    <p><a href="/archive/">Archiveを見る</a></p>
-    <p><a href="https://note.com/awaifacets">noteを見る</a></p>
-    <p><a href="/gallery/">Galleryを見る</a></p>
-    <p><a href="/news/">Newsを見る</a></p>
-    <p><a href="/">トップページに戻る</a></p>
-  </div>-->
+  <header class="site-header">
+    <a class="site-logo" href="/" aria-label="awai facets トップへ">awai facets</a>
+  </header>
+  <main aria-labelledby="page-title">
+    <p class="error-code">404</p>
+    <h1 id="page-title">ページが見つかりませんでした。</h1>
+    <p class="message">ページが移動したか、URLが変更された可能性があります。下のリンクから、お探しの情報をご覧ください。</p>
+    <nav class="page-links" aria-label="お探しの情報へ">
+      <ul>
+        <li><a href="https://shop.awaifacets.com/"><span>販売中の石を見る</span></a></li>
+        <li><a href="/gallery/"><span>ギャラリーを見る</span></a></li>
+        <li><a href="https://note.com/awaifacets"><span>制作の記録を読む</span></a></li>
+        <li><a href="/"><span>トップへ戻る</span></a></li>
+      </ul>
+    </nav>
+  </main>
+  <footer>© awai facets</footer>
 </body>
 </html>

@@ -3,6 +3,7 @@ import json, html, re, csv, argparse
 from pathlib import Path
 import shutil
 import sys
+from urllib.parse import urlsplit
 
 from labels import (
     STONE_LABELS,
@@ -1105,6 +1106,17 @@ def top_index_html(new_cards: str, top_news_cards_html: str) -> str:
 </html>'''
 
 
+def validated_note_url(value):
+    """Accept web links only; empty values keep existing Gallery output unchanged."""
+    url = _s(value)
+    if url:
+        parsed = urlsplit(url)
+        if (parsed.scheme not in ("http", "https") or not parsed.hostname
+                or any(c.isspace() or ord(c) < 32 for c in url)):
+            raise ValueError(f"Invalid note_url: {url!r}; use an http(s) URL")
+    return url
+
+
 def detail_html(it):
     """ギャラリー／詳細ページ（1石）のフルHTMLを返す。"""
     slug   = it["slug"]
@@ -1279,6 +1291,14 @@ def detail_html(it):
     if cta_html and slug in TOP_SHOP_LINK_SLUGS:
         top_cta_html = cta_html.replace('class="cta-block"', 'class="cta-block cta-block--top"', 1)
 
+    note_url = validated_note_url(it.get("note_url"))
+    note_html = (
+        '<section class="cta-block note-link">'
+        f'<a href="{html.escape(note_url, quote=True)}" class="cta-link" '
+        'target="_blank" rel="noopener noreferrer">制作の記録を読む →</a>'
+        '</section>'
+    ) if note_url else ""
+
     logo_html = render_partial("top_logo.html")
     nav_html  = render_partial("nav_main.html")
 
@@ -1319,7 +1339,7 @@ def detail_html(it):
   {top_cta_html + chr(10) + "  " if top_cta_html else ""}{video_html}
   {thumbs_html}
   {plate_html}
-  {cta_html}
+  {note_html + chr(10) + "  " if note_html else ""}{cta_html}
 </main>
 
 <div class="lb-root" data-lb-root hidden>
