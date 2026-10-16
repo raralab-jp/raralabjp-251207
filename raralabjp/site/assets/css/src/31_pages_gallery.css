@@ -90,3 +90,10 @@
     opacity: 0.9;
   }
 }
+/* Gallery: species filter */
+.gallery-filter { display:flex; align-items:center; gap:12px 16px; flex-wrap:wrap; margin:0 0 28px; padding:16px 0; border-top:1px solid #ddd; border-bottom:1px solid #ddd; font-size:13px; }
+.gallery-filter[hidden], .gallery-pager[hidden] { display:none; }
+.gallery-filter select { max-width:100%; padding:10px 34px 10px 12px; border:1px solid #bbb; border-radius:3px; background:#fff; color:inherit; font:inherit; }
+.gallery-filter select:focus-visible { outline:2px solid #536b50; outline-offset:3px; }
+.gallery-filter-count { margin:0 0 0 auto; font-size:12px; opacity:.7; }
+@media(max-width:600px) { .gallery-filter { gap:10px; } .gallery-filter label { font-size:12px; } .gallery-filter-count { width:100%; margin:0; } }

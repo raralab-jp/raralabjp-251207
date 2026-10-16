@@ -971,7 +971,43 @@ def news_card_html(n: dict) -> str:
     return render_news_index_card(n)
 
 
-def gallery_index_html(cards: str, prev_link: str = None, next_link: str = None, canonical: str = "") -> str:
+# Broad browsing groups; display names and product data stay unchanged.
+GALLERY_SPECIES = {
+    "sapphire": ("サファイア", {"Montana Sapphire", "Winza Sapphire", "Kenyan Sapphire", "Songea Sapphire", "Bi-color Sapphire", "Umba Sapphire", "Blue Sapphire", "Color Change Sapphire", "Pink Sapphire"}),
+    "zircon": ("ジルコン", {"Zircon", "Umba Zircon"}),
+    "garnet": ("ガーネット", {"Garnet", "Dragon Garnet"}),
+    "tourmaline": ("トルマリン", {"Pink Tourmaline"}),
+    "oregon-sunstone": ("オレゴンサンストーン", {"Oregon Sunstone"}),
+    "sunstone": ("サンストーン", {"Sunstone"}),
+    "aquamarine": ("アクアマリン", {"Aquamarine"}),
+}
+
+def gallery_species_key(item):
+    stone = _s(item.get("stone")).casefold()
+    for key, (_, names) in GALLERY_SPECIES.items():
+        if stone in {name.casefold() for name in names}:
+            return key
+    return "other"
+
+def gallery_filter_html(items):
+    counts = {}
+    cards = []
+    for item in items:
+        key = gallery_species_key(item)
+        counts[key] = counts.get(key, 0) + 1
+        cards.append(render_gallery_card(item).replace('<figure class="rl-item">', f'<figure class="rl-item" data-species="{key}">', 1))
+    labels = {key: value[0] for key, value in GALLERY_SPECIES.items()}
+    labels["other"] = "その他"
+    options = ''.join(f'<option value="{key}">{name}（{counts[key]}）</option>' for key, name in labels.items() if counts.get(key))
+    return f'''<div class="gallery-filter" hidden>
+<label for="gallery-species">石種で絞り込む</label>
+<select id="gallery-species"><option value="">すべての石種（{len(items)}）</option>{options}</select>
+<p class="gallery-filter-count" role="status" aria-live="polite"></p>
+</div>
+<template id="gallery-all-items">{''.join(cards)}</template>
+<script src="/assets/js/gallery-filter.js" defer></script>'''
+
+def gallery_index_html(cards: str, prev_link: str = None, next_link: str = None, canonical: str = "", all_items=None) -> str:
     """
     ギャラリー一覧ページ全体のHTML。
     ヘッダーは「ロゴ → メニュー」を共通で表示する。
@@ -1003,6 +1039,7 @@ def gallery_index_html(cards: str, prev_link: str = None, next_link: str = None,
         description=description,
         canonical=can,
         og_image=DEFAULT_OG_IMAGE,
+        stylesheet_version="gallery-species-20261016",
     )
 
     return f'''<!doctype html>
@@ -1025,6 +1062,7 @@ def gallery_index_html(cards: str, prev_link: str = None, next_link: str = None,
     </div>
   </section>
 
+  {gallery_filter_html(all_items) if all_items is not None else ""}
   <section class="rl-gallery">
 {cards}
   </section>
@@ -1827,7 +1865,7 @@ def build():
             canonical = f"{SITE_ORIGIN}/gallery/page-{page_num}.html"
 
         out_path.write_text(
-            inject_footer(gallery_index_html(cards, prev_link=prev_link, next_link=next_link, canonical=canonical)),
+            inject_footer(gallery_index_html(cards, prev_link=prev_link, next_link=next_link, canonical=canonical, all_items=items)),
             encoding="utf-8"
         )
 
