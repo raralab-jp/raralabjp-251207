@@ -1000,8 +1000,8 @@ def gallery_filter_html(items):
     labels["other"] = "その他"
     options = ''.join(f'<option value="{key}">{name}（{counts[key]}）</option>' for key, name in labels.items() if counts.get(key))
     return f'''<div class="gallery-filter" hidden>
-<label for="gallery-species">石種で絞り込む</label>
-<select id="gallery-species"><option value="">すべての石種（{len(items)}）</option>{options}</select>
+<label for="gallery-species">石の種類で絞り込む</label>
+<select id="gallery-species"><option value="">すべての石の種類（{len(items)}）</option>{options}</select>
 <p class="gallery-filter-count" role="status" aria-live="polite"></p>
 </div>
 <template id="gallery-all-items">{''.join(cards)}</template>
