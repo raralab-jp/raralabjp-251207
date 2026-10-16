@@ -971,15 +971,15 @@ def news_card_html(n: dict) -> str:
     return render_news_index_card(n)
 
 
-# Broad browsing groups; display names and product data stay unchanged.
+# Browsing groups reference canonical stone keys; Japanese names live in STONE_LABELS.
 GALLERY_SPECIES = {
-    "sapphire": ("サファイア", {"Montana Sapphire", "Winza Sapphire", "Kenyan Sapphire", "Songea Sapphire", "Bi-color Sapphire", "Umba Sapphire", "Blue Sapphire", "Color Change Sapphire", "Pink Sapphire"}),
-    "zircon": ("ジルコン", {"Zircon", "Umba Zircon"}),
-    "garnet": ("ガーネット", {"Garnet", "Dragon Garnet"}),
-    "tourmaline": ("トルマリン", {"Pink Tourmaline"}),
-    "oregon-sunstone": ("オレゴンサンストーン", {"Oregon Sunstone"}),
-    "sunstone": ("サンストーン", {"Sunstone"}),
-    "aquamarine": ("アクアマリン", {"Aquamarine"}),
+    "sapphire": ("Sapphire", {"Montana Sapphire", "Winza Sapphire", "Kenyan Sapphire", "Songea Sapphire", "Bi-color Sapphire", "Umba Sapphire", "Blue Sapphire", "Color Change Sapphire", "Pink Sapphire"}),
+    "zircon": ("Zircon", {"Zircon", "Umba Zircon"}),
+    "garnet": ("Garnet", {"Garnet", "Dragon Garnet"}),
+    "tourmaline": ("Tourmaline", {"Pink Tourmaline"}),
+    "oregon-sunstone": ("Oregon Sunstone", {"Oregon Sunstone"}),
+    "sunstone": ("Sunstone", {"Sunstone"}),
+    "aquamarine": ("Aquamarine", {"Aquamarine"}),
 }
 
 def gallery_species_key(item):
@@ -996,7 +996,7 @@ def gallery_filter_html(items):
         key = gallery_species_key(item)
         counts[key] = counts.get(key, 0) + 1
         cards.append(render_gallery_card(item).replace('<figure class="rl-item">', f'<figure class="rl-item" data-species="{key}">', 1))
-    labels = {key: value[0] for key, value in GALLERY_SPECIES.items()}
+    labels = {key: label(STONE_LABELS, value[0], "ja") for key, value in GALLERY_SPECIES.items()}
     labels["other"] = "その他"
     options = ''.join(f'<option value="{key}">{name}（{counts[key]}）</option>' for key, name in labels.items() if counts.get(key))
     return f'''<div class="gallery-filter" hidden>

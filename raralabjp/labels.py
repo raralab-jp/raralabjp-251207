@@ -1,6 +1,10 @@
 # labels.py
 
 STONE_LABELS = {
+    "Sapphire": {"ja": "サファイア", "en": "Sapphire"},
+    "Tourmaline": {"ja": "トルマリン", "en": "Tourmaline"},
+    "Oregon Sunstone": {"ja": "オレゴン・サンストーン", "en": "Oregon Sunstone"},
+    "Sunstone": {"ja": "サンストーン", "en": "Sunstone"},
     "Montana Sapphire": {
         "ja": "モンタナ・サファイア",
         "en": "Montana Sapphire",
