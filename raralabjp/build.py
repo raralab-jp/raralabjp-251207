@@ -976,7 +976,7 @@ GALLERY_SPECIES = {
     "sapphire": ("Sapphire", {"Montana Sapphire", "Winza Sapphire", "Kenyan Sapphire", "Songea Sapphire", "Bi-color Sapphire", "Umba Sapphire", "Blue Sapphire", "Color Change Sapphire", "Pink Sapphire"}),
     "zircon": ("Zircon", {"Zircon", "Umba Zircon"}),
     "garnet": ("Garnet", {"Garnet", "Dragon Garnet"}),
-    "tourmaline": ("Tourmaline", {"Pink Tourmaline"}),
+    "tourmaline": ("Tourmaline", {"Pink Tourmaline", "Green Tourmaline"}),
     "oregon-sunstone": ("Oregon Sunstone", {"Oregon Sunstone"}),
     "sunstone": ("Sunstone", {"Sunstone"}),
     "aquamarine": ("Aquamarine", {"Aquamarine"}),
