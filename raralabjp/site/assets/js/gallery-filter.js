@@ -8,7 +8,7 @@
   const pager = document.querySelector('.gallery-pager');
   const status = controls.querySelector('[role="status"]');
   const total = all.content.querySelectorAll('.rl-item').length;
-  const page = Number(location.pathname.match(/page-(\d+)\.html/)?.[1] || 1);
+  const page = Number(location.pathname.match(/^\/gallery\/page-([1-9]\d*)(?:\.html)?\/?$/)?.[1] || 1);
   function apply() {
     const key = select.value;
     if (key) {
