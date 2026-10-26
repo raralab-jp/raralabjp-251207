@@ -973,13 +973,13 @@ def news_card_html(n: dict) -> str:
 
 # Browsing groups reference canonical stone keys; Japanese names live in STONE_LABELS.
 GALLERY_SPECIES = {
-    "sapphire": ("Sapphire", {"Montana Sapphire", "Winza Sapphire", "Kenyan Sapphire", "Songea Sapphire", "Bi-color Sapphire", "Umba Sapphire", "Blue Sapphire", "Color Change Sapphire", "Pink Sapphire"}),
-    "zircon": ("Zircon", {"Zircon", "Umba Zircon"}),
-    "garnet": ("Garnet", {"Garnet", "Dragon Garnet"}),
-    "tourmaline": ("Tourmaline", {"Pink Tourmaline", "Green Tourmaline"}),
-    "oregon-sunstone": ("Oregon Sunstone", {"Oregon Sunstone"}),
-    "sunstone": ("Sunstone", {"Sunstone"}),
     "aquamarine": ("Aquamarine", {"Aquamarine"}),
+    "oregon-sunstone": ("Oregon Sunstone", {"Oregon Sunstone"}),
+    "garnet": ("Garnet", {"Garnet", "Dragon Garnet"}),
+    "sapphire": ("Sapphire", {"Montana Sapphire", "Winza Sapphire", "Kenyan Sapphire", "Songea Sapphire", "Bi-color Sapphire", "Umba Sapphire", "Blue Sapphire", "Color Change Sapphire", "Pink Sapphire"}),
+    "sunstone": ("Sunstone", {"Sunstone"}),
+    "zircon": ("Zircon", {"Zircon", "Umba Zircon"}),
+    "tourmaline": ("Tourmaline", {"Pink Tourmaline", "Green Tourmaline"}),
 }
 
 def gallery_species_key(item):
