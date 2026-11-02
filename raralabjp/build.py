@@ -1136,7 +1136,7 @@ def top_index_html(new_cards: str, top_news_cards_html: str) -> str:
         description=description,
         canonical=canonical,
         og_image=og_image,
-        stylesheet_version="20260901-home-layout",
+        stylesheet_version="20261102-journal",
     )
 
     return f'''<!doctype html>
