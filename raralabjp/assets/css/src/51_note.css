@@ -1,0 +1,12 @@
+/* Static note cards: no external requests or scripts. */
+body.home .top-note{width:100%;margin:0 auto 48px;}
+.note-cards{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:16px;}
+.note-card a{display:flex;flex-direction:column;color:inherit;text-decoration:none;height:100%;}
+.note-thumb{aspect-ratio:3/2;background:#f2f2f2;overflow:hidden;display:grid;place-items:center;}
+.note-thumb img{width:100%;height:100%;object-fit:contain;display:block;}
+.note-placeholder{font-size:18px;letter-spacing:.06em;color:#777;}
+.note-card h3{font-size:1em;font-weight:normal;line-height:1.5;margin:10px 0 6px;overflow-wrap:anywhere;}
+.note-card time{font-size:.85em;color:#666;}
+.note-card a:focus-visible,.note-more a:focus-visible{outline:2px solid currentColor;outline-offset:5px;}
+.note-more{text-align:center;margin-top:24px;}
+@media(max-width:599px){.note-cards{grid-template-columns:1fr;gap:28px;}}

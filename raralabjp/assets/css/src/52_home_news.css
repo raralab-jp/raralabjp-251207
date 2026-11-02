@@ -1,0 +1,19 @@
+/* Homepage News only: dates and article links, no cards or excerpts. */
+body.home .top-news-list{list-style:none;margin:0;padding:0;}
+body.home .top-news-row{display:grid;grid-template-columns:7em minmax(0,1fr);gap:12px;padding:12px 0;border-bottom:1px solid #eee;line-height:1.6;}
+body.home .top-news-row time{color:#666;font-size:.85em;padding-top:.12em;}
+body.home .top-news-row a{color:inherit;text-decoration:none;overflow-wrap:anywhere;}
+body.home .top-news-row a:hover{text-decoration:underline;text-underline-offset:4px;}
+body.home .top-news-row a:focus-visible{outline:2px solid currentColor;outline-offset:3px;}
+body.home .top-note{margin-top:clamp(28px,4vw,44px);margin-bottom:0;}
+@media(max-width:599px){body.home .top-news-row{grid-template-columns:1fr;gap:2px;padding:12px 0;}}
+
+/* Shared headings; retain the existing generous section rhythm. */
+body.home .top-section > .section-doubleline{font-family:inherit;font-size:1.5rem;font-weight:700;line-height:1.6;margin:0.83em 0 14px;}
+
+/* Journal and News list links: one shared, left-aligned treatment. */
+body.home .top-note .note-more,
+body.home .top-news .news-more{margin:26px 0 24px;padding:0;text-align:left;font-size:1rem;line-height:1.6;}
+body.home .top-note .note-more a,
+body.home .top-news .news-more a{font-size:inherit;font-weight:400;line-height:inherit;text-decoration:underline;text-underline-offset:4px;text-decoration-thickness:1px;opacity:.7;transition:opacity 120ms linear;}
+@media(hover:hover){body.home .top-note .note-more a:hover,body.home .top-news .news-more a:hover{opacity:.9;}}

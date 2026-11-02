@@ -3,6 +3,7 @@ import json, html, re, csv, argparse
 from pathlib import Path
 import shutil
 import sys
+from note_feed import refresh as refresh_note, load as load_note, render as render_note
 from urllib.parse import urlsplit
 
 from labels import (
@@ -1075,17 +1076,28 @@ def gallery_index_html(cards: str, prev_link: str = None, next_link: str = None,
 '''
 
 
+def top_news_list_html(items):
+    """Homepage only: retain latest three dates and article links."""
+    rows = []
+    for item in items[:3]:
+        slug = html.escape(str(item.get("slug", "")), quote=True)
+        title = html.escape(str(item.get("title", "")))
+        date = html.escape(str(item.get("date", "")), quote=True)
+        rows.append(f'<li class="top-news-row"><time datetime="{date}">{date}</time><a href="/news/{slug}/">{title}</a></li>')
+    return "\n".join(rows)
+
+
 def top_index_html(new_cards: str, top_news_cards_html: str) -> str:
     """
     トップページ（/index.html）のHTML。
-    News は「画像の下にテキスト」カードを3件表示する（追加のテキスト一覧は出さない）。
+    News は日付と記事リンクのみの一覧を最新3件表示する。
     """
     logo_html      = render_partial("top_logo.html")
     hero_html      = read_top_hero()
     nav_html       = render_partial("nav_main.html")
     intro_html     = read_intro()
     sections_html  = read_file(ROOT / "assets" / "partials" / "top_sections.html")
-    more_html      = read_file(ROOT / "assets" / "partials" / "top_more.html")
+    more_html      = render_note(load_note(ROOT))
     cta_html       = read_cta()
 
     gallery_block = f'''
@@ -1100,11 +1112,11 @@ def top_index_html(new_cards: str, top_news_cards_html: str) -> str:
     news_block = f'''
 <section class="top-section top-news">
   <h2 class="section-doubleline">News</h2>
-  <div class="news-cards">
+  <ul class="top-news-list">
 {top_news_cards_html}
-  </div>
+  </ul>
   <div class="news-more">
-    <a href="/news/">News 一覧を見る</a>
+    <a href="/news/">Newsの記事一覧を見る</a>
   </div>
 </section>
 '''
@@ -1137,8 +1149,8 @@ def top_index_html(new_cards: str, top_news_cards_html: str) -> str:
 {intro_html}
 {sections_html}
 {gallery_block}
-{news_block}
 {more_html}
+{news_block}
 {cta_html}
 </body>
 </html>'''
@@ -1798,8 +1810,10 @@ def build_site_css():
 
 
 # ---- Build ----
-def build():
+def build(skip_note_refresh=False):
     # 先に CSS を生成してから assets をコピーする（生成物を site 側に反映させるため）
+    _, note_status = refresh_note(ROOT, offline=skip_note_refresh)
+    print("[note] " + note_status)
     build_site_css()
 
     # サムネ & ニュース画像の WebP を事前に揃えておく
@@ -1926,9 +1940,7 @@ def build():
 
     top_news_cards_html = ""
     if news_items:
-        top_news_cards_html = "\n".join(
-            top_news_card_html(n) for n in news_items[:TOP_NEWS_COUNT]
-        )
+        top_news_cards_html = top_news_list_html(news_items[:TOP_NEWS_COUNT])
 
     (SITE_ROOT / "index.html").write_text(
         inject_footer(top_index_html(new_cards, top_news_cards_html)),
@@ -1980,6 +1992,7 @@ def build():
 
 if __name__ == "__main__":
     ap = argparse.ArgumentParser()
+    ap.add_argument("--skip-note-refresh", action="store_true")
     ap.add_argument("--target", choices=["gallery", "listing", "square", "all"], default="gallery")
     ap.add_argument("--master-csv", default="")
     ap.add_argument("--slug", default="")
@@ -1994,5 +2007,5 @@ if __name__ == "__main__":
             out_dir=args.out_dir,
         )
     else:
-        build()
+        build(skip_note_refresh=args.skip_note_refresh)
         print("✅ build complete: gallery, news, details, and top index generated.")

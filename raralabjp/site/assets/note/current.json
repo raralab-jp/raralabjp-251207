@@ -1,0 +1,30 @@
+{
+  "articles": [
+    {
+      "id": "n654723b8e1a9",
+      "image": "images/8a212219460b881a15f2e2efbe712154d6291c34578c9b448823a162d395eafd.webp",
+      "image_sha256": "8a212219460b881a15f2e2efbe712154d6291c34578c9b448823a162d395eafd",
+      "published": "2026-10-27T20:04:43+09:00",
+      "title": "スクエアの次は長方形。残った厚みに合わせて磨いたミント・トルマリン",
+      "url": "https://note.com/awaifacets/n/n654723b8e1a9"
+    },
+    {
+      "id": "nf957bbb3d8fa",
+      "image": "images/fb2d5e8d8bb87bce2cfda5e0478af2d31ab82519beec9a4ede016ca6cdaa97ff.webp",
+      "image_sha256": "fb2d5e8d8bb87bce2cfda5e0478af2d31ab82519beec9a4ede016ca6cdaa97ff",
+      "published": "2026-10-22T02:17:22+09:00",
+      "title": "残った形に合わせて設計する。ウィンザサファイアの研磨記録",
+      "url": "https://note.com/awaifacets/n/nf957bbb3d8fa"
+    },
+    {
+      "id": "nf85b255534a2",
+      "image": "images/83e292bb83f85310f8d6917fb484129d7b07d493681f1c15d98a81ed515c7f97.webp",
+      "image_sha256": "83e292bb83f85310f8d6917fb484129d7b07d493681f1c15d98a81ed515c7f97",
+      "published": "2026-10-06T21:37:06+09:00",
+      "title": "淡いピンクに、しっかり青。ウィンザサファイアの研磨記録",
+      "url": "https://note.com/awaifacets/n/nf85b255534a2"
+    }
+  ],
+  "generation": "75556666746c339976f3e8eb33bed2e78d292995729e34ee7aa6106e17ab6d0a",
+  "schema": 1
+}

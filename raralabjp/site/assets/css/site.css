@@ -1377,3 +1377,38 @@ main.detail section.cta-block--top a.cta-link {
 .gallery-filter select:focus-visible { outline:2px solid #536b50; outline-offset:3px; }
 .gallery-filter-count { margin:0 0 0 auto; font-size:12px; opacity:.7; }
 @media(max-width:600px) { .gallery-filter { gap:10px; } .gallery-filter label { font-size:12px; } .gallery-filter-count { width:100%; margin:0; } }
+
+/* ---- 51_note.css ---- */
+/* Static note cards: no external requests or scripts. */
+body.home .top-note{width:100%;margin:0 auto 48px;}
+.note-cards{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:16px;}
+.note-card a{display:flex;flex-direction:column;color:inherit;text-decoration:none;height:100%;}
+.note-thumb{aspect-ratio:3/2;background:#f2f2f2;overflow:hidden;display:grid;place-items:center;}
+.note-thumb img{width:100%;height:100%;object-fit:contain;display:block;}
+.note-placeholder{font-size:18px;letter-spacing:.06em;color:#777;}
+.note-card h3{font-size:1em;font-weight:normal;line-height:1.5;margin:10px 0 6px;overflow-wrap:anywhere;}
+.note-card time{font-size:.85em;color:#666;}
+.note-card a:focus-visible,.note-more a:focus-visible{outline:2px solid currentColor;outline-offset:5px;}
+.note-more{text-align:center;margin-top:24px;}
+@media(max-width:599px){.note-cards{grid-template-columns:1fr;gap:28px;}}
+
+/* ---- 52_home_news.css ---- */
+/* Homepage News only: dates and article links, no cards or excerpts. */
+body.home .top-news-list{list-style:none;margin:0;padding:0;}
+body.home .top-news-row{display:grid;grid-template-columns:7em minmax(0,1fr);gap:12px;padding:12px 0;border-bottom:1px solid #eee;line-height:1.6;}
+body.home .top-news-row time{color:#666;font-size:.85em;padding-top:.12em;}
+body.home .top-news-row a{color:inherit;text-decoration:none;overflow-wrap:anywhere;}
+body.home .top-news-row a:hover{text-decoration:underline;text-underline-offset:4px;}
+body.home .top-news-row a:focus-visible{outline:2px solid currentColor;outline-offset:3px;}
+body.home .top-note{margin-top:clamp(28px,4vw,44px);margin-bottom:0;}
+@media(max-width:599px){body.home .top-news-row{grid-template-columns:1fr;gap:2px;padding:12px 0;}}
+
+/* Shared headings; retain the existing generous section rhythm. */
+body.home .top-section > .section-doubleline{font-family:inherit;font-size:1.5rem;font-weight:700;line-height:1.6;margin:0.83em 0 14px;}
+
+/* Journal and News list links: one shared, left-aligned treatment. */
+body.home .top-note .note-more,
+body.home .top-news .news-more{margin:26px 0 24px;padding:0;text-align:left;font-size:1rem;line-height:1.6;}
+body.home .top-note .note-more a,
+body.home .top-news .news-more a{font-size:inherit;font-weight:400;line-height:inherit;text-decoration:underline;text-underline-offset:4px;text-decoration-thickness:1px;opacity:.7;transition:opacity 120ms linear;}
+@media(hover:hover){body.home .top-note .note-more a:hover,body.home .top-news .news-more a:hover{opacity:.9;}}
