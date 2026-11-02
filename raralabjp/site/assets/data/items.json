@@ -403,13 +403,15 @@
     "title_jp": "非加熱ブルー・サファイア 0.2800ct “Cushion in a Square V2”",
     "date": "2025-12-01",
     "tags": [],
-    "image_order": "",
+    "image_order": "cover 261031-153315 261031-153518 261031-153714 261031-154044 261031-154214 261031-154738",
     "process_image_order": "",
     "video_url": "",
     "shop_url": "https://shop.awaifacets.com/product/blue-sapphire-0280ct-cushion-in-a-square-v2/5R7GYJCA6HOUFV67LTCXGD6S",
     "modification_note": null,
     "design_is_named": null,
-    "additional_note": null
+    "additional_note": null,
+    "cover_image": "blue-sapphire-0280ct-cushion-in-a-square-v2-cover.jpg",
+    "image_selection_policy": "explicit"
   },
   {
     "slug": "color-change-sapphire-0411ct-french-cut",
@@ -447,13 +449,15 @@
     "title_jp": "非加熱ピンク・サファイア 0.318ct “Square Step Barion V3”",
     "date": "2025-12-01",
     "tags": [],
-    "image_order": "",
+    "image_order": "cover 261028-162209 261028-162343 261028-162522 261028-162727 261028-162911 261028-161041",
     "process_image_order": "",
     "video_url": "",
     "shop_url": "https://shop.awaifacets.com/product/pink-sapphire-0318ct-square-step-barion-v3/GUPXEXD2PQ34CU3P2ENOGRQI",
     "modification_note": null,
     "design_is_named": null,
-    "additional_note": null
+    "additional_note": null,
+    "cover_image": "pink-sapphire-0318ct-square-step-barion-v3-cover.jpg",
+    "image_selection_policy": "explicit"
   },
   {
     "slug": "dragon-garnet-0626ct-maelstrom-authority",
