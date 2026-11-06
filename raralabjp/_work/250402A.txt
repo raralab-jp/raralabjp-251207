@@ -5,7 +5,7 @@
 URLs:
   shop=
   gallery=https://raralab.jp/gallery/garnet-0523ct-uso-da/
-  video=https://customer-jnhhy169io6el95i.cloudflarestream.com/50ef3f808ee12c026cb31fc8165bd4a7/iframe
+  video=https://customer-jnhhy169io6el95i.cloudflarestream.com/01f48aa54da3f48285e19af53e0067c4/iframe
   note=
 
 image_order:
