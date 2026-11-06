@@ -1,0 +1,230 @@
+<!doctype html>
+<html lang="ja">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="robots" content="noindex, nofollow, noarchive">
+  <meta name="referrer" content="no-referrer">
+  <meta name="color-scheme" content="light">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'none'; frame-src https://customer-jnhhy169io6el95i.cloudflarestream.com; font-src 'self'; img-src 'self'; style-src 'unsafe-inline'; script-src 'unsafe-inline'; connect-src 'none'; form-action 'none'; base-uri 'none'">
+  <title>動画確認 | awai facets</title>
+  <link rel="icon" href="/assets/icons/favicon.svg" type="image/svg+xml">
+  <style>
+    @font-face {
+      font-family: "Inclusive Sans";
+      src: url("/assets/fonts/InclusiveSans-VariableFont_wght.ttf") format("truetype");
+      font-style: normal;
+      font-weight: 300 700;
+      font-display: swap;
+    }
+    * { box-sizing: border-box; }
+    html { color-scheme: light; background: #fff; }
+    body {
+      margin: 0;
+      color: #222;
+      background: #fff;
+      font-family: "Inclusive Sans", system-ui, -apple-system, "Helvetica Neue", Arial, sans-serif;
+      line-height: 1.6;
+      -webkit-text-size-adjust: 100%;
+    }
+    .page { max-width: 980px; margin: 0 auto; padding: 24px 16px 40px; }
+    .brand { margin: 0 0 18px; font-size: 28px; font-weight: 400; letter-spacing: .02em; }
+    h1 { margin: 0 0 10px; font-size: 22px; font-weight: 400; }
+    .intro { margin: 0 0 10px; max-width: 62ch; color: #595959; font-size: 14px; }
+    .video-list { display: grid; gap: 18px; }
+    .video-card { min-width: 0; background: #f3f3f3; }
+    .video-label { padding: 10px 14px; }
+    .card-meta { display: flex; align-items: baseline; justify-content: space-between; gap: 8px; margin-bottom: 2px; flex-wrap: wrap; }
+    .review-status { margin: 0; font-size: 12px; font-weight: 600; }
+    .review-status[data-state="ok"] { color: #385932; }
+    .review-status[data-state="fix"] { color: #85501b; }
+    .checklist { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 6px 10px; margin: 0; padding: 10px 14px 12px; min-width: 0; border: 0; }
+    .checklist label { display: flex; align-items: center; gap: 7px; min-height: 44px; cursor: pointer; font-size: 13px; line-height: 1.4; }
+    .checklist input { flex: 0 0 20px; width: 20px; height: 20px; margin: 0; accent-color: #536b50; }
+    .checklist input:focus-visible { outline: 2px solid #536b50; outline-offset: 3px; }
+    .checklist input:checked + span { font-weight: 600; }
+    .sr-only { position: absolute; width: 1px; height: 1px; padding: 0; overflow: hidden; clip: rect(0, 0, 0, 0); white-space: nowrap; border: 0; }
+    .review-help, .storage-note { margin: 0 0 10px; color: #595959; font-size: 12px; }
+    .storage-note[data-available="false"] { color: #85501b; }
+    .progress { margin: 14px 0; font-size: 13px; font-weight: 600; }
+    .sku { margin: 0; color: #595959; font-size: 12px; letter-spacing: .06em; }
+    h2 { margin: 0; font-size: 17px; font-weight: 400; overflow-wrap: anywhere; }
+    .video-frame { position: relative; width: 100%; aspect-ratio: 16 / 9; background: #f3f3f3; }
+    iframe { position: absolute; inset: 0; width: 100%; height: 100%; border: 0; }
+    iframe:focus-visible { outline: 2px solid #536b50; outline-offset: 2px; }
+    .access-note { margin: 26px 0 0; color: #666; font-size: 12px; }
+    @media (min-width: 768px) { .page { padding-right: 24px; padding-left: 24px; } }
+    @media (min-width: 1024px) { .page { padding-right: 28px; padding-left: 28px; } }
+    @media (max-width: 360px) { h2 { font-size: 16px; } .video-label { padding: 10px 12px; } }
+  </style>
+</head>
+<body>
+  <main class="page">
+    <header>
+      <p class="brand">awai facets</p>
+      <h1>動画確認</h1>
+      <p class="intro">開始位置・長さ・再生速度は現状のままです。サイズ・位置・色・背景の境目と出だしを確認してください。</p>
+      <p class="review-help">判定を選ぶと「確認済み」になります。「OK」と修正項目は同時に選べません。</p>
+      <p id="storage-note" class="storage-note" role="status">チェックはこのブラウザだけに保存します。送信機能はありません。</p>
+      <noscript><p class="storage-note" data-available="false">チェック機能にはJavaScriptが必要です。</p></noscript>
+      <p id="review-progress" class="progress" aria-live="polite">0 / 3 本 確認済み</p>
+    </header>
+    <div class="video-list">
+    <section class="video-card" aria-labelledby="title-241208F" data-review-card data-sku="241208F" data-video-id="4f3b526527d6a5beaebd46ce6137eea1" data-viewed="false">
+      <div class="video-label">
+        <div class="card-meta"><p class="sku">241208F</p><p class="review-status" data-review-status data-state="unseen" aria-live="polite">未確認</p></div>
+        <h2 id="title-241208F">Montana Sapphire · 0.448ct</h2>
+      </div>
+      <div class="video-frame">
+        <iframe src="https://customer-jnhhy169io6el95i.cloudflarestream.com/4f3b526527d6a5beaebd46ce6137eea1/iframe?controls=true&amp;autoplay=false&amp;loop=false" title="241208F Montana Sapphire 0.448ct 確認用動画"
+          loading="eager" referrerpolicy="no-referrer"
+          allow="encrypted-media; picture-in-picture; fullscreen" allowfullscreen></iframe>
+      </div>
+      <fieldset class="checklist">
+        <legend class="sr-only">241208F の確認結果</legend>
+        <label><input type="checkbox" data-field="viewed" disabled><span>確認済み</span></label>
+        <label><input type="checkbox" data-field="ok" disabled><span>OK</span></label>
+        <label><input type="checkbox" data-field="trim" disabled><span>頭出しの調整が必要</span></label>
+        <label><input type="checkbox" data-field="ellipse" disabled><span>楕円の修正が必要</span></label>
+      </fieldset>
+    </section>
+    <section class="video-card" aria-labelledby="title-250828A" data-review-card data-sku="250828A" data-video-id="1589f9e62447843220c779c956c3c032" data-viewed="false">
+      <div class="video-label">
+        <div class="card-meta"><p class="sku">250828A</p><p class="review-status" data-review-status data-state="unseen" aria-live="polite">未確認</p></div>
+        <h2 id="title-250828A">Pink Tourmaline · 0.856ct</h2>
+      </div>
+      <div class="video-frame">
+        <iframe src="https://customer-jnhhy169io6el95i.cloudflarestream.com/1589f9e62447843220c779c956c3c032/iframe?controls=true&amp;autoplay=false&amp;loop=false" title="250828A Pink Tourmaline 0.856ct 確認用動画"
+          loading="lazy" referrerpolicy="no-referrer"
+          allow="encrypted-media; picture-in-picture; fullscreen" allowfullscreen></iframe>
+      </div>
+      <fieldset class="checklist">
+        <legend class="sr-only">250828A の確認結果</legend>
+        <label><input type="checkbox" data-field="viewed" disabled><span>確認済み</span></label>
+        <label><input type="checkbox" data-field="ok" disabled><span>OK</span></label>
+        <label><input type="checkbox" data-field="trim" disabled><span>頭出しの調整が必要</span></label>
+        <label><input type="checkbox" data-field="ellipse" disabled><span>楕円の修正が必要</span></label>
+      </fieldset>
+    </section>
+    <section class="video-card" aria-labelledby="title-260916B" data-review-card data-sku="260916B" data-video-id="70c172a87ba922eb3a3652c400b1aed6" data-viewed="false">
+      <div class="video-label">
+        <div class="card-meta"><p class="sku">260916B</p><p class="review-status" data-review-status data-state="unseen" aria-live="polite">未確認</p></div>
+        <h2 id="title-260916B">Green Tourmaline · 0.561ct</h2>
+      </div>
+      <div class="video-frame">
+        <iframe src="https://customer-jnhhy169io6el95i.cloudflarestream.com/70c172a87ba922eb3a3652c400b1aed6/iframe?controls=true&amp;autoplay=false&amp;loop=false" title="260916B Green Tourmaline 0.561ct 確認用動画"
+          loading="lazy" referrerpolicy="no-referrer"
+          allow="encrypted-media; picture-in-picture; fullscreen" allowfullscreen></iframe>
+      </div>
+      <fieldset class="checklist">
+        <legend class="sr-only">260916B の確認結果</legend>
+        <label><input type="checkbox" data-field="viewed" disabled><span>確認済み</span></label>
+        <label><input type="checkbox" data-field="ok" disabled><span>OK</span></label>
+        <label><input type="checkbox" data-field="trim" disabled><span>頭出しの調整が必要</span></label>
+        <label><input type="checkbox" data-field="ellipse" disabled><span>楕円の修正が必要</span></label>
+      </fieldset>
+    </section>
+    </div>
+    <p class="access-note">確認用ページ · URLを知っている方が閲覧できます。</p>
+  </main>
+  <script>
+(function () {
+  'use strict';
+  const fields = ['viewed', 'ok', 'trim', 'ellipse'];
+  const cards = Array.from(document.querySelectorAll('[data-review-card]'));
+  const storageNote = document.getElementById('storage-note');
+  const progress = document.getElementById('review-progress');
+  let storage = null;
+  let canSave = false;
+
+  function showStorageStatus() {
+    storageNote.textContent = canSave
+      ? 'チェックはこのブラウザに保存されます。送信はされません。スクショで共有できます。'
+      : 'このブラウザでは保存できません。チェックはこのページを開いている間だけ有効です。閉じる前にスクショで残してください。';
+    storageNote.dataset.available = canSave ? 'true' : 'false';
+  }
+  try {
+    storage = window.localStorage;
+    const probe = 'awai-video-review:v1:storage-test';
+    storage.setItem(probe, '1');
+    storage.removeItem(probe);
+    canSave = true;
+  } catch (_) {
+    canSave = false;
+  }
+  showStorageStatus();
+
+  function cleanState(value) {
+    const state = {};
+    fields.forEach(function (field) { state[field] = Boolean(value && value[field] === true); });
+    if (state.trim || state.ellipse) state.ok = false;
+    if (state.ok || state.trim || state.ellipse) state.viewed = true;
+    return state;
+  }
+  function readState(key) {
+    if (!canSave) return cleanState(null);
+    let saved;
+    try {
+      saved = storage.getItem(key);
+    } catch (_) {
+      canSave = false;
+      showStorageStatus();
+      return cleanState(null);
+    }
+    try { return cleanState(JSON.parse(saved)); }
+    catch (_) { return cleanState(null); }
+  }
+  function updateProgress() {
+    const count = cards.filter(function (card) { return card.dataset.viewed === 'true'; }).length;
+    progress.textContent = count + ' / ' + cards.length + ' 本 確認済み';
+  }
+
+  cards.forEach(function (card) {
+    const key = 'awai-video-review:v1:' + window.location.pathname + ':' + card.dataset.sku + ':' + card.dataset.videoId;
+    const inputs = {};
+    fields.forEach(function (field) { inputs[field] = card.querySelector('[data-field="' + field + '"]'); });
+    const status = card.querySelector('[data-review-status]');
+    let state = readState(key);
+
+    function paint() {
+      fields.forEach(function (field) { inputs[field].checked = state[field]; });
+      card.dataset.viewed = state.viewed ? 'true' : 'false';
+      const fixes = [];
+      if (state.trim) fixes.push('頭出し');
+      if (state.ellipse) fixes.push('楕円');
+      status.textContent = !state.viewed ? '未確認'
+        : state.ok ? '確認済み · OK'
+        : fixes.length ? '確認済み · 要修正：' + fixes.join('・')
+        : '確認済み · 判定待ち';
+      status.dataset.state = !state.viewed ? 'unseen' : state.ok ? 'ok' : fixes.length ? 'fix' : 'viewed';
+      updateProgress();
+    }
+    fields.forEach(function (field) {
+      const input = inputs[field];
+      input.disabled = false;
+      input.addEventListener('change', function () {
+        state[field] = input.checked;
+        if (field === 'viewed' && !input.checked) {
+          state = cleanState(null);
+        } else if (field === 'ok' && input.checked) {
+          state.viewed = true;
+          state.trim = false;
+          state.ellipse = false;
+        } else if ((field === 'trim' || field === 'ellipse') && input.checked) {
+          state.viewed = true;
+          state.ok = false;
+        }
+        paint();
+        if (canSave) {
+          try { storage.setItem(key, JSON.stringify(state)); }
+          catch (_) { canSave = false; showStorageStatus(); }
+        }
+      });
+    });
+    paint();
+  });
+}());
+
+  </script>
+</body>
+</html>
