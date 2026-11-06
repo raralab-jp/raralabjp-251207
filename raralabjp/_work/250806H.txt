@@ -5,7 +5,7 @@
 URLs:
   shop=
   gallery= https://raralab.jp/gallery/montana-sapphire-0405ct-cut-corner-rectangle-step/
-  video=https://customer-jnhhy169io6el95i.cloudflarestream.com/66b07de11b05d335339766e4cabccb6f/iframe
+  video=https://customer-jnhhy169io6el95i.cloudflarestream.com/5914d18ce04a852444b1a1e1a6366bfc/iframe
   note=
 
 image_order:

@@ -5,7 +5,7 @@
 URLs:
   shop=
   gallery=
-  video=https://customer-jnhhy169io6el95i.cloudflarestream.com/c368131f8b4a5fbab5c6dd03ef842d64/iframe
+  video=https://customer-jnhhy169io6el95i.cloudflarestream.com/d0195e5519625bf47a250edbfbf57d16/iframe
   note=
 
 image_order: 20260708-16-20-45-16-20 20260708-16-22-52-16-22 20260708-16-27-45-16-27 20260708-16-29-45-16-29 20260704-17-01-55-17-01

@@ -1,4 +1,4 @@
-URLs: shop=https://www.raralab.shop/product/blue-sapphire-0280ct-cushion-in-a-square-v2/5R7GYJCA6HOUFV67LTCXGD6S; video=
+URLs: shop=https://www.raralab.shop/product/blue-sapphire-0280ct-cushion-in-a-square-v2/5R7GYJCA6HOUFV67LTCXGD6S; video=https://customer-jnhhy169io6el95i.cloudflarestream.com/2c6df62b77ac97617eca00fc2b2207aa/iframe
 Title JP: 非加熱ブルー・サファイア 0.2800ct “Cushion in a Square V2”
 Stone: Blue Sapphire
 Facet Design: “Cushion in a Square V2”
