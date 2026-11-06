@@ -36,6 +36,8 @@
     .video-label { padding: 10px 14px; }
     .card-meta { display: flex; align-items: baseline; justify-content: space-between; gap: 8px; margin-bottom: 2px; flex-wrap: wrap; }
     .review-status { margin: 0; font-size: 12px; font-weight: 600; }
+    .version-label { margin: 3px 0 0; color: #595959; font-size: 12px; line-height: 1.4; }
+    .review-note { margin: 4px 0 0; color: #595959; font-size: 12px; line-height: 1.45; }
     .review-status[data-state="ok"] { color: #385932; }
     .review-status[data-state="fix"] { color: #85501b; }
     .checklist { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 6px 10px; margin: 0; padding: 10px 14px 12px; min-width: 0; border: 0; }
@@ -63,20 +65,22 @@
     <header>
       <p class="brand">awai facets</p>
       <h1>動画確認</h1>
-      <p class="intro">開始位置・長さ・再生速度は現状のままです。サイズ・位置・色・背景の境目と出だしを確認してください。</p>
+      <p class="intro">今回の5本は、正面が開始約3秒で見えるように頭出しを調整しました。再生速度と終わり方はそのままです。サイズ・位置・色・背景の境目と出だしを確認してください。</p>
       <p class="review-help">判定を選ぶと「確認済み」になります。「OK」と修正項目は同時に選べません。</p>
       <p id="storage-note" class="storage-note" role="status">チェックはこのブラウザだけに保存します。送信機能はありません。</p>
       <noscript><p class="storage-note" data-available="false">チェック機能にはJavaScriptが必要です。</p></noscript>
-      <p id="review-progress" class="progress" aria-live="polite">0 / 3 本 確認済み</p>
+      <p id="review-progress" class="progress" aria-live="polite">0 / 6 本 確認済み</p>
     </header>
     <div class="video-list">
-    <section class="video-card" aria-labelledby="title-241208F" data-review-card data-sku="241208F" data-video-id="4f3b526527d6a5beaebd46ce6137eea1" data-viewed="false">
+    <section class="video-card" aria-labelledby="title-241208F" data-review-card data-sku="241208F" data-video-id="85bf15c531267448952ea3b42590fff4" data-viewed="false">
       <div class="video-label">
         <div class="card-meta"><p class="sku">241208F</p><p class="review-status" data-review-status data-state="unseen" aria-live="polite">未確認</p></div>
         <h2 id="title-241208F">Montana Sapphire · 0.448ct</h2>
+        <p class="version-label">再確認・頭出しと楕円</p>
+        <p class="review-note">頭出しを短くし、楕円の境目をさらに柔らかくしました。</p>
       </div>
       <div class="video-frame">
-        <iframe src="https://customer-jnhhy169io6el95i.cloudflarestream.com/4f3b526527d6a5beaebd46ce6137eea1/iframe?controls=true" title="241208F Montana Sapphire 0.448ct 確認用動画"
+        <iframe src="https://customer-jnhhy169io6el95i.cloudflarestream.com/85bf15c531267448952ea3b42590fff4/iframe?controls=true" title="241208F Montana Sapphire 0.448ct 確認用動画"
           loading="eager" referrerpolicy="no-referrer"
           allow="encrypted-media; picture-in-picture; fullscreen" allowfullscreen></iframe>
       </div>
@@ -88,13 +92,15 @@
         <label><input type="checkbox" data-field="ellipse" disabled><span>楕円の修正が必要</span></label>
       </fieldset>
     </section>
-    <section class="video-card" aria-labelledby="title-250828A" data-review-card data-sku="250828A" data-video-id="1589f9e62447843220c779c956c3c032" data-viewed="false">
+    <section class="video-card" aria-labelledby="title-250828A" data-review-card data-sku="250828A" data-video-id="4b199dc05d12b7ba69752cf85073801f" data-viewed="false">
       <div class="video-label">
         <div class="card-meta"><p class="sku">250828A</p><p class="review-status" data-review-status data-state="unseen" aria-live="polite">未確認</p></div>
         <h2 id="title-250828A">Pink Tourmaline · 0.856ct</h2>
+        <p class="version-label">再確認・頭出し</p>
+        <p class="review-note">冒頭のきらめきを残し、約3秒で正面になる頭出しです。</p>
       </div>
       <div class="video-frame">
-        <iframe src="https://customer-jnhhy169io6el95i.cloudflarestream.com/1589f9e62447843220c779c956c3c032/iframe?controls=true" title="250828A Pink Tourmaline 0.856ct 確認用動画"
+        <iframe src="https://customer-jnhhy169io6el95i.cloudflarestream.com/4b199dc05d12b7ba69752cf85073801f/iframe?controls=true" title="250828A Pink Tourmaline 0.856ct 確認用動画"
           loading="lazy" referrerpolicy="no-referrer"
           allow="encrypted-media; picture-in-picture; fullscreen" allowfullscreen></iframe>
       </div>
@@ -110,6 +116,7 @@
       <div class="video-label">
         <div class="card-meta"><p class="sku">260916B</p><p class="review-status" data-review-status data-state="unseen" aria-live="polite">未確認</p></div>
         <h2 id="title-260916B">Green Tourmaline · 0.561ct</h2>
+        <p class="version-label">前回OK・変更なし</p>
       </div>
       <div class="video-frame">
         <iframe src="https://customer-jnhhy169io6el95i.cloudflarestream.com/70c172a87ba922eb3a3652c400b1aed6/iframe?controls=true" title="260916B Green Tourmaline 0.561ct 確認用動画"
@@ -118,6 +125,66 @@
       </div>
       <fieldset class="checklist">
         <legend class="sr-only">260916B の確認結果</legend>
+        <label><input type="checkbox" data-field="viewed" disabled><span>確認済み</span></label>
+        <label><input type="checkbox" data-field="ok" disabled><span>OK</span></label>
+        <label><input type="checkbox" data-field="trim" disabled><span>頭出しの調整が必要</span></label>
+        <label><input type="checkbox" data-field="ellipse" disabled><span>楕円の修正が必要</span></label>
+      </fieldset>
+    </section>
+    <section class="video-card" aria-labelledby="title-241208E" data-review-card data-sku="241208E" data-video-id="95c0a524869ce5f2d3c95d281ee31f49" data-viewed="false">
+      <div class="video-label">
+        <div class="card-meta"><p class="sku">241208E</p><p class="review-status" data-review-status data-state="unseen" aria-live="polite">未確認</p></div>
+        <h2 id="title-241208E">Montana Sapphire · 0.413ct</h2>
+        <p class="version-label">新規確認</p>
+        <p class="review-note">正面が開始約3秒で見える頭出しです。</p>
+      </div>
+      <div class="video-frame">
+        <iframe src="https://customer-jnhhy169io6el95i.cloudflarestream.com/95c0a524869ce5f2d3c95d281ee31f49/iframe?controls=true" title="241208E Montana Sapphire 0.413ct 確認用動画"
+          loading="lazy" referrerpolicy="no-referrer"
+          allow="encrypted-media; picture-in-picture; fullscreen" allowfullscreen></iframe>
+      </div>
+      <fieldset class="checklist">
+        <legend class="sr-only">241208E の確認結果</legend>
+        <label><input type="checkbox" data-field="viewed" disabled><span>確認済み</span></label>
+        <label><input type="checkbox" data-field="ok" disabled><span>OK</span></label>
+        <label><input type="checkbox" data-field="trim" disabled><span>頭出しの調整が必要</span></label>
+        <label><input type="checkbox" data-field="ellipse" disabled><span>楕円の修正が必要</span></label>
+      </fieldset>
+    </section>
+    <section class="video-card" aria-labelledby="title-250405A" data-review-card data-sku="250405A" data-video-id="2c6df62b77ac97617eca00fc2b2207aa" data-viewed="false">
+      <div class="video-label">
+        <div class="card-meta"><p class="sku">250405A</p><p class="review-status" data-review-status data-state="unseen" aria-live="polite">未確認</p></div>
+        <h2 id="title-250405A">Blue Sapphire · 0.280ct</h2>
+        <p class="version-label">新規確認</p>
+        <p class="review-note">正面が開始約3秒で見える頭出しです。</p>
+      </div>
+      <div class="video-frame">
+        <iframe src="https://customer-jnhhy169io6el95i.cloudflarestream.com/2c6df62b77ac97617eca00fc2b2207aa/iframe?controls=true" title="250405A Blue Sapphire 0.280ct 確認用動画"
+          loading="lazy" referrerpolicy="no-referrer"
+          allow="encrypted-media; picture-in-picture; fullscreen" allowfullscreen></iframe>
+      </div>
+      <fieldset class="checklist">
+        <legend class="sr-only">250405A の確認結果</legend>
+        <label><input type="checkbox" data-field="viewed" disabled><span>確認済み</span></label>
+        <label><input type="checkbox" data-field="ok" disabled><span>OK</span></label>
+        <label><input type="checkbox" data-field="trim" disabled><span>頭出しの調整が必要</span></label>
+        <label><input type="checkbox" data-field="ellipse" disabled><span>楕円の修正が必要</span></label>
+      </fieldset>
+    </section>
+    <section class="video-card" aria-labelledby="title-250413A" data-review-card data-sku="250413A" data-video-id="2a7632f70d8990ed058f9fc142548a99" data-viewed="false">
+      <div class="video-label">
+        <div class="card-meta"><p class="sku">250413A</p><p class="review-status" data-review-status data-state="unseen" aria-live="polite">未確認</p></div>
+        <h2 id="title-250413A">Zircon · 0.718ct</h2>
+        <p class="version-label">新規確認</p>
+        <p class="review-note">正面が開始約3秒で見える頭出しです。</p>
+      </div>
+      <div class="video-frame">
+        <iframe src="https://customer-jnhhy169io6el95i.cloudflarestream.com/2a7632f70d8990ed058f9fc142548a99/iframe?controls=true" title="250413A Zircon 0.718ct 確認用動画"
+          loading="lazy" referrerpolicy="no-referrer"
+          allow="encrypted-media; picture-in-picture; fullscreen" allowfullscreen></iframe>
+      </div>
+      <fieldset class="checklist">
+        <legend class="sr-only">250413A の確認結果</legend>
         <label><input type="checkbox" data-field="viewed" disabled><span>確認済み</span></label>
         <label><input type="checkbox" data-field="ok" disabled><span>OK</span></label>
         <label><input type="checkbox" data-field="trim" disabled><span>頭出しの調整が必要</span></label>
