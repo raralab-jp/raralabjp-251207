@@ -35,9 +35,8 @@
     window.gtag = function () { window.dataLayer.push(arguments); };
     gtag('consent', 'default', {analytics_storage:'granted', ad_storage:'denied', ad_user_data:'denied', ad_personalization:'denied'});
     gtag('js', new Date());
-    gtag('config', ID, {send_page_view:false, allow_google_signals:false, allow_ad_personalization_signals:false,
+    gtag('config', ID, {send_page_view:true, allow_google_signals:false, allow_ad_personalization_signals:false,
       page_location:cleanURL(location.href), page_referrer:referrerOrigin()});
-    gtag('event', 'page_view', {page_location:cleanURL(location.href), page_referrer:referrerOrigin(), page_title:document.title});
     var script = document.createElement('script');
     script.async = true; script.src = 'https://www.googletagmanager.com/gtag/js?id=' + ID;
     script.referrerPolicy = 'no-referrer'; document.head.appendChild(script);
