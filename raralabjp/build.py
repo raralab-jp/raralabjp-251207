@@ -1989,6 +1989,8 @@ def build(skip_note_refresh=False):
         print("[gemdiary] skip: assets/gemdiary/body not found")
 
     normalize_published_html()
+    from analytics_install import install as install_analytics
+    install_analytics(SITE_ROOT)
 
 if __name__ == "__main__":
     ap = argparse.ArgumentParser()
