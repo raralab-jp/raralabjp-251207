@@ -1,6 +1,6 @@
 """Idempotently include opt-in analytics in published HTML; leave content intact."""
 from pathlib import Path
-TAG = '<script defer src="/assets/js/analytics-consent.js?v=20261115"></script>'
+TAG = '<script defer src="/assets/js/analytics-consent.js?v=20261115b"></script>'
 def install(site_root):
     count = 0
     for path in Path(site_root).rglob('*.html'):
