@@ -5,7 +5,7 @@
 URLs:
   shop=https://www.raralab.shop/product/montana-sapphire-0448ct-smallest-hex-apex/103
   gallery=https://raralab.jp/gallery/montana-sapphire-0448ct-smallest-hex-apex/
-  video=https://customer-jnhhy169io6el95i.cloudflarestream.com/85bf15c531267448952ea3b42590fff4/iframe
+  video=https://customer-jnhhy169io6el95i.cloudflarestream.com/234c84b02cc8901de2a569dc79636ab9/iframe
   note=
 
 image_order:
