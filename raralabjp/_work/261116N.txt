@@ -1,0 +1,20 @@
+URLs: shop=; gallery=https://awaifacets.com/gallery/montana-sapphire-0254ct-smallest-hex-apex/; video=https://customer-jnhhy169io6el95i.cloudflarestream.com/451b1b1c9345d4988d6c3ab4e9ef8744/iframe; note=
+Title JP: モンタナ・サファイア 0.254ct “SMALLEST HEX APEX”
+Product ID: 261116N
+Stone: Montana Sapphire
+Stone JP: モンタナ・サファイア
+Facet Design: SMALLEST HEX APEX
+Designer: Robert H. Long
+Faceted by: awai facets
+Carat: 0.254ct
+Size: 3.47 × 3.44 × 2.45 mm
+Origin: Rock Creek, Montana, USA
+産地: アメリカ・モンタナ州ロッククリーク
+Treatment: Heated
+Clarity: Under 10× magnification, a slightly cloudy haze is visible in the foreground and an ink-like color is visible deeper inside. The cloudy area is not visible from some angles. The cause of the ink-like color is undetermined. The cutter provisionally reports that the cloudy area is probably not noticeable to the unaided eye, although someone with exceptionally good eyesight might see it. This is not a definitive eye-clean assessment.
+透明度: 10倍ルーペ観察：奥にインクのような色が見え、手前に少し濁った雲状のもやが見える。雲状部分は角度によって見えない。奥の色が内包物によるものかは未確定。本人の暫定観察では、通常の肉眼では雲状部分は分からないと思うが、非常に目がよい人なら見えるかもしれない。肉眼で必ず見えないとは断定しない。
+modification_note:
+design_is_named: 1
+cover_image: montana-sapphire-0254ct-smallest-hex-apex-cover.jpg
+image_order: 02 03 04 05 06
+process_image_order:
