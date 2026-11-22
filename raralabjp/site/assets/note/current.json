@@ -1,6 +1,14 @@
 {
   "articles": [
     {
+      "id": "n77d3a9f71add",
+      "image": "images/a44d182f400c9b48ede66a4e0b7d381ca63f82c2cd08c35050844a43e61c9179.webp",
+      "image_sha256": "a44d182f400c9b48ede66a4e0b7d381ca63f82c2cd08c35050844a43e61c9179",
+      "published": "2026-11-22T21:27:44+09:00",
+      "title": "リングに石を載せてみたら、カットの見え方について考えることになった",
+      "url": "https://note.com/awaifacets/n/n77d3a9f71add"
+    },
+    {
       "id": "n829f07dca083",
       "image": "images/934a3d76d167012c0a86e7ae3e1b656d0f7ca6feff3181b9e530967f2a091910.webp",
       "image_sha256": "934a3d76d167012c0a86e7ae3e1b656d0f7ca6feff3181b9e530967f2a091910",
@@ -15,16 +23,8 @@
       "published": "2026-10-27T20:04:43+09:00",
       "title": "スクエアの次は長方形。残った厚みに合わせて磨いたミント・トルマリン",
       "url": "https://note.com/awaifacets/n/n654723b8e1a9"
-    },
-    {
-      "id": "nf957bbb3d8fa",
-      "image": "images/fb2d5e8d8bb87bce2cfda5e0478af2d31ab82519beec9a4ede016ca6cdaa97ff.webp",
-      "image_sha256": "fb2d5e8d8bb87bce2cfda5e0478af2d31ab82519beec9a4ede016ca6cdaa97ff",
-      "published": "2026-10-22T02:17:22+09:00",
-      "title": "残った形に合わせて設計する。ウィンザサファイアの研磨記録",
-      "url": "https://note.com/awaifacets/n/nf957bbb3d8fa"
     }
   ],
-  "generation": "1a316e47b63b40225f62419b14de9abbad636fd9b198238eafa0e9abb0f4a497",
+  "generation": "0723e0fe3f8bd7b279d1c0b3d8b31064d78947cd9034193d43ca760860ad5312",
   "schema": 1
 }
