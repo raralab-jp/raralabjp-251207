@@ -1,0 +1,26 @@
+URLs: shop=; gallery=https://awaifacets.com/gallery/montana-sapphire-0268ct-simple-jack/; video=; note=
+Product ID: 261119N
+Stone: Montana Sapphire
+Stone JP: モンタナ・サファイア
+Facet Design: Simple Jack
+Designer: Bob Keller
+Faceted by: awai facets
+Carat: 0.268ct
+Size: 3.71 × 3.78 × 2.65 mm
+Origin: Rock Creek, Montana, USA
+産地: アメリカ・モンタナ州ロッククリーク
+Treatment: Heated
+処理: 加熱
+鑑別: 日独宝石研究所
+cert_lab_en: Japan Germany Gemmological Laboratory
+sorting_report_number: J-181348
+sorting_shape_ja: モディファイド ラウンド ファンシー カット
+origin_source: Owner-confirmed
+additional_note: Rough from 1990s old stock (owner-confirmed); not a faceting date.
+Colors: blue
+design_is_named: 1
+cover_image: montana-sapphire-0268ct-simple-jack-cover.jpg
+image_order: angle angle-2 silver-chip gold-chip side back sorting
+process_image_order:
+Clarity: An eye-visible, feather-like inclusion extends from the table towards the girdle.
+透明度: テーブルからガードルにかけて、肉眼で見えるフェザー状の内包物があります。
