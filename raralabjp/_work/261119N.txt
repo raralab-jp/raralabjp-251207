@@ -1,4 +1,4 @@
-URLs: shop=; gallery=https://awaifacets.com/gallery/montana-sapphire-0268ct-simple-jack/; video=; note=
+URLs: shop=; gallery=https://awaifacets.com/gallery/montana-sapphire-0268ct-simple-jack/; video=https://customer-jnhhy169io6el95i.cloudflarestream.com/76b7a752ad18b42e3ca5e6fb918f5ac6/iframe; note=
 Product ID: 261119N
 Stone: Montana Sapphire
 Stone JP: モンタナ・サファイア
