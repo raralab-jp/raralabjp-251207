@@ -16,5 +16,5 @@ Clarity: Under 10× magnification, a slightly cloudy haze is visible in the fore
 modification_note:
 design_is_named: 1
 cover_image: montana-sapphire-0254ct-smallest-hex-apex-cover.jpg
-image_order: 02 03 04 05 06
+image_order: 02 ring-pb240697 ring-pb240704 03 04 05 06
 process_image_order:
