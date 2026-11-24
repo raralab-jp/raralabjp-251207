@@ -1,4 +1,4 @@
-URLs: shop=; gallery=https://awaifacets.com/gallery/montana-sapphire-0268ct-simple-jack/; video=https://customer-jnhhy169io6el95i.cloudflarestream.com/76b7a752ad18b42e3ca5e6fb918f5ac6/iframe; note=
+URLs: shop=https://shop.awaifacets.com/product/-0-268ct-simple-jack-/HM3DFWLZWY7CFLVEQ2UHXZYP; gallery=https://awaifacets.com/gallery/montana-sapphire-0268ct-simple-jack/; video=https://customer-jnhhy169io6el95i.cloudflarestream.com/76b7a752ad18b42e3ca5e6fb918f5ac6/iframe; note=
 Product ID: 261119N
 Stone: Montana Sapphire
 Stone JP: モンタナ・サファイア
@@ -20,7 +20,7 @@ additional_note: Rough from 1990s old stock (owner-confirmed); not a faceting da
 Colors: blue
 design_is_named: 1
 cover_image: montana-sapphire-0268ct-simple-jack-cover.jpg
-image_order: angle angle-2 silver-chip gold-chip side back sorting
+image_order: angle ring-pb240691 ring-pb240693 angle-2 silver-chip gold-chip side back sorting
 process_image_order:
 Clarity: An eye-visible, feather-like inclusion extends from the table towards the girdle.
 透明度: テーブルからガードルにかけて、肉眼で見えるフェザー状の内包物があります。
